@@ -1,0 +1,20 @@
+# Build artifacts
+*.apk
+*.aab
+*.class
+*.dex
+build/
+.gradle/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Local config
+local.properties
