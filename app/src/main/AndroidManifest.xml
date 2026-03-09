@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32"/>
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
+    <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false"/>
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false"/>
+    <uses-feature
+        android:glEsVersion="0x20000"
+        android:required="true"/>
+
+    <queries>
+        <package android:name="com.google.android.apps.maps"/>
+    </queries>
+
+    <application
+        android:theme="@style/Theme.MobileInvoiceOCR"
+        android:label="Mobile Invoice Assistant"
+        android:icon="@mipmap/ic_launcher"
+        android:allowBackup="true"
+        android:supportsRtl="true"
+        android:extractNativeLibs="false"
+        android:usesCleartextTraffic="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:requestLegacyExternalStorage="true">
+
+        <activity
+            android:theme="@style/Theme.MobileInvoiceOCR.NoActionBar"
+            android:name=".MainActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".InvoiceDetailActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity"/>
+        <activity
+            android:name=".CameraActivity"
+            android:screenOrientation="landscape"/>
+        <activity
+            android:theme="@style/Theme.MobileInvoiceOCR.Fullscreen"
+            android:name=".SignatureActivity"
+            android:screenOrientation="sensor"/>
+        <activity
+            android:label="@string/invoice_library"
+            android:name=".InvoiceLibraryActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity"/>
+        <activity
+            android:label="@string/manual_extraction"
+            android:name=".ManualExtractionActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".InvoiceLibraryActivity"/>
+        <activity
+            android:name=".BroadcastMessageActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity"/>
+        <activity
+            android:label="Settings"
+            android:name=".SettingsActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity"/>
+        <activity
+            android:theme="@style/Theme.MobileInvoiceOCR.NoActionBar"
+            android:label="Route Optimization"
+            android:name=".RouteMapActivity"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity"/>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBFCX7mXQi-BijDfQlIa8nC6EbOJaT2uv4"/>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:exported="false"
+            android:authorities="${applicationId}.fileprovider"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false"/>
+    </application>
+</manifest>
