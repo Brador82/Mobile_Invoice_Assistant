@@ -10,31 +10,31 @@
     <path
         android:fillColor="#00000000"
         android:pathData="M-5,95 Q50,82 100,98 Q160,118 220,105 Q280,92 365,118"
-        android:strokeColor="#ccd4af37"
+        android:strokeColor="#18b0b0b0"
         android:strokeWidth="6"
         android:strokeLineCap="round"/>
     <path
         android:fillColor="#00000000"
         android:pathData="M-5,108 Q55,96 110,112 Q175,130 235,116 Q295,102 365,130"
-        android:strokeColor="#90d4af37"
+        android:strokeColor="#12a0a0a0"
         android:strokeWidth="2.5"
         android:strokeLineCap="round"/>
     <path
         android:fillColor="#00000000"
         android:pathData="M320,-5 Q270,30 220,55 Q160,85 100,105 Q50,120 -5,130"
-        android:strokeColor="#80d4af37"
+        android:strokeColor="#15b8b8b8"
         android:strokeWidth="3.5"
         android:strokeLineCap="round"/>
     <path
         android:fillColor="#00000000"
         android:pathData="M260,15 Q245,45 248,80 Q251,115 240,160"
-        android:strokeColor="#55d4af37"
+        android:strokeColor="#0dc0c0c0"
         android:strokeWidth="1.2"
         android:strokeLineCap="round"/>
     <path
         android:fillColor="#00000000"
         android:pathData="M30,-5 Q55,25 48,55 Q41,80 60,100"
-        android:strokeColor="#40d4af37"
+        android:strokeColor="#0ab0b0b0"
         android:strokeWidth="1"
         android:strokeLineCap="round"/>
     <path

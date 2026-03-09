@@ -300,8 +300,8 @@ public class SelectionOverlayView extends View {
             return;
         }
         this.imageMatrix.reset();
-        float scaleX = getWidth() / this.imageBitmap.getWidth();
-        float scaleY = getHeight() / this.imageBitmap.getHeight();
+        float scaleX = getWidth() * 1.0f / this.imageBitmap.getWidth();
+        float scaleY = getHeight() * 1.0f / this.imageBitmap.getHeight();
         this.minScale = Math.min(scaleX, scaleY);
         this.scaleFactor = this.minScale;
         this.maxScale = this.minScale * 5.0f;

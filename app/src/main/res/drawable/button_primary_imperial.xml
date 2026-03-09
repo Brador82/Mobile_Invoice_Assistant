@@ -16,6 +16,7 @@
             <corners android:radius="6dp"/>
         </shape>
     </item>
+    <!-- Intensified top gloss highlight -->
     <item
         android:left="2dp"
         android:top="2dp"
@@ -23,14 +24,15 @@
         android:bottom="2dp">
         <shape android:shape="rectangle">
             <gradient
-                android:startColor="#28ffffff"
+                android:startColor="#50ffffff"
                 android:endColor="#00000000"
                 android:angle="270"
                 android:type="linear"
-                android:centerColor="#06ffffff"/>
+                android:centerColor="#0affffff"/>
             <corners android:radius="6dp"/>
         </shape>
     </item>
+    <!-- Deeper bottom shadow for depth -->
     <item
         android:left="2dp"
         android:top="2dp"
@@ -39,13 +41,14 @@
         <shape android:shape="rectangle">
             <gradient
                 android:startColor="#00000000"
-                android:endColor="#42000000"
+                android:endColor="#60000000"
                 android:angle="135"
                 android:type="linear"
-                android:centerColor="#1a000000"/>
+                android:centerColor="#28000000"/>
             <corners android:radius="6dp"/>
         </shape>
     </item>
+    <!-- Edge shine for gloss effect -->
     <item
         android:left="2dp"
         android:top="2dp"
@@ -53,12 +56,28 @@
         android:bottom="2dp">
         <shape android:shape="rectangle">
             <gradient
-                android:startColor="#14ffffff"
+                android:startColor="#22ffffff"
                 android:endColor="#00000000"
                 android:angle="0"
                 android:type="linear"
                 android:centerColor="#00000000"/>
             <corners android:radius="6dp"/>
+        </shape>
+    </item>
+    <!-- Additional specular highlight at top -->
+    <item
+        android:left="4dp"
+        android:top="2dp"
+        android:right="4dp"
+        android:bottom="0dp">
+        <shape android:shape="rectangle">
+            <gradient
+                android:startColor="#30ffffff"
+                android:endColor="#00ffffff"
+                android:angle="270"
+                android:type="linear"/>
+            <corners android:radius="6dp"/>
+            <size android:height="12dp"/>
         </shape>
     </item>
 </layer-list>
