@@ -300,12 +300,12 @@ public class SelectionOverlayView extends View {
     }
 
     public void setTextRegions(List<PaddleOCREngine.TextRegion> regions) {
-        this.textRegions = regions != null ? regions : new ArrayList<>();
+        this.textRegions = regions != null ? new ArrayList<>(regions) : new ArrayList<>();
         invalidate();
     }
 
     public void setCharRegions(List<PaddleOCREngine.TextRegion> regions) {
-        this.charRegions = regions != null ? regions : new ArrayList<>();
+        this.charRegions = regions != null ? new ArrayList<>(regions) : new ArrayList<>();
     }
 
     public void setTapToSelectMode(boolean enabled) {
@@ -608,8 +608,11 @@ public class SelectionOverlayView extends View {
                         Rect bitmapRect = screenRectToBitmapRect(normalized);
                         this.selectionRect = null;
                         invalidate();
-                        if (gathered != null && !gathered.isEmpty() && this.textListener != null) {
-                            this.textListener.onTextSelected(gathered, bitmapRect);
+                        // Always fire the listener — even with empty text so the
+                        // activity can run an OCR fallback on the selected region.
+                        if (this.textListener != null) {
+                            this.textListener.onTextSelected(
+                                    gathered != null ? gathered : "", bitmapRect);
                         }
                     }
                     return true;
@@ -671,6 +674,9 @@ public class SelectionOverlayView extends View {
     }
 
     private Rect screenRectToBitmapRect(RectF screenRect) {
+        if (this.imageBitmap == null || this.imageBitmap.isRecycled()) {
+            return new Rect(0, 0, 0, 0);
+        }
         Matrix inverse = new Matrix();
         this.imageMatrix.invert(inverse);
         float[] pts = { screenRect.left, screenRect.top, screenRect.right, screenRect.bottom };
@@ -722,11 +728,12 @@ public class SelectionOverlayView extends View {
 
     private String gatherTextFromScreenRect(RectF screenRect) {
         // Prefer character-level regions for precise selection; fall back to line
-        // regions
-        List<PaddleOCREngine.TextRegion> source = (this.charRegions != null && !this.charRegions.isEmpty())
-                ? this.charRegions
-                : this.textRegions;
-        if (source == null || source.isEmpty()) {
+        // regions. Take a local snapshot to avoid ConcurrentModificationException
+        // when the ML Kit callback replaces the list on another thread.
+        List<PaddleOCREngine.TextRegion> charSnap = new ArrayList<>(this.charRegions);
+        List<PaddleOCREngine.TextRegion> lineSnap = new ArrayList<>(this.textRegions);
+        List<PaddleOCREngine.TextRegion> source = (!charSnap.isEmpty()) ? charSnap : lineSnap;
+        if (source.isEmpty() || this.imageBitmap == null || this.imageBitmap.isRecycled()) {
             return null;
         }
         final Rect bitmapRect = screenRectToBitmapRect(screenRect);

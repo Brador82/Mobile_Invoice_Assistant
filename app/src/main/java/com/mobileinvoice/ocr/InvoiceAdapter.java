@@ -165,6 +165,8 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.InvoiceV
                     InvoiceAdapter.InvoiceViewHolder.this.lambda$bind$7(invoice, view);
                 }
             });
+            // Grey out completed deliveries as a visual aid
+            applyCompletedOverlay(invoice.isCompleted());
         }
 
         static /* synthetic */ void lambda$bind$0(Invoice invoice, View v) {
@@ -221,6 +223,7 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.InvoiceV
 
         /* JADX INFO: Access modifiers changed from: private */
         public /* synthetic */ void lambda$bind$5(Invoice invoice, CompoundButton buttonView, boolean isChecked) {
+            applyCompletedOverlay(isChecked);
             if (InvoiceAdapter.this.listener != null) {
                 InvoiceAdapter.this.listener.onDeliveryCompleteChanged(invoice, isChecked);
             }
@@ -284,6 +287,12 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.InvoiceV
                 badge.setTextColor(0xFF404040);
                 badge.setBackgroundResource(R.drawable.badge_service_dim);
             }
+        }
+
+        /** Grey out the entire card when delivery is completed; restore when unchecked. */
+        private void applyCompletedOverlay(boolean completed) {
+            float alpha = completed ? 0.45f : 1.0f;
+            this.binding.cardContent.setAlpha(alpha);
         }
 
         private void applyThemeStyling(int position) {

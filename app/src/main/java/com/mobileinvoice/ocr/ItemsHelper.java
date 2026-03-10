@@ -19,6 +19,8 @@ public class ItemsHelper {
                 obj.put("item", di.item != null ? di.item : "");
                 obj.put("model", di.model != null ? di.model : "");
                 obj.put("serial", di.serial != null ? di.serial : "");
+                obj.put("make", di.make != null ? di.make : "");
+                obj.put("services", di.services != null ? di.services : "");
                 array.put(obj);
             }
             return array.toString();
@@ -42,8 +44,13 @@ public class ItemsHelper {
                     String item = obj.optString("item", "");
                     String model = obj.optString("model", "");
                     String serial = obj.optString("serial", "");
+                    String make = obj.optString("make", "");
+                    String services = obj.optString("services", "");
                     if (!item.isEmpty()) {
-                        items.add(new DeliveryItem(item, model, serial));
+                        DeliveryItem di = new DeliveryItem(item, model, serial);
+                        di.make = make;
+                        di.services = services;
+                        items.add(di);
                     }
                 }
                 return items;

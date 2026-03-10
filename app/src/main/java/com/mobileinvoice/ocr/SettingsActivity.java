@@ -3,6 +3,8 @@ package com.mobileinvoice.ocr;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.os.Handler;
+import android.os.Looper;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -30,10 +32,16 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import androidx.appcompat.widget.SwitchCompat;
 import com.mobileinvoice.ocr.DriveHelper;
 import com.mobileinvoice.ocr.SettingsActivity;
 import com.mobileinvoice.ocr.database.InvoiceDatabase;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Locale;
 
@@ -66,6 +74,15 @@ public class SettingsActivity extends BaseActivity {
     private TextView tvDriveStatus;
     private TextView tvGeoResult;
     private TextView tvVersion;
+    private SwitchCompat switchFollowUp;
+    private TextInputEditText etGoogleReviewUrl;
+    private TextInputEditText etBroadcastMessage;
+    private TextInputEditText etCustomMessage1;
+    private TextInputEditText etCustomMessage2;
+    private TextInputEditText etDeliveryTeamName;
+    private TextInputEditText etSuggestedReview;
+    private final Handler shortenHandler = new Handler(Looper.getMainLooper());
+    private Runnable pendingShortenRunnable;
 
     @Override // androidx.fragment.app.FragmentActivity, androidx.activity.ComponentActivity, androidx.core.app.ComponentActivity, android.app.Activity
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,6 +173,13 @@ public class SettingsActivity extends BaseActivity {
         this.rbAfterNavigate = (RadioButton) findViewById(R.id.rbAfterNavigate);
         this.tvVersion = (TextView) findViewById(R.id.tvVersion);
         this.btnClearAllData = (MaterialButton) findViewById(R.id.btnClearAllData);
+        this.switchFollowUp = (SwitchCompat) findViewById(R.id.switchFollowUp);
+        this.etGoogleReviewUrl = (TextInputEditText) findViewById(R.id.etGoogleReviewUrl);
+        this.etBroadcastMessage = (TextInputEditText) findViewById(R.id.etBroadcastMessage);
+        this.etCustomMessage1 = (TextInputEditText) findViewById(R.id.etCustomMessage1);
+        this.etCustomMessage2 = (TextInputEditText) findViewById(R.id.etCustomMessage2);
+        this.etDeliveryTeamName = (TextInputEditText) findViewById(R.id.etDeliveryTeamName);
+        this.etSuggestedReview = (TextInputEditText) findViewById(R.id.etSuggestedReview);
     }
 
     /* JADX WARN: Can't fix incorrect switch cases order, some code will duplicate */
@@ -219,6 +243,13 @@ public class SettingsActivity extends BaseActivity {
                 this.rbAfterAsk.setChecked(true);
                 break;
         }
+        this.switchFollowUp.setChecked(this.settings.isFollowUpEnabled());
+        this.etDeliveryTeamName.setText(this.settings.getDeliveryTeamName());
+        this.etGoogleReviewUrl.setText(this.settings.getGoogleReviewUrl());
+        this.etSuggestedReview.setText(this.settings.getSuggestedReview());
+        this.etBroadcastMessage.setText(this.settings.getBroadcastMessage());
+        this.etCustomMessage1.setText(this.settings.getCustomMessage1());
+        this.etCustomMessage2.setText(this.settings.getCustomMessage2());
         String versionName = "1.3.3";
         try {
             versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
@@ -317,6 +348,60 @@ public class SettingsActivity extends BaseActivity {
             @Override // android.widget.RadioGroup.OnCheckedChangeListener
             public final void onCheckedChanged(RadioGroup radioGroup, int i) {
                 SettingsActivity.this.lambda$setupListeners$10(radioGroup, i);
+            }
+        });
+        this.switchFollowUp.setOnCheckedChangeListener(new android.widget.CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(android.widget.CompoundButton buttonView, boolean isChecked) {
+                SettingsActivity.this.settings.setFollowUpEnabled(isChecked);
+            }
+        });
+        this.etDeliveryTeamName.addTextChangedListener(new SimpleWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                SettingsActivity.this.settings.setDeliveryTeamName(s.toString().trim());
+            }
+        });
+        this.etSuggestedReview.addTextChangedListener(new SimpleWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                SettingsActivity.this.settings.setSuggestedReview(s.toString());
+            }
+        });
+        this.etGoogleReviewUrl.addTextChangedListener(new SimpleWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                final String url = s.toString().trim();
+                SettingsActivity.this.settings.setGoogleReviewUrl(url);
+                // Debounce URL shortening: wait 1.5s after user stops typing
+                if (pendingShortenRunnable != null) {
+                    shortenHandler.removeCallbacks(pendingShortenRunnable);
+                }
+                pendingShortenRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        shortenReviewUrl(url);
+                    }
+                };
+                shortenHandler.postDelayed(pendingShortenRunnable, 1500);
+            }
+        });
+        this.etBroadcastMessage.addTextChangedListener(new SimpleWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                SettingsActivity.this.settings.setBroadcastMessage(s.toString());
+            }
+        });
+        this.etCustomMessage1.addTextChangedListener(new SimpleWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                SettingsActivity.this.settings.setCustomMessage1(s.toString());
+            }
+        });
+        this.etCustomMessage2.addTextChangedListener(new SimpleWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                SettingsActivity.this.settings.setCustomMessage2(s.toString());
             }
         });
         this.btnClearAllData.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.SettingsActivity$$ExternalSyntheticLambda13
@@ -556,6 +641,43 @@ public class SettingsActivity extends BaseActivity {
     /* JADX INFO: Access modifiers changed from: private */
     public /* synthetic */ void lambda$geocodeAddress$14(IOException e) {
         this.tvGeoResult.setText("Geocoder error: " + e.getMessage());
+    }
+
+    private void shortenReviewUrl(final String longUrl) {
+        if (longUrl.isEmpty() || !longUrl.startsWith("http")) {
+            settings.setShortReviewUrl("");
+            return;
+        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    String encoded = URLEncoder.encode(longUrl, "UTF-8");
+                    URL apiUrl = new URL("https://tinyurl.com/api-create.php?url=" + encoded);
+                    HttpURLConnection conn = (HttpURLConnection) apiUrl.openConnection();
+                    conn.setRequestMethod("GET");
+                    conn.setConnectTimeout(5000);
+                    conn.setReadTimeout(5000);
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    final String shortUrl = reader.readLine();
+                    reader.close();
+                    conn.disconnect();
+                    if (shortUrl != null && shortUrl.startsWith("http")) {
+                        settings.setShortReviewUrl(shortUrl);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(SettingsActivity.this,
+                                        "Review link shortened", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                } catch (Exception e) {
+                    // Shortening failed silently — full URL will be used
+                    settings.setShortReviewUrl("");
+                }
+            }
+        }).start();
     }
 
     private void confirmClearAllData() {

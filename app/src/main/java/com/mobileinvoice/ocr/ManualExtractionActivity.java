@@ -243,6 +243,7 @@ public class ManualExtractionActivity extends BaseActivity {
         this.chipStates.put(field, state);
         Chip chip = this.fieldChips.get(field);
         if (chip == null) {
+            return;
         }
         chip.setChipBackgroundColor(null);
         chip.setBackground(getResources().getDrawable(R.drawable.chip_gradient_bg, null));
@@ -372,6 +373,10 @@ public class ManualExtractionActivity extends BaseActivity {
      */
     public void lambda$onCreate$0(final String extractedText, Rect bitmapRect) {
         if (extractedText == null || extractedText.trim().isEmpty()) {
+            // No pre-scanned text matched — run OCR directly on the selected region
+            if (bitmapRect != null && bitmapRect.width() > 10 && bitmapRect.height() > 10) {
+                runOCROnRegion(bitmapRect);
+            }
             return;
         }
         Set<FieldType> detected = autoDetectFields(extractedText);
@@ -426,6 +431,54 @@ public class ManualExtractionActivity extends BaseActivity {
             }
         });
         popup.show();
+    }
+
+    /** Crop the given bitmap region, run ML Kit OCR on it, and show results. */
+    private void runOCROnRegion(final Rect bitmapRect) {
+        if (this.fullBitmap == null || this.fullBitmap.isRecycled())
+            return;
+        // Clamp rect to bitmap bounds
+        int left = Math.max(0, bitmapRect.left);
+        int top = Math.max(0, bitmapRect.top);
+        int right = Math.min(this.fullBitmap.getWidth(), bitmapRect.right);
+        int bottom = Math.min(this.fullBitmap.getHeight(), bitmapRect.bottom);
+        if (right <= left || bottom <= top)
+            return;
+        final Bitmap crop = Bitmap.createBitmap(this.fullBitmap, left, top, right - left, bottom - top);
+        Toast.makeText(this, "Scanning region…", Toast.LENGTH_SHORT).show();
+        InputImage image = InputImage.fromBitmap(crop, 0);
+        this.recognizer.process(image)
+                .addOnSuccessListener(new OnSuccessListener<Text>() {
+                    @Override
+                    public void onSuccess(Text visionText) {
+                        crop.recycle();
+                        StringBuilder sb = new StringBuilder();
+                        for (Text.TextBlock block : visionText.getTextBlocks()) {
+                            for (Text.Line line : block.getLines()) {
+                                String t = line.getText().trim();
+                                if (!t.isEmpty())
+                                    sb.append(t).append(" ");
+                            }
+                        }
+                        String ocrd = sb.toString().trim();
+                        if (!ocrd.isEmpty()) {
+                            // Re-enter the normal flow with the OCR text
+                            lambda$onCreate$0(ocrd, bitmapRect);
+                        } else {
+                            Toast.makeText(ManualExtractionActivity.this, "No text found in region", Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(Exception e) {
+                        crop.recycle();
+                        android.util.Log.e("ManualExtraction", "OCR fallback failed", e);
+                        Toast.makeText(ManualExtractionActivity.this, "OCR failed: " + e.getMessage(),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     /* JADX INFO: Access modifiers changed from: private */

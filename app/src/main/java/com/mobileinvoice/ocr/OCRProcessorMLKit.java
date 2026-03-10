@@ -16,7 +16,9 @@ import com.google.mlkit.vision.text.latin.TextRecognizerOptions;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
@@ -51,12 +53,33 @@ public class OCRProcessorMLKit {
     // PGE29BY1FS
     private static final Pattern BARE_MODEL_PATTERN = Pattern.compile("\\b(?!A4L)([A-Z]{2,5}\\d{1,7}[A-Z0-9]{0,7})\\b");
 
+    // Known appliance brands for make extraction
+    private static final String[] KNOWN_BRANDS = {
+            "LG", "GE", "Samsung", "Whirlpool", "Maytag", "Frigidaire", "Bosch",
+            "KitchenAid", "Amana", "Kenmore", "Electrolux", "Hotpoint", "Haier",
+            "Fisher & Paykel", "Fisher and Paykel", "Speed Queen", "Miele",
+            "Thermador", "Viking", "Sub-Zero", "Sub Zero", "Wolf", "Dacor",
+            "Jenn-Air", "JennAir", "Cafe", "Monogram", "Profile", "Crosley",
+            "Danby", "Magic Chef", "Insignia", "Hisense", "Midea", "Beko",
+            "Bertazzoni", "BlueStar", "DERA"
+    };
+
+    // Company / store header keywords — phones near these lines are store phones
+    private static final String[] STORE_KEYWORDS = {
+            "appliances", "electronics", "furniture", "4 less", " inc", " llc", " corp",
+            "showroom", "warehouse", "salesperson", "store", "a4l", "fax", "toll free",
+            "customer service", "office"
+    };
+
     public static class OCRResult {
         public String customerName = "";
         public String address = "";
         public String phone = "";
+        public String altPhone = "";
         public String invoiceNumber = "";
         public String items = "";
+        /** Global service flags: "DELIVERY,INSTALL,HAUL AWAY" etc. */
+        public String services = "";
         public String rawText = "";
     }
 
@@ -83,8 +106,10 @@ public class OCRProcessorMLKit {
             Log.d(TAG, "Customer: " + result2.customerName);
             Log.d(TAG, "Address: " + result2.address);
             Log.d(TAG, "Phone: " + result2.phone);
+            Log.d(TAG, "Alt Phone: " + result2.altPhone);
             Log.d(TAG, "Invoice #: " + result2.invoiceNumber);
             Log.d(TAG, "Items: " + result2.items);
+            Log.d(TAG, "Services: " + result2.services);
             Log.d(TAG, "=====================================");
             return result2;
         } catch (IOException e) {
@@ -154,14 +179,21 @@ public class OCRProcessorMLKit {
         }
         result.rawText = rawText.toString();
         result.invoiceNumber = extractInvoiceNumber(allLines);
+
+        // Collect store/company phones first so we never assign them to the customer
+        Set<String> storePhoneDigits = collectStorePhones(allLines);
+
         int billToIndex = findLineContaining(allLines, "BILL TO");
         if (billToIndex == -1) {
             Log.w(TAG, "BILL TO not found, using fallback extraction");
-            extractWithFallback(allLines, result);
+            extractWithFallback(allLines, storePhoneDigits, result);
         } else {
-            extractFromBillToSection(allLines, billToIndex, result);
+            extractFromBillToSection(allLines, billToIndex, storePhoneDigits, result);
         }
+
+        result.services = extractGlobalServices(allLines);
         result.items = extractItems(allLines);
+
         if (result.customerName.isEmpty()) {
             result.customerName = "Unknown Customer";
         }
@@ -177,35 +209,159 @@ public class OCRProcessorMLKit {
         return result;
     }
 
-    private void extractFromBillToSection(List<String> lines, int billToIndex, OCRResult result) {
-        for (int i = billToIndex + 1; i < Math.min(billToIndex + 10, lines.size()); i++) {
-            String line = lines.get(i).trim();
-            if (!line.isEmpty()) {
-                if (result.customerName.isEmpty() && line.toLowerCase().startsWith("name:")) {
-                    result.customerName = extractCustomerName(line);
-                } else if (result.address.isEmpty() && line.toLowerCase().startsWith("address:")) {
-                    result.address = extractAddress(line);
-                } else if (result.phone.isEmpty()
-                        && (line.toLowerCase().contains("phone") || PHONE_PATTERN.matcher(line).find())) {
-                    result.phone = extractPhone(line);
+    /**
+     * Collects the digit-strings of every phone found in the company/store header
+     * block so they can be excluded from customer-phone extraction.
+     * Heuristic: any phone on a line that contains a store keyword, or any phone
+     * in the first few lines before the BILL-TO block.
+     */
+    private Set<String> collectStorePhones(List<String> lines) {
+        Set<String> storeDigits = new LinkedHashSet<>();
+        int billToIdx = findLineContaining(lines, "BILL TO");
+        // Treat the top‑N lines (before BILL TO) as potential store-header lines
+        int headerEnd = billToIdx >= 0 ? Math.min(billToIdx, 15) : Math.min(lines.size(), 10);
+        for (int i = 0; i < headerEnd; i++) {
+            String line = lines.get(i);
+            String lower = line.toLowerCase();
+            boolean isStoreCtx = false;
+            for (String kw : STORE_KEYWORDS) {
+                if (lower.contains(kw)) {
+                    isStoreCtx = true;
+                    break;
+                }
+            }
+            if (isStoreCtx || i < 5) {
+                Matcher m = PHONE_PATTERN.matcher(line);
+                while (m.find())
+                    storeDigits.add(m.group().replaceAll("\\D", ""));
+            }
+        }
+        // Also scan every line for store keywords and grab phones from those lines
+        for (String line : lines) {
+            String lower = line.toLowerCase();
+            for (String kw : STORE_KEYWORDS) {
+                if (lower.contains(kw)) {
+                    Matcher m = PHONE_PATTERN.matcher(line);
+                    while (m.find())
+                        storeDigits.add(m.group().replaceAll("\\D", ""));
+                    break;
                 }
             }
         }
+        return storeDigits;
     }
 
-    private void extractWithFallback(List<String> lines, OCRResult result) {
+    /** Extract a phone string from a raw match, skipping store digits. */
+    private String formatPhone(String digits) {
+        if (digits.length() == 10) {
+            return String.format("(%s) %s-%s",
+                    digits.substring(0, 3), digits.substring(3, 6), digits.substring(6));
+        }
+        return digits;
+    }
+
+    /**
+     * Scans lines in [windowStart, windowEnd) for phone numbers not in storeDigits.
+     * Sets result.phone if empty, result.altPhone if a second distinct number
+     * found.
+     */
+    private void assignPhones(List<String> lines, int windowStart, int windowEnd,
+            Set<String> storeDigits, OCRResult result) {
+        List<String> found = new ArrayList<>();
+        for (int i = windowStart; i < windowEnd; i++) {
+            String line = lines.get(i);
+            Matcher m = PHONE_PATTERN.matcher(line);
+            while (m.find()) {
+                String digits = m.group().replaceAll("\\D", "");
+                if (storeDigits.contains(digits))
+                    continue;
+                String formatted = formatPhone(digits);
+                if (!found.contains(formatted))
+                    found.add(formatted);
+            }
+        }
+        if (!found.isEmpty() && result.phone.isEmpty())
+            result.phone = found.get(0);
+        if (found.size() > 1 && result.altPhone.isEmpty())
+            result.altPhone = found.get(1);
+    }
+
+    /** Global service flag detection across all invoice lines. */
+    private String extractGlobalServices(List<String> lines) {
+        Set<String> flags = new LinkedHashSet<>();
+        for (String line : lines) {
+            String lower = line.toLowerCase();
+            if (lower.matches(".*\\bdeliver(?:y|ed)?\\b.*"))
+                flags.add("DELIVERY");
+            if (lower.matches(".*\\binstall(?:ation|ed)?\\b.*"))
+                flags.add("INSTALL");
+            if (lower.matches(".*\\bhaul\\s*(?:away)?\\b.*"))
+                flags.add("HAUL AWAY");
+            if (lower.matches(".*\\bservice\\s*(?:call|fee)?\\b.*")
+                    && !lower.contains("customer service"))
+                flags.add("SERVICE");
+        }
+        StringBuilder sb = new StringBuilder();
+        for (String f : flags) {
+            if (sb.length() > 0)
+                sb.append(",");
+            sb.append(f);
+        }
+        return sb.toString();
+    }
+
+    private void extractFromBillToSection(List<String> lines, int billToIndex,
+            Set<String> storePhoneDigits, OCRResult result) {
+        // Scan both before AND after the BILL TO marker.
+        // For sideways/rotated invoices ML Kit reads blocks in image-top-to-bottom
+        // order,
+        // so the customer detail lines often appear BEFORE the "BILL TO:" label in the
+        // OCR output stream. Searching only forward would miss them entirely.
+        int windowStart = Math.max(0, billToIndex - 10);
+        int windowEnd = Math.min(lines.size(), billToIndex + 15);
+        for (int i = windowStart; i < windowEnd; i++) {
+            if (i == billToIndex)
+                continue;
+            String line = lines.get(i).trim();
+            if (line.isEmpty())
+                continue;
+            if (result.customerName.isEmpty() && line.toLowerCase().startsWith("name:")) {
+                result.customerName = extractCustomerName(line);
+            }
+            if (result.address.isEmpty() && line.toLowerCase().startsWith("address:")) {
+                result.address = extractAddress(line);
+            }
+        }
+        // Phone: dedicate a separate pass with store-phone suppression
+        assignPhones(lines, windowStart, windowEnd, storePhoneDigits, result);
+        // If still no phone, widen scan to whole document
+        if (result.phone.isEmpty()) {
+            assignPhones(lines, 0, lines.size(), storePhoneDigits, result);
+        }
+    }
+
+    private void extractWithFallback(List<String> lines, Set<String> storePhoneDigits, OCRResult result) {
+        // Labeled-field first pass
         for (String line : lines) {
             if (result.customerName.isEmpty() && line.toLowerCase().startsWith("name:")) {
                 result.customerName = extractCustomerName(line);
             }
-            if (result.address.isEmpty() && (line.toLowerCase().startsWith("address:")
-                    || (line.matches(".*\\d+\\s+[A-Z].*") && line.length() > 10))) {
+            if (result.address.isEmpty() && line.toLowerCase().startsWith("address:")) {
                 result.address = extractAddress(line);
             }
-            if (result.phone.isEmpty() && PHONE_PATTERN.matcher(line).find()) {
-                result.phone = extractPhone(line);
+        }
+        // Raw address heuristic — only accept lines that also contain a zip code
+        if (result.address.isEmpty()) {
+            for (String line : lines) {
+                if (line.matches(".*\\d+\\s+[A-Z].*") && line.length() > 10
+                        && ZIP_CODE_PATTERN.matcher(line).find()) {
+                    result.address = extractAddress(line);
+                    break;
+                }
             }
         }
+        // Phone: skip store phones, collect customer + alt
+        assignPhones(lines, 0, lines.size(), storePhoneDigits, result);
     }
 
     private String extractCustomerName(String line) {
@@ -258,19 +414,6 @@ public class OCRProcessorMLKit {
             address = address.substring(0, phoneMatcher.start()).trim();
         }
         return address.replaceAll("\\s+", StringUtils.SPACE).trim();
-    }
-
-    private String extractPhone(String line) {
-        Matcher matcher = PHONE_PATTERN.matcher(line);
-        if (!matcher.find()) {
-            return "";
-        }
-        String phone = matcher.group();
-        String digits = phone.replaceAll("\\D", "");
-        if (digits.length() == 10) {
-            return String.format("(%s) %s-%s", digits.substring(0, 3), digits.substring(3, 6), digits.substring(6, 10));
-        }
-        return phone;
     }
 
     private String extractInvoiceNumber(List<String> lines) {
@@ -438,10 +581,57 @@ public class OCRProcessorMLKit {
                         }
                     }
                 }
+                // Detect brand/make from line
+                if (di.make.isEmpty()) {
+                    di.make = detectMake(line3);
+                }
+            }
+            // Detect service flags from the entire window for this item
+            if (di.services.isEmpty()) {
+                List<String> windowLines = lines.subList(windowStart, windowEnd);
+                di.services = detectItemServices(windowLines);
             }
             idx++;
         }
         return ItemsHelper.toJson(foundItems);
+    }
+
+    /** Returns the brand/make found in the given line, or "". */
+    private String detectMake(String line) {
+        String lower = line.toLowerCase();
+        for (String brand : KNOWN_BRANDS) {
+            if (lower.contains(brand.toLowerCase())) {
+                return brand;
+            }
+        }
+        return "";
+    }
+
+    /**
+     * Scans a window of lines and returns a comma-delimited string of service flags
+     * detected: DELIVERY, INSTALL, HAUL AWAY, SERVICE.
+     */
+    private String detectItemServices(List<String> windowLines) {
+        Set<String> flags = new LinkedHashSet<>();
+        for (String line : windowLines) {
+            String lower = line.toLowerCase();
+            if (lower.matches(".*\\bdeliver(?:y|ed)?\\b.*"))
+                flags.add("DELIVERY");
+            if (lower.matches(".*\\binstall(?:ation|ed)?\\b.*"))
+                flags.add("INSTALL");
+            if (lower.matches(".*\\bhaul\\s*(?:away)?\\b.*"))
+                flags.add("HAUL AWAY");
+            if (lower.matches(".*\\bservice\\s*(?:call|fee)?\\b.*")
+                    && !lower.contains("customer service"))
+                flags.add("SERVICE");
+        }
+        StringBuilder sb = new StringBuilder();
+        for (String f : flags) {
+            if (sb.length() > 0)
+                sb.append(",");
+            sb.append(f);
+        }
+        return sb.toString();
     }
 
     private String normalizeAppliance(String item) {

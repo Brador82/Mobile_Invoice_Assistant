@@ -17,6 +17,8 @@ public class Invoice {
     private String notes;
     private String originalImagePath;
     private String phone;
+    @ColumnInfo(name = "altPhone")
+    private String altPhone;
     private String podImagePath1;
     private String podImagePath2;
     private String podImagePath3;
@@ -55,6 +57,10 @@ public class Invoice {
 
     public String getPhone() {
         return this.phone;
+    }
+
+    public String getAltPhone() {
+        return this.altPhone != null ? this.altPhone : "";
     }
 
     public String getItems() {
@@ -143,6 +149,10 @@ public class Invoice {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public void setAltPhone(String altPhone) {
+        this.altPhone = altPhone;
     }
 
     public void setItems(String items) {

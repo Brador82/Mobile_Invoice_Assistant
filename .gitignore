@@ -18,3 +18,11 @@ desktop.ini
 
 # Local config
 local.properties
+keystore.properties
+
+# Signing
+*.jks
+*.keystore
+
+# JDK (should not be in repo)
+oracleJdk-25/

@@ -19,6 +19,14 @@ public class AppSettings {
     public static final String KEY_WAREHOUSE_ADDRESS = "warehouse_address";
     public static final String KEY_WAREHOUSE_LAT = "warehouse_lat";
     public static final String KEY_WAREHOUSE_LNG = "warehouse_lng";
+    public static final String KEY_FOLLOWUP_ENABLED = "followup_enabled";
+    public static final String KEY_BROADCAST_MESSAGE = "broadcast_message";
+    public static final String KEY_CUSTOM_MESSAGE_1 = "custom_message_1";
+    public static final String KEY_CUSTOM_MESSAGE_2 = "custom_message_2";
+    public static final String KEY_GOOGLE_REVIEW_URL = "google_review_url";
+    public static final String KEY_SHORT_REVIEW_URL = "short_review_url";
+    public static final String KEY_DELIVERY_TEAM_NAME = "delivery_team_name";
+    public static final String KEY_SUGGESTED_REVIEW = "suggested_review";
     private static final String PREFS_NAME = "app_settings";
     public static final String THEME_BLACK_GOLD = "black_gold";
     public static final String THEME_BLENDED = "blended";
@@ -132,5 +140,105 @@ public class AppSettings {
 
     public void setDriveAccountEmail(String value) {
         this.prefs.edit().putString(KEY_DRIVE_ACCOUNT_EMAIL, value).apply();
+    }
+
+    public boolean isFollowUpEnabled() {
+        return this.prefs.getBoolean(KEY_FOLLOWUP_ENABLED, false);
+    }
+
+    public void setFollowUpEnabled(boolean value) {
+        this.prefs.edit().putBoolean(KEY_FOLLOWUP_ENABLED, value).apply();
+    }
+
+    private static final String DEFAULT_BROADCAST =
+            "Hi {name}, thank you for choosing {company}! We hope you're enjoying your new {items}. "
+            + "If you have a moment, we'd love a 5-star review!\n\n"
+            + "You can copy & paste this:\n\"{review_text}\"\n\n"
+            + "Leave your review here: {review_url}";
+
+    public String getBroadcastMessage() {
+        return this.prefs.getString(KEY_BROADCAST_MESSAGE, DEFAULT_BROADCAST);
+    }
+
+    public void setBroadcastMessage(String value) {
+        this.prefs.edit().putString(KEY_BROADCAST_MESSAGE, value).apply();
+    }
+
+    public String getCustomMessage1() {
+        return this.prefs.getString(KEY_CUSTOM_MESSAGE_1,
+                "Your delivery from {company} is complete. Thank you for your business!");
+    }
+
+    public void setCustomMessage1(String value) {
+        this.prefs.edit().putString(KEY_CUSTOM_MESSAGE_1, value).apply();
+    }
+
+    public String getCustomMessage2() {
+        return this.prefs.getString(KEY_CUSTOM_MESSAGE_2,
+                "Hi {name}, just checking in! How is everything working? Leave us a review: {review_url}");
+    }
+
+    public void setCustomMessage2(String value) {
+        this.prefs.edit().putString(KEY_CUSTOM_MESSAGE_2, value).apply();
+    }
+
+    public String getGoogleReviewUrl() {
+        return this.prefs.getString(KEY_GOOGLE_REVIEW_URL, "");
+    }
+
+    public void setGoogleReviewUrl(String value) {
+        this.prefs.edit().putString(KEY_GOOGLE_REVIEW_URL, value).apply();
+    }
+
+    public String getShortReviewUrl() {
+        return this.prefs.getString(KEY_SHORT_REVIEW_URL, "");
+    }
+
+    public void setShortReviewUrl(String value) {
+        this.prefs.edit().putString(KEY_SHORT_REVIEW_URL, value).apply();
+    }
+
+    public String getDeliveryTeamName() {
+        return this.prefs.getString(KEY_DELIVERY_TEAM_NAME, "");
+    }
+
+    public void setDeliveryTeamName(String value) {
+        this.prefs.edit().putString(KEY_DELIVERY_TEAM_NAME, value).apply();
+    }
+
+    private static final String DEFAULT_SUGGESTED_REVIEW =
+            "The {team} did an outstanding job with our {items}! "
+            + "Professional, on time, and very careful. Highly recommend {company}!";
+
+    public String getSuggestedReview() {
+        return this.prefs.getString(KEY_SUGGESTED_REVIEW, DEFAULT_SUGGESTED_REVIEW);
+    }
+
+    public void setSuggestedReview(String value) {
+        this.prefs.edit().putString(KEY_SUGGESTED_REVIEW, value).apply();
+    }
+
+    /** Expand placeholders in a message template with invoice data. */
+    public String expandMessage(String template, String customerName, String items) {
+        String msg = template;
+        msg = msg.replace("{name}", customerName != null ? customerName : "");
+        msg = msg.replace("{company}", getCompanyName());
+        msg = msg.replace("{items}", items != null ? items : "your purchase");
+        String teamName = getDeliveryTeamName();
+        if (teamName.isEmpty()) teamName = getCompanyName() + " delivery team";
+        msg = msg.replace("{team}", teamName);
+        String reviewUrl = getShortReviewUrl();
+        if (reviewUrl.isEmpty()) reviewUrl = getGoogleReviewUrl();
+        msg = msg.replace("{review_url}", reviewUrl);
+        // Expand suggested review text (itself gets placeholder expansion)
+        if (msg.contains("{review_text}")) {
+            String reviewBody = getSuggestedReview();
+            reviewBody = reviewBody.replace("{team}", teamName);
+            reviewBody = reviewBody.replace("{company}", getCompanyName());
+            reviewBody = reviewBody.replace("{items}", items != null ? items : "your purchase");
+            reviewBody = reviewBody.replace("{name}", customerName != null ? customerName : "");
+            msg = msg.replace("{review_text}", reviewBody);
+        }
+        return msg;
     }
 }

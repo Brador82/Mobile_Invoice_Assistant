@@ -8,8 +8,8 @@ import androidx.room.TypeConverters;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@Database(entities = {Invoice.class}, version = 9, exportSchema = false)
-@TypeConverters({Converters.class})
+@Database(entities = { Invoice.class }, version = 10, exportSchema = false)
+@TypeConverters({ Converters.class })
 public abstract class InvoiceDatabase extends RoomDatabase {
     private static final Migration MIGRATION_2_3;
     private static final Migration MIGRATION_3_4;
@@ -18,6 +18,7 @@ public abstract class InvoiceDatabase extends RoomDatabase {
     private static final Migration MIGRATION_6_7;
     private static final Migration MIGRATION_7_8;
     private static final Migration MIGRATION_8_9;
+    private static final Migration MIGRATION_9_10;
     private static InvoiceDatabase instance;
 
     public abstract InvoiceDao invoiceDao();
@@ -34,8 +35,10 @@ public abstract class InvoiceDatabase extends RoomDatabase {
         MIGRATION_3_4 = new Migration(i, i2) { // from class: com.mobileinvoice.ocr.database.InvoiceDatabase.2
             @Override // androidx.room.migration.Migration
             public void migrate(SupportSQLiteDatabase database) {
-                database.execSQL("CREATE TABLE invoices_new (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, invoiceNumber TEXT, customerName TEXT, address TEXT, phone TEXT, items TEXT, podImagePath1 TEXT, podImagePath2 TEXT, podImagePath3 TEXT, signatureImagePath TEXT, notes TEXT, originalImagePath TEXT, rawOcrText TEXT, timestamp INTEGER NOT NULL, status TEXT)");
-                database.execSQL("INSERT INTO invoices_new (id, invoiceNumber, customerName, address, phone, items, podImagePath1, podImagePath2, podImagePath3, signatureImagePath, notes, originalImagePath, rawOcrText, timestamp, status) SELECT id, invoiceNumber, customerName, address, phone, items, podImagePath1, podImagePath2, podImagePath3, signatureImagePath, notes, originalImagePath, rawOcrText, timestamp, status FROM invoices");
+                database.execSQL(
+                        "CREATE TABLE invoices_new (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, invoiceNumber TEXT, customerName TEXT, address TEXT, phone TEXT, items TEXT, podImagePath1 TEXT, podImagePath2 TEXT, podImagePath3 TEXT, signatureImagePath TEXT, notes TEXT, originalImagePath TEXT, rawOcrText TEXT, timestamp INTEGER NOT NULL, status TEXT)");
+                database.execSQL(
+                        "INSERT INTO invoices_new (id, invoiceNumber, customerName, address, phone, items, podImagePath1, podImagePath2, podImagePath3, signatureImagePath, notes, originalImagePath, rawOcrText, timestamp, status) SELECT id, invoiceNumber, customerName, address, phone, items, podImagePath1, podImagePath2, podImagePath3, signatureImagePath, notes, originalImagePath, rawOcrText, timestamp, status FROM invoices");
                 database.execSQL("DROP TABLE invoices");
                 database.execSQL("ALTER TABLE invoices_new RENAME TO invoices");
             }
@@ -76,13 +79,23 @@ public abstract class InvoiceDatabase extends RoomDatabase {
                 database.execSQL("ALTER TABLE invoices ADD COLUMN serviceType TEXT DEFAULT 'Delivery'");
             }
         };
+        MIGRATION_9_10 = new Migration(9, 10) {
+            @Override
+            public void migrate(SupportSQLiteDatabase database) {
+                database.execSQL("ALTER TABLE invoices ADD COLUMN altPhone TEXT");
+            }
+        };
     }
 
     public static synchronized InvoiceDatabase getInstance(Context context) {
         InvoiceDatabase invoiceDatabase;
         synchronized (InvoiceDatabase.class) {
             if (instance == null) {
-                instance = (InvoiceDatabase) Room.databaseBuilder(context.getApplicationContext(), InvoiceDatabase.class, "invoice_database").addMigrations(MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7, MIGRATION_7_8, MIGRATION_8_9).fallbackToDestructiveMigration().build();
+                instance = (InvoiceDatabase) Room
+                        .databaseBuilder(context.getApplicationContext(), InvoiceDatabase.class, "invoice_database")
+                        .addMigrations(MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7,
+                                MIGRATION_7_8, MIGRATION_8_9, MIGRATION_9_10)
+                        .fallbackToDestructiveMigration().build();
             }
             invoiceDatabase = instance;
         }

@@ -54,7 +54,9 @@ public class MainActivity extends BaseActivity implements InvoiceAdapter.OnInvoi
     private List<Uri> selectedImages = new ArrayList();
     private List<Invoice> invoices = new ArrayList();
 
-    /* JADX WARN: Can't fix incorrect switch cases order, some code will duplicate */
+    /*
+     * JADX WARN: Can't fix incorrect switch cases order, some code will duplicate
+     */
     @Override // com.mobileinvoice.ocr.BaseActivity
     protected void applyAppTheme() {
         char c;
@@ -120,20 +122,23 @@ public class MainActivity extends BaseActivity implements InvoiceAdapter.OnInvoi
         }
     }
 
-    @Override // androidx.fragment.app.FragmentActivity, androidx.activity.ComponentActivity, androidx.core.app.ComponentActivity, android.app.Activity
+    @Override // androidx.fragment.app.FragmentActivity, androidx.activity.ComponentActivity,
+              // androidx.core.app.ComponentActivity, android.app.Activity
     protected void onCreate(Bundle savedInstanceState) {
         applyAppTheme();
         super.onCreate(savedInstanceState);
         this.binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(this.binding.getRoot());
         this.database = InvoiceDatabase.getInstance(this);
-        this.binding.btnBroadcast.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda21
+        this.binding.btnBroadcast.setOnClickListener(new View.OnClickListener() { // from class:
+                                                                                  // com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda21
             @Override // android.view.View.OnClickListener
             public final void onClick(View view) {
                 MainActivity.this.lambda$onCreate$0(view);
             }
         });
-        this.binding.fabSettings.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda23
+        this.binding.fabSettings.setOnClickListener(new View.OnClickListener() { // from class:
+                                                                                 // com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda23
             @Override // android.view.View.OnClickListener
             public final void onClick(View view) {
                 MainActivity.this.lambda$onCreate$1(view);
@@ -162,30 +167,38 @@ public class MainActivity extends BaseActivity implements InvoiceAdapter.OnInvoi
     }
 
     private void setupActivityResultLaunchers() {
-        this.pickImagesLauncher = registerForActivityResult(new ActivityResultContracts.GetMultipleContents(), new ActivityResultCallback() { // from class: com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda7
-            @Override // androidx.activity.result.ActivityResultCallback
-            public final void onActivityResult(Object obj) {
-                MainActivity.this.lambda$setupActivityResultLaunchers$2((List) obj);
-            }
-        });
-        this.cameraLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback() { // from class: com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda8
-            @Override // androidx.activity.result.ActivityResultCallback
-            public final void onActivityResult(Object obj) {
-                MainActivity.this.lambda$setupActivityResultLaunchers$3((ActivityResult) obj);
-            }
-        });
-        this.requestCameraPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), new ActivityResultCallback() { // from class: com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda9
-            @Override // androidx.activity.result.ActivityResultCallback
-            public final void onActivityResult(Object obj) {
-                MainActivity.this.lambda$setupActivityResultLaunchers$4((Boolean) obj);
-            }
-        });
-        this.folderPickerLauncher = registerForActivityResult(new ActivityResultContracts.OpenDocumentTree(), new ActivityResultCallback() { // from class: com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda10
-            @Override // androidx.activity.result.ActivityResultCallback
-            public final void onActivityResult(Object obj) {
-                MainActivity.this.lambda$setupActivityResultLaunchers$5((Uri) obj);
-            }
-        });
+        this.pickImagesLauncher = registerForActivityResult(new ActivityResultContracts.GetMultipleContents(),
+                new ActivityResultCallback() { // from class:
+                                               // com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda7
+                    @Override // androidx.activity.result.ActivityResultCallback
+                    public final void onActivityResult(Object obj) {
+                        MainActivity.this.lambda$setupActivityResultLaunchers$2((List) obj);
+                    }
+                });
+        this.cameraLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback() { // from class:
+                                               // com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda8
+                    @Override // androidx.activity.result.ActivityResultCallback
+                    public final void onActivityResult(Object obj) {
+                        MainActivity.this.lambda$setupActivityResultLaunchers$3((ActivityResult) obj);
+                    }
+                });
+        this.requestCameraPermissionLauncher = registerForActivityResult(
+                new ActivityResultContracts.RequestPermission(), new ActivityResultCallback() { // from class:
+                                                                                                // com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda9
+                    @Override // androidx.activity.result.ActivityResultCallback
+                    public final void onActivityResult(Object obj) {
+                        MainActivity.this.lambda$setupActivityResultLaunchers$4((Boolean) obj);
+                    }
+                });
+        this.folderPickerLauncher = registerForActivityResult(new ActivityResultContracts.OpenDocumentTree(),
+                new ActivityResultCallback() { // from class:
+                                               // com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda10
+                    @Override // androidx.activity.result.ActivityResultCallback
+                    public final void onActivityResult(Object obj) {
+                        MainActivity.this.lambda$setupActivityResultLaunchers$5((Uri) obj);
+                    }
+                });
     }
 
     /* JADX INFO: Access modifiers changed from: private */
@@ -207,7 +220,8 @@ public class MainActivity extends BaseActivity implements InvoiceAdapter.OnInvoi
     /* JADX INFO: Access modifiers changed from: private */
     public /* synthetic */ void lambda$setupActivityResultLaunchers$3(ActivityResult result) {
         Uri imageUri;
-        if (result.getResultCode() == -1 && result.getData() != null && (imageUri = result.getData().getData()) != null) {
+        if (result.getResultCode() == -1 && result.getData() != null
+                && (imageUri = result.getData().getData()) != null) {
             Uri correctedUri = rotateImageIfNeeded(imageUri);
             this.selectedImages.add(correctedUri);
             updateImageCount();
@@ -239,49 +253,57 @@ public class MainActivity extends BaseActivity implements InvoiceAdapter.OnInvoi
     }
 
     private void setupClickListeners() {
-        this.binding.btnUpload.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda24
+        this.binding.btnUpload.setOnClickListener(new View.OnClickListener() { // from class:
+                                                                               // com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda24
             @Override // android.view.View.OnClickListener
             public final void onClick(View view) {
                 MainActivity.this.lambda$setupClickListeners$6(view);
             }
         });
-        this.binding.btnCamera.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda25
+        this.binding.btnCamera.setOnClickListener(new View.OnClickListener() { // from class:
+                                                                               // com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda25
             @Override // android.view.View.OnClickListener
             public final void onClick(View view) {
                 MainActivity.this.lambda$setupClickListeners$7(view);
             }
         });
-        this.binding.btnClearQueue.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda26
+        this.binding.btnClearQueue.setOnClickListener(new View.OnClickListener() { // from class:
+                                                                                   // com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda26
             @Override // android.view.View.OnClickListener
             public final void onClick(View view) {
                 MainActivity.this.lambda$setupClickListeners$9(view);
             }
         });
-        this.binding.btnProcessOCR.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda27
+        this.binding.btnProcessOCR.setOnClickListener(new View.OnClickListener() { // from class:
+                                                                                   // com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda27
             @Override // android.view.View.OnClickListener
             public final void onClick(View view) {
                 MainActivity.this.lambda$setupClickListeners$13(view);
             }
         });
-        this.binding.btnExportCSV.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda28
+        this.binding.btnExportCSV.setOnClickListener(new View.OnClickListener() { // from class:
+                                                                                  // com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda28
             @Override // android.view.View.OnClickListener
             public final void onClick(View view) {
                 MainActivity.this.lambda$setupClickListeners$17(view);
             }
         });
-        this.binding.btnExportMarkdown.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda29
+        this.binding.btnExportMarkdown.setOnClickListener(new View.OnClickListener() { // from class:
+                                                                                       // com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda29
             @Override // android.view.View.OnClickListener
             public final void onClick(View view) {
                 MainActivity.this.lambda$setupClickListeners$18(view);
             }
         });
-        this.binding.btnOptimizeRoute.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda30
+        this.binding.btnOptimizeRoute.setOnClickListener(new View.OnClickListener() { // from class:
+                                                                                      // com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda30
             @Override // android.view.View.OnClickListener
             public final void onClick(View view) {
                 MainActivity.this.lambda$setupClickListeners$19(view);
             }
         });
-        this.binding.btnInvoiceLibrary.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda31
+        this.binding.btnInvoiceLibrary.setOnClickListener(new View.OnClickListener() { // from class:
+                                                                                       // com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda31
             @Override // android.view.View.OnClickListener
             public final void onClick(View view) {
                 MainActivity.this.lambda$setupClickListeners$20(view);
@@ -289,7 +311,8 @@ public class MainActivity extends BaseActivity implements InvoiceAdapter.OnInvoi
         });
         ImageButton btnLibraryIcon = (ImageButton) findViewById(R.id.btnInvoiceLibraryIcon);
         if (btnLibraryIcon != null) {
-            btnLibraryIcon.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda32
+            btnLibraryIcon.setOnClickListener(new View.OnClickListener() { // from class:
+                                                                           // com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda32
                 @Override // android.view.View.OnClickListener
                 public final void onClick(View view) {
                     MainActivity.this.lambda$setupClickListeners$21(view);
@@ -315,12 +338,16 @@ public class MainActivity extends BaseActivity implements InvoiceAdapter.OnInvoi
     /* JADX INFO: Access modifiers changed from: private */
     public /* synthetic */ void lambda$setupClickListeners$9(View v) {
         if (!this.selectedImages.isEmpty()) {
-            new AlertDialog.Builder(this).setTitle("Clear Image Queue?").setMessage("This will clear " + this.selectedImages.size() + " selected image(s) that haven't been processed yet.").setPositiveButton("Clear", new DialogInterface.OnClickListener() { // from class: com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda2
-                @Override // android.content.DialogInterface.OnClickListener
-                public final void onClick(DialogInterface dialogInterface, int i) {
-                    MainActivity.this.lambda$setupClickListeners$8(dialogInterface, i);
-                }
-            }).setNegativeButton("Cancel", (DialogInterface.OnClickListener) null).show();
+            new AlertDialog.Builder(this).setTitle("Clear Image Queue?")
+                    .setMessage("This will clear " + this.selectedImages.size()
+                            + " selected image(s) that haven't been processed yet.")
+                    .setPositiveButton("Clear", new DialogInterface.OnClickListener() { // from class:
+                                                                                        // com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda2
+                        @Override // android.content.DialogInterface.OnClickListener
+                        public final void onClick(DialogInterface dialogInterface, int i) {
+                            MainActivity.this.lambda$setupClickListeners$8(dialogInterface, i);
+                        }
+                    }).setNegativeButton("Cancel", (DialogInterface.OnClickListener) null).show();
         }
     }
 
@@ -363,7 +390,8 @@ public class MainActivity extends BaseActivity implements InvoiceAdapter.OnInvoi
             OCRProcessorMLKit.OCRResult result = ocrProcessor.processImage(imageUri);
             Invoice invoice = new Invoice();
             boolean hasItems = false;
-            boolean hasInvoiceNumber = (result.invoiceNumber == null || result.invoiceNumber.trim().isEmpty() || result.invoiceNumber.equalsIgnoreCase("No invoice number")) ? false : true;
+            boolean hasInvoiceNumber = (result.invoiceNumber == null || result.invoiceNumber.trim().isEmpty()
+                    || result.invoiceNumber.equalsIgnoreCase("No invoice number")) ? false : true;
             if (hasInvoiceNumber) {
                 str = result.invoiceNumber.trim();
             } else {
@@ -373,7 +401,14 @@ public class MainActivity extends BaseActivity implements InvoiceAdapter.OnInvoi
             invoice.setCustomerName(result.customerName.isEmpty() ? "Unknown Customer" : result.customerName);
             invoice.setAddress(result.address.isEmpty() ? "No address found" : result.address);
             invoice.setPhone(result.phone.isEmpty() ? "No phone" : result.phone);
-            if (result.items != null && !result.items.trim().isEmpty() && !result.items.equalsIgnoreCase("No items detected")) {
+            if (result.altPhone != null && !result.altPhone.isEmpty()) {
+                invoice.setAltPhone(result.altPhone);
+            }
+            if (result.services != null && !result.services.isEmpty()) {
+                invoice.setServiceType(result.services);
+            }
+            if (result.items != null && !result.items.trim().isEmpty()
+                    && !result.items.equalsIgnoreCase("No items detected")) {
                 hasItems = true;
             }
             invoice.setItems(hasItems ? result.items.trim() : "");
@@ -417,7 +452,8 @@ public class MainActivity extends BaseActivity implements InvoiceAdapter.OnInvoi
     /* JADX INFO: Access modifiers changed from: private */
     public /* synthetic */ void lambda$setupClickListeners$10(int index) {
         this.binding.progressBar.setProgress(index);
-        this.binding.tvProgress.setText("Processing " + index + PackagingURIHelper.FORWARD_SLASH_STRING + this.selectedImages.size());
+        this.binding.tvProgress
+                .setText("Processing " + index + PackagingURIHelper.FORWARD_SLASH_STRING + this.selectedImages.size());
     }
 
     /* JADX INFO: Access modifiers changed from: private */
@@ -439,7 +475,8 @@ public class MainActivity extends BaseActivity implements InvoiceAdapter.OnInvoi
             return;
         }
         final ExportHelper exportHelper = new ExportHelper(this);
-        exportHelper.setExportCompleteCallback(new ExportHelper.ExportCompleteCallback() { // from class: com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda16
+        exportHelper.setExportCompleteCallback(new ExportHelper.ExportCompleteCallback() { // from class:
+                                                                                           // com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda16
             @Override // com.mobileinvoice.ocr.ExportHelper.ExportCompleteCallback
             public final void onExportComplete(File file, int i) {
                 MainActivity.this.lambda$setupClickListeners$14(file, i);
@@ -504,7 +541,9 @@ public class MainActivity extends BaseActivity implements InvoiceAdapter.OnInvoi
         this.invoiceAdapter = new InvoiceAdapter(this);
         this.binding.invoiceRecycler.setLayoutManager(new LinearLayoutManager(this));
         this.binding.invoiceRecycler.setAdapter(this.invoiceAdapter);
-        ItemMoveCallback itemMoveCallback = new ItemMoveCallback(new ItemMoveCallback.ItemTouchHelperContract() { // from class: com.mobileinvoice.ocr.MainActivity.1
+        ItemMoveCallback itemMoveCallback = new ItemMoveCallback(new ItemMoveCallback.ItemTouchHelperContract() { // from
+                                                                                                                  // class:
+                                                                                                                  // com.mobileinvoice.ocr.MainActivity.1
             @Override // com.mobileinvoice.ocr.ItemMoveCallback.ItemTouchHelperContract
             public void onRowMoved(int fromPosition, int toPosition) {
                 MainActivity.this.invoiceAdapter.onItemMove(fromPosition, toPosition);
@@ -532,9 +571,10 @@ public class MainActivity extends BaseActivity implements InvoiceAdapter.OnInvoi
     }
 
     private void createSampleInvoices(int count) {
-        String[] sampleNames = {"John Smith", "Jane Doe", "Bob Johnson", "Alice Williams", "Mike Brown"};
-        String[] sampleAddresses = {"123 Main St, New York, NY 10001", "456 Oak Ave, Los Angeles, CA 90001", "789 Pine Rd, Chicago, IL 60601", "321 Elm St, Houston, TX 77001", "654 Maple Dr, Phoenix, AZ 85001"};
-        String[] samplePhones = {"555-0101", "555-0102", "555-0103", "555-0104", "555-0105"};
+        String[] sampleNames = { "John Smith", "Jane Doe", "Bob Johnson", "Alice Williams", "Mike Brown" };
+        String[] sampleAddresses = { "123 Main St, New York, NY 10001", "456 Oak Ave, Los Angeles, CA 90001",
+                "789 Pine Rd, Chicago, IL 60601", "321 Elm St, Houston, TX 77001", "654 Maple Dr, Phoenix, AZ 85001" };
+        String[] samplePhones = { "555-0101", "555-0102", "555-0103", "555-0104", "555-0105" };
         for (int i = 0; i < count; i++) {
             Invoice invoice = new Invoice();
             invoice.setId(this.invoices.size() + 1);
@@ -633,7 +673,8 @@ public class MainActivity extends BaseActivity implements InvoiceAdapter.OnInvoi
     public /* synthetic */ void lambda$exportToSelectedFolder$30(Uri treeUri) {
         final List<Invoice> exportInvoices = this.database.invoiceDao().getAllInvoicesSync();
         final ExportHelper exportHelper = new ExportHelper(this);
-        exportHelper.setExportCompleteCallback(new ExportHelper.ExportCompleteCallback() { // from class: com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda11
+        exportHelper.setExportCompleteCallback(new ExportHelper.ExportCompleteCallback() { // from class:
+                                                                                           // com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda11
             @Override // com.mobileinvoice.ocr.ExportHelper.ExportCompleteCallback
             public final void onExportComplete(File file, int i) {
                 MainActivity.this.lambda$exportToSelectedFolder$26(file, i);
@@ -642,14 +683,16 @@ public class MainActivity extends BaseActivity implements InvoiceAdapter.OnInvoi
         try {
             DocumentFile destDir = DocumentFile.fromTreeUri(this, treeUri);
             if (destDir != null && destDir.canWrite()) {
-                runOnUiThread(new Runnable() { // from class: com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda22
+                runOnUiThread(new Runnable() { // from class:
+                                               // com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda22
                     @Override // java.lang.Runnable
                     public final void run() {
                         exportHelper.exportToHTMLZip(exportInvoices);
                     }
                 });
             } else {
-                runOnUiThread(new Runnable() { // from class: com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda33
+                runOnUiThread(new Runnable() { // from class:
+                                               // com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda33
                     @Override // java.lang.Runnable
                     public final void run() {
                         MainActivity.this.lambda$exportToSelectedFolder$28();
@@ -759,36 +802,91 @@ public class MainActivity extends BaseActivity implements InvoiceAdapter.OnInvoi
     }
 
     /* JADX INFO: Access modifiers changed from: private */
-    public /* synthetic */ void lambda$onDeliveryCompleteChanged$35(Invoice invoice, final boolean isComplete) {
+    public /* synthetic */ void lambda$onDeliveryCompleteChanged$35(final Invoice invoice, final boolean isComplete) {
         this.database.invoiceDao().update(invoice);
-        runOnUiThread(new Runnable() { // from class: com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda40
-            @Override // java.lang.Runnable
-            public final void run() {
-                MainActivity.this.lambda$onDeliveryCompleteChanged$34(isComplete);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (isComplete) {
+                    Toast.makeText(MainActivity.this, "Delivery marked complete!", 0).show();
+                    offerFollowUpMessage(invoice);
+                } else {
+                    Toast.makeText(MainActivity.this, "Delivery marked pending", 0).show();
+                }
             }
         });
     }
 
-    /* JADX INFO: Access modifiers changed from: private */
-    public /* synthetic */ void lambda$onDeliveryCompleteChanged$34(boolean isComplete) {
-        String message = isComplete ? "Delivery marked complete!" : "Delivery marked pending";
-        Toast.makeText(this, message, 0).show();
+    private void offerFollowUpMessage(final Invoice invoice) {
+        AppSettings settings = AppSettings.getInstance(this);
+        if (!settings.isFollowUpEnabled())
+            return;
+        String phone = invoice.getPhone();
+        if (phone == null || phone.isEmpty() || "No phone".equals(phone))
+            return;
+
+        String customerName = invoice.getCustomerName();
+        String itemsDisplay = "";
+        if (invoice.getItems() != null && !invoice.getItems().isEmpty()) {
+            List<DeliveryItem> items = ItemsHelper.fromJson(invoice.getItems());
+            itemsDisplay = ItemsHelper.toNamesString(items);
+        }
+
+        final String mainMsg = settings.expandMessage(settings.getBroadcastMessage(), customerName, itemsDisplay);
+        final String quick1 = settings.expandMessage(settings.getCustomMessage1(), customerName, itemsDisplay);
+        final String quick2 = settings.expandMessage(settings.getCustomMessage2(), customerName, itemsDisplay);
+        final String phoneNumber = phone;
+
+        String[] options = { "Send Follow-Up", "Quick Message 1", "Quick Message 2", "Skip" };
+        new AlertDialog.Builder(this)
+                .setTitle("Send Customer Message?")
+                .setItems(options, new android.content.DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(android.content.DialogInterface dialog, int which) {
+                        String smsBody = null;
+                        switch (which) {
+                            case 0:
+                                smsBody = mainMsg;
+                                break;
+                            case 1:
+                                smsBody = quick1;
+                                break;
+                            case 2:
+                                smsBody = quick2;
+                                break;
+                            default:
+                                return;
+                        }
+                        Intent smsIntent = new Intent(Intent.ACTION_VIEW);
+                        smsIntent.setData(Uri.parse("sms:" + phoneNumber));
+                        smsIntent.putExtra("sms_body", smsBody);
+                        startActivity(smsIntent);
+                    }
+                })
+                .show();
     }
 
     /* JADX INFO: Access modifiers changed from: private */
-    /* renamed from: showCleanupDialog, reason: merged with bridge method [inline-methods] */
+    /*
+     * renamed from: showCleanupDialog, reason: merged with bridge method
+     * [inline-methods]
+     */
     public void lambda$exportToSelectedFolder$25(int exportedCount) {
-        new AlertDialog.Builder(this).setTitle("Export Complete").setMessage(exportedCount + " invoices exported successfully to Downloads/MobileInvoiceOCR.\n\nWould you like to clear all data to start fresh?").setPositiveButton("Clear All Data", new DialogInterface.OnClickListener() { // from class: com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda36
-            @Override // android.content.DialogInterface.OnClickListener
-            public final void onClick(DialogInterface dialogInterface, int i) {
-                MainActivity.this.lambda$showCleanupDialog$36(dialogInterface, i);
-            }
-        }).setNegativeButton("Keep Data", new DialogInterface.OnClickListener() { // from class: com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda37
-            @Override // android.content.DialogInterface.OnClickListener
-            public final void onClick(DialogInterface dialogInterface, int i) {
-                MainActivity.this.lambda$showCleanupDialog$37(dialogInterface, i);
-            }
-        }).setIcon(android.R.drawable.ic_dialog_info).show();
+        new AlertDialog.Builder(this).setTitle("Export Complete").setMessage(exportedCount
+                + " invoices exported successfully to Downloads/MobileInvoiceOCR.\n\nWould you like to clear all data to start fresh?")
+                .setPositiveButton("Clear All Data", new DialogInterface.OnClickListener() { // from class:
+                                                                                             // com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda36
+                    @Override // android.content.DialogInterface.OnClickListener
+                    public final void onClick(DialogInterface dialogInterface, int i) {
+                        MainActivity.this.lambda$showCleanupDialog$36(dialogInterface, i);
+                    }
+                }).setNegativeButton("Keep Data", new DialogInterface.OnClickListener() { // from class:
+                                                                                          // com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda37
+                    @Override // android.content.DialogInterface.OnClickListener
+                    public final void onClick(DialogInterface dialogInterface, int i) {
+                        MainActivity.this.lambda$showCleanupDialog$37(dialogInterface, i);
+                    }
+                }).setIcon(android.R.drawable.ic_dialog_info).show();
     }
 
     /* JADX INFO: Access modifiers changed from: private */
@@ -802,12 +900,17 @@ public class MainActivity extends BaseActivity implements InvoiceAdapter.OnInvoi
     }
 
     private void clearAllData() {
-        new AlertDialog.Builder(this).setTitle("Confirm Clear All").setMessage("This will permanently delete all " + this.invoices.size() + " invoices from the app. Exported data in Downloads will NOT be affected.\n\nAre you sure?").setPositiveButton("Yes, Clear All", new DialogInterface.OnClickListener() { // from class: com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda3
-            @Override // android.content.DialogInterface.OnClickListener
-            public final void onClick(DialogInterface dialogInterface, int i) {
-                MainActivity.this.lambda$clearAllData$40(dialogInterface, i);
-            }
-        }).setNegativeButton("Cancel", (DialogInterface.OnClickListener) null).setIcon(android.R.drawable.ic_dialog_alert).show();
+        new AlertDialog.Builder(this).setTitle("Confirm Clear All")
+                .setMessage("This will permanently delete all " + this.invoices.size()
+                        + " invoices from the app. Exported data in Downloads will NOT be affected.\n\nAre you sure?")
+                .setPositiveButton("Yes, Clear All", new DialogInterface.OnClickListener() { // from class:
+                                                                                             // com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda3
+                    @Override // android.content.DialogInterface.OnClickListener
+                    public final void onClick(DialogInterface dialogInterface, int i) {
+                        MainActivity.this.lambda$clearAllData$40(dialogInterface, i);
+                    }
+                }).setNegativeButton("Cancel", (DialogInterface.OnClickListener) null)
+                .setIcon(android.R.drawable.ic_dialog_alert).show();
     }
 
     /* JADX INFO: Access modifiers changed from: private */
@@ -901,7 +1004,8 @@ public class MainActivity extends BaseActivity implements InvoiceAdapter.OnInvoi
                 Log.d("MainActivity", "Rotating image by " + rotation + " degrees");
                 Matrix matrix = new Matrix();
                 matrix.postRotate(rotation);
-                Bitmap rotatedBitmap = Bitmap.createBitmap(originalBitmap, 0, 0, originalBitmap.getWidth(), originalBitmap.getHeight(), matrix, true);
+                Bitmap rotatedBitmap = Bitmap.createBitmap(originalBitmap, 0, 0, originalBitmap.getWidth(),
+                        originalBitmap.getHeight(), matrix, true);
                 originalBitmap.recycle();
                 try {
                     File imagesDir = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "Invoices");

@@ -456,6 +456,153 @@
             android:paddingBottom="6dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="CUSTOMER MESSAGING"
+            android:letterSpacing="0.08"/>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            app:cardBackgroundColor="?attr/colorSurface"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="2dp">
+            <LinearLayout
+                android:orientation="vertical"
+                android:padding="14dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp">
+                    <TextView
+                        android:textSize="13sp"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Send follow-up on delivery complete"/>
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switchFollowUp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:hint="Delivery Team Name"
+                    app:boxStrokeColor="?attr/themeTextAccent"
+                    app:hintTextColor="?attr/themeTextAccent"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:id="@+id/etDeliveryTeamName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textCapWords"
+                        android:textSize="12sp"/>
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:hint="Google Review URL"
+                    app:boxStrokeColor="?attr/themeTextAccent"
+                    app:hintTextColor="?attr/themeTextAccent"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:id="@+id/etGoogleReviewUrl"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textUri"
+                        android:textSize="12sp"/>
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:hint="Suggested Review (customer can copy/paste)"
+                    app:boxStrokeColor="?attr/themeTextAccent"
+                    app:hintTextColor="?attr/themeTextAccent"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:id="@+id/etSuggestedReview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine"
+                        android:minLines="2"
+                        android:textSize="12sp"/>
+                </com.google.android.material.textfield.TextInputLayout>
+                <TextView
+                    android:textSize="11sp"
+                    android:textColor="#888888"
+                    android:paddingBottom="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Placeholders: {name}  {company}  {items}  {team}  {review_url}  {review_text}"/>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:hint="Follow-Up Message"
+                    app:boxStrokeColor="?attr/themeTextAccent"
+                    app:hintTextColor="?attr/themeTextAccent"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:id="@+id/etBroadcastMessage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine"
+                        android:minLines="3"
+                        android:textSize="12sp"/>
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:hint="Quick Message 1"
+                    app:boxStrokeColor="?attr/themeTextAccent"
+                    app:hintTextColor="?attr/themeTextAccent"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:id="@+id/etCustomMessage1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine"
+                        android:minLines="2"
+                        android:textSize="12sp"/>
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Quick Message 2"
+                    app:boxStrokeColor="?attr/themeTextAccent"
+                    app:hintTextColor="?attr/themeTextAccent"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:id="@+id/etCustomMessage2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine"
+                        android:minLines="2"
+                        android:textSize="12sp"/>
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+        <TextView
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:textColor="?attr/themeTextAccent"
+            android:paddingBottom="6dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="ℹ  ABOUT"
             android:letterSpacing="0.08"/>
         <androidx.cardview.widget.CardView
