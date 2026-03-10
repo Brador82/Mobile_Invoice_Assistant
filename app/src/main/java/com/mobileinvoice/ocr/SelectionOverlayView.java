@@ -16,6 +16,8 @@ import android.view.ScaleGestureDetector;
 import android.view.View;
 import com.mobileinvoice.ocr.PaddleOCREngine;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import org.apache.commons.compress.compressors.CompressorStreamFactory;
 
@@ -30,7 +32,11 @@ public class SelectionOverlayView extends View {
     private CompletedSelection draggedSelection;
     private Bitmap imageBitmap;
     private Matrix imageMatrix;
+    private boolean cropMode;
+    private float currentDragX;
+    private float currentDragY;
     private boolean isDragging;
+    private boolean isLongPressSelecting;
     private boolean isResizing;
     private boolean isScaling;
     private OnSelectionCompleteListener listener;
@@ -49,6 +55,7 @@ public class SelectionOverlayView extends View {
     private boolean tapToSelectMode;
     private OnTextSelectedListener textListener;
     private List<PaddleOCREngine.TextRegion> textRegions;
+    private List<PaddleOCREngine.TextRegion> charRegions;
 
     public interface OnSelectionCompleteListener {
         void onSelectionComplete(Rect bitmapRect);
@@ -80,6 +87,7 @@ public class SelectionOverlayView extends View {
         this.tapToSelectMode = false;
         this.completedSelections = new ArrayList();
         this.textRegions = new ArrayList();
+        this.charRegions = new ArrayList();
         this.isScaling = false;
         this.draggedSelection = null;
         this.dragStartPoint = null;
@@ -101,6 +109,7 @@ public class SelectionOverlayView extends View {
         this.tapToSelectMode = false;
         this.completedSelections = new ArrayList();
         this.textRegions = new ArrayList();
+        this.charRegions = new ArrayList();
         this.isScaling = false;
         this.draggedSelection = null;
         this.dragStartPoint = null;
@@ -122,6 +131,7 @@ public class SelectionOverlayView extends View {
         this.tapToSelectMode = false;
         this.completedSelections = new ArrayList();
         this.textRegions = new ArrayList();
+        this.charRegions = new ArrayList();
         this.isScaling = false;
         this.draggedSelection = null;
         this.dragStartPoint = null;
@@ -135,12 +145,12 @@ public class SelectionOverlayView extends View {
 
     private void init(Context context) {
         this.selectionPaint = new Paint(1);
-        this.selectionPaint.setColor(-14575885);
+        this.selectionPaint.setColor(0xFFFFD700);
         this.selectionPaint.setStyle(Paint.Style.STROKE);
         this.selectionPaint.setStrokeWidth(3.0f);
-        this.selectionPaint.setPathEffect(new DashPathEffect(new float[]{15.0f, 10.0f}, 0.0f));
+        this.selectionPaint.setPathEffect(new DashPathEffect(new float[] { 15.0f, 10.0f }, 0.0f));
         this.selectionFillPaint = new Paint(1);
-        this.selectionFillPaint.setColor(857839347);
+        this.selectionFillPaint.setColor(0x40FFD700);
         this.selectionFillPaint.setStyle(Paint.Style.FILL);
         this.completedPaint = new Paint(1);
         this.completedPaint.setColor(-6381922);
@@ -149,32 +159,41 @@ public class SelectionOverlayView extends View {
         this.completedFillPaint = new Paint(1);
         this.completedFillPaint.setColor(866033310);
         this.completedFillPaint.setStyle(Paint.Style.FILL);
-        this.scaleDetector = new ScaleGestureDetector(context, new ScaleGestureDetector.SimpleOnScaleGestureListener() { // from class: com.mobileinvoice.ocr.SelectionOverlayView.1
-            @Override // android.view.ScaleGestureDetector.SimpleOnScaleGestureListener, android.view.ScaleGestureDetector.OnScaleGestureListener
+        this.scaleDetector = new ScaleGestureDetector(context, new ScaleGestureDetector.SimpleOnScaleGestureListener() { // from
+                                                                                                                         // class:
+                                                                                                                         // com.mobileinvoice.ocr.SelectionOverlayView.1
+            @Override // android.view.ScaleGestureDetector.SimpleOnScaleGestureListener,
+                      // android.view.ScaleGestureDetector.OnScaleGestureListener
             public boolean onScaleBegin(ScaleGestureDetector detector) {
                 SelectionOverlayView.this.isScaling = true;
                 return true;
             }
 
-            @Override // android.view.ScaleGestureDetector.SimpleOnScaleGestureListener, android.view.ScaleGestureDetector.OnScaleGestureListener
+            @Override // android.view.ScaleGestureDetector.SimpleOnScaleGestureListener,
+                      // android.view.ScaleGestureDetector.OnScaleGestureListener
             public boolean onScale(ScaleGestureDetector detector) {
                 float factor = detector.getScaleFactor();
-                float newScale = Math.max(SelectionOverlayView.this.minScale, Math.min(SelectionOverlayView.this.maxScale, SelectionOverlayView.this.scaleFactor * factor));
+                float newScale = Math.max(SelectionOverlayView.this.minScale,
+                        Math.min(SelectionOverlayView.this.maxScale, SelectionOverlayView.this.scaleFactor * factor));
                 float adjustedFactor = newScale / SelectionOverlayView.this.scaleFactor;
                 SelectionOverlayView.this.scaleFactor = newScale;
-                SelectionOverlayView.this.imageMatrix.postScale(adjustedFactor, adjustedFactor, detector.getFocusX(), detector.getFocusY());
+                SelectionOverlayView.this.imageMatrix.postScale(adjustedFactor, adjustedFactor, detector.getFocusX(),
+                        detector.getFocusY());
                 SelectionOverlayView.this.constrainTranslation();
                 SelectionOverlayView.this.invalidate();
                 return true;
             }
 
-            @Override // android.view.ScaleGestureDetector.SimpleOnScaleGestureListener, android.view.ScaleGestureDetector.OnScaleGestureListener
+            @Override // android.view.ScaleGestureDetector.SimpleOnScaleGestureListener,
+                      // android.view.ScaleGestureDetector.OnScaleGestureListener
             public void onScaleEnd(ScaleGestureDetector detector) {
                 SelectionOverlayView.this.isScaling = false;
             }
         });
-        this.panDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() { // from class: com.mobileinvoice.ocr.SelectionOverlayView.2
-            @Override // android.view.GestureDetector.SimpleOnGestureListener, android.view.GestureDetector.OnGestureListener
+        this.panDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() { // from class:
+                                                                                                        // com.mobileinvoice.ocr.SelectionOverlayView.2
+            @Override // android.view.GestureDetector.SimpleOnGestureListener,
+                      // android.view.GestureDetector.OnGestureListener
             public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
                 if (!SelectionOverlayView.this.isDragging) {
                     SelectionOverlayView.this.imageMatrix.postTranslate(-distanceX, -distanceY);
@@ -185,7 +204,8 @@ public class SelectionOverlayView extends View {
                 return true;
             }
 
-            @Override // android.view.GestureDetector.SimpleOnGestureListener, android.view.GestureDetector.OnGestureListener
+            @Override // android.view.GestureDetector.SimpleOnGestureListener,
+                      // android.view.GestureDetector.OnGestureListener
             public void onLongPress(MotionEvent e) {
                 PointF touchPoint = new PointF(e.getX(), e.getY());
                 CompletedSelection hit = SelectionOverlayView.this.findCompletedSelectionAt(touchPoint);
@@ -195,14 +215,23 @@ public class SelectionOverlayView extends View {
                     SelectionOverlayView.this.dragOriginalRect = new Rect(hit.bitmapRect);
                     SelectionOverlayView.this.isDragging = true;
                     SelectionOverlayView.this.invalidate();
+                } else if (hit == null) {
+                    SelectionOverlayView.this.isLongPressSelecting = true;
+                    SelectionOverlayView.this.selectionStart = touchPoint;
+                    SelectionOverlayView.this.selectionRect = new RectF(touchPoint.x, touchPoint.y, touchPoint.x,
+                            touchPoint.y);
+                    SelectionOverlayView.this.performHapticFeedback(0);
+                    SelectionOverlayView.this.invalidate();
                 }
             }
 
-            @Override // android.view.GestureDetector.SimpleOnGestureListener, android.view.GestureDetector.OnDoubleTapListener
+            @Override // android.view.GestureDetector.SimpleOnGestureListener,
+                      // android.view.GestureDetector.OnDoubleTapListener
             public boolean onSingleTapConfirmed(MotionEvent e) {
                 PaddleOCREngine.TextRegion tappedRegion;
                 PointF touchPoint = new PointF(e.getX(), e.getY());
-                if (SelectionOverlayView.this.textListener != null && !SelectionOverlayView.this.textRegions.isEmpty() && (tappedRegion = SelectionOverlayView.this.findTextRegionAt(touchPoint)) != null) {
+                if (SelectionOverlayView.this.textListener != null && !SelectionOverlayView.this.textRegions.isEmpty()
+                        && (tappedRegion = SelectionOverlayView.this.findTextRegionAt(touchPoint)) != null) {
                     SelectionOverlayView.this.textListener.onTextSelected(tappedRegion.text, tappedRegion.boundingBox);
                     return true;
                 }
@@ -224,7 +253,8 @@ public class SelectionOverlayView extends View {
                 return false;
             }
 
-            @Override // android.view.GestureDetector.SimpleOnGestureListener, android.view.GestureDetector.OnDoubleTapListener
+            @Override // android.view.GestureDetector.SimpleOnGestureListener,
+                      // android.view.GestureDetector.OnDoubleTapListener
             public boolean onDoubleTap(MotionEvent e) {
                 PointF touchPoint = new PointF(e.getX(), e.getY());
                 CompletedSelection hit = SelectionOverlayView.this.findCompletedSelectionAt(touchPoint);
@@ -250,6 +280,10 @@ public class SelectionOverlayView extends View {
         invalidate();
     }
 
+    public Bitmap getImageBitmap() {
+        return this.imageBitmap;
+    }
+
     public void setSelectionMode(boolean enabled) {
         this.selectionMode = enabled;
         this.selectionRect = null;
@@ -270,6 +304,10 @@ public class SelectionOverlayView extends View {
         invalidate();
     }
 
+    public void setCharRegions(List<PaddleOCREngine.TextRegion> regions) {
+        this.charRegions = regions != null ? regions : new ArrayList<>();
+    }
+
     public void setTapToSelectMode(boolean enabled) {
         this.tapToSelectMode = enabled;
         invalidate();
@@ -285,6 +323,29 @@ public class SelectionOverlayView extends View {
         this.selectionRect = null;
         this.selectionStart = null;
         invalidate();
+    }
+
+    public void setCropMode(boolean enabled) {
+        this.cropMode = enabled;
+        this.selectionRect = null;
+        this.selectionStart = null;
+        invalidate();
+    }
+
+    public boolean isCropMode() {
+        return this.cropMode;
+    }
+
+    public Rect getCropBitmapRect() {
+        if (this.selectionRect == null || this.imageBitmap == null) {
+            return null;
+        }
+        RectF normalized = new RectF(
+                Math.min(this.selectionRect.left, this.selectionRect.right),
+                Math.min(this.selectionRect.top, this.selectionRect.bottom),
+                Math.max(this.selectionRect.left, this.selectionRect.right),
+                Math.max(this.selectionRect.top, this.selectionRect.bottom));
+        return screenRectToBitmapRect(normalized);
     }
 
     @Override // android.view.View
@@ -350,15 +411,18 @@ public class SelectionOverlayView extends View {
         }
     }
 
-    /* JADX WARN: Can't fix incorrect switch cases order, some code will duplicate */
-    /* JADX WARN: Code restructure failed: missing block: B:39:0x007b, code lost:
-    
-        if (r11.equals("tl") != false) goto L34;
+    /*
+     * JADX WARN: Can't fix incorrect switch cases order, some code will duplicate
+     */
+    /*
+     * JADX WARN: Code restructure failed: missing block: B:39:0x007b, code lost:
+     * 
+     * if (r11.equals("tl") != false) goto L34;
      */
     @Override // android.view.View
     /*
-        Code decompiled incorrectly, please refer to instructions dump.
-    */
+     * Code decompiled incorrectly, please refer to instructions dump.
+     */
     public boolean onTouchEvent(MotionEvent event) {
         char c = 0;
         if (this.imageBitmap == null) {
@@ -367,6 +431,35 @@ public class SelectionOverlayView extends View {
         if (event.getPointerCount() > 1) {
             this.scaleDetector.onTouchEvent(event);
             this.panDetector.onTouchEvent(event);
+            return true;
+        }
+        if (this.cropMode) {
+            switch (event.getActionMasked()) {
+                case 0:
+                    this.selectionStart = new PointF(event.getX(), event.getY());
+                    this.selectionRect = new RectF(this.selectionStart.x, this.selectionStart.y, this.selectionStart.x,
+                            this.selectionStart.y);
+                    invalidate();
+                    return true;
+                case 2:
+                    if (this.selectionRect != null) {
+                        this.selectionRect.right = event.getX();
+                        this.selectionRect.bottom = event.getY();
+                        invalidate();
+                    }
+                    return true;
+                case 1:
+                case 3:
+                    if (this.selectionRect != null) {
+                        this.selectionRect = new RectF(
+                                Math.min(this.selectionRect.left, this.selectionRect.right),
+                                Math.min(this.selectionRect.top, this.selectionRect.bottom),
+                                Math.max(this.selectionRect.left, this.selectionRect.right),
+                                Math.max(this.selectionRect.top, this.selectionRect.bottom));
+                        invalidate();
+                    }
+                    return true;
+            }
             return true;
         }
         if (this.selectedBox != null) {
@@ -398,7 +491,7 @@ public class SelectionOverlayView extends View {
                         float screenDy = event.getY() - this.dragStartPoint.y;
                         Matrix inverse = new Matrix();
                         this.imageMatrix.invert(inverse);
-                        float[] offset = {screenDx, screenDy};
+                        float[] offset = { screenDx, screenDy };
                         inverse.mapVectors(offset);
                         float bitmapDx = offset[0];
                         float bitmapDy = offset[1];
@@ -450,7 +543,8 @@ public class SelectionOverlayView extends View {
                                 newRect.bottom = (int) (this.dragOriginalRect.bottom + bitmapDy);
                                 break;
                         }
-                        if (newRect.left < newRect.right && newRect.top < newRect.bottom && newRect.width() >= 20 && newRect.height() >= 20) {
+                        if (newRect.left < newRect.right && newRect.top < newRect.bottom && newRect.width() >= 20
+                                && newRect.height() >= 20) {
                             this.selectedBox.bitmapRect.set(newRect);
                             constrainRectToBitmap(this.selectedBox.bitmapRect);
                         }
@@ -475,17 +569,52 @@ public class SelectionOverlayView extends View {
                     float screenDy2 = event.getY() - this.dragStartPoint.y;
                     Matrix inverse2 = new Matrix();
                     this.imageMatrix.invert(inverse2);
-                    float[] offset2 = {screenDx2, screenDy2};
+                    float[] offset2 = { screenDx2, screenDy2 };
                     inverse2.mapVectors(offset2);
                     float bitmapDx2 = offset2[0];
                     float bitmapDy2 = offset2[1];
-                    this.draggedSelection.bitmapRect.set((int) (this.dragOriginalRect.left + bitmapDx2), (int) (this.dragOriginalRect.top + bitmapDy2), (int) (this.dragOriginalRect.right + bitmapDx2), (int) (this.dragOriginalRect.bottom + bitmapDy2));
+                    this.draggedSelection.bitmapRect.set((int) (this.dragOriginalRect.left + bitmapDx2),
+                            (int) (this.dragOriginalRect.top + bitmapDy2),
+                            (int) (this.dragOriginalRect.right + bitmapDx2),
+                            (int) (this.dragOriginalRect.bottom + bitmapDy2));
                     constrainRectToBitmap(this.draggedSelection.bitmapRect);
                     invalidate();
                     return true;
                 default:
                     return true;
             }
+        }
+        if (this.isLongPressSelecting) {
+            switch (event.getActionMasked()) {
+                case 2:
+                    if (this.selectionRect != null) {
+                        this.currentDragX = event.getX();
+                        this.currentDragY = event.getY();
+                        this.selectionRect.right = event.getX();
+                        this.selectionRect.bottom = event.getY();
+                        invalidate();
+                    }
+                    return true;
+                case 1:
+                case 3:
+                    this.isLongPressSelecting = false;
+                    if (this.selectionRect != null) {
+                        RectF normalized = new RectF(
+                                Math.min(this.selectionRect.left, this.selectionRect.right),
+                                Math.min(this.selectionRect.top, this.selectionRect.bottom),
+                                Math.max(this.selectionRect.left, this.selectionRect.right),
+                                Math.max(this.selectionRect.top, this.selectionRect.bottom));
+                        String gathered = gatherTextFromScreenRect(normalized);
+                        Rect bitmapRect = screenRectToBitmapRect(normalized);
+                        this.selectionRect = null;
+                        invalidate();
+                        if (gathered != null && !gathered.isEmpty() && this.textListener != null) {
+                            this.textListener.onTextSelected(gathered, bitmapRect);
+                        }
+                    }
+                    return true;
+            }
+            return true;
         }
         if (!this.selectionMode) {
             this.scaleDetector.onTouchEvent(event);
@@ -497,16 +626,21 @@ public class SelectionOverlayView extends View {
         switch (event.getActionMasked()) {
             case 0:
                 this.selectionStart = new PointF(event.getX(), event.getY());
-                this.selectionRect = new RectF(this.selectionStart.x, this.selectionStart.y, this.selectionStart.x, this.selectionStart.y);
+                this.selectionRect = new RectF(this.selectionStart.x, this.selectionStart.y, this.selectionStart.x,
+                        this.selectionStart.y);
                 invalidate();
                 return true;
             case 1:
                 if (this.selectionRect != null) {
-                    RectF normalized = new RectF(Math.min(this.selectionRect.left, this.selectionRect.right), Math.min(this.selectionRect.top, this.selectionRect.bottom), Math.max(this.selectionRect.left, this.selectionRect.right), Math.max(this.selectionRect.top, this.selectionRect.bottom));
+                    RectF normalized = new RectF(Math.min(this.selectionRect.left, this.selectionRect.right),
+                            Math.min(this.selectionRect.top, this.selectionRect.bottom),
+                            Math.max(this.selectionRect.left, this.selectionRect.right),
+                            Math.max(this.selectionRect.top, this.selectionRect.bottom));
                     Rect bitmapRect = screenRectToBitmapRect(normalized);
                     if (bitmapRect.width() < 20 || bitmapRect.height() < 20) {
                         if (this.textListener != null && !this.textRegions.isEmpty()) {
-                            PointF tapPoint = new PointF((normalized.left + normalized.right) / 2.0f, (normalized.top + normalized.bottom) / 2.0f);
+                            PointF tapPoint = new PointF((normalized.left + normalized.right) / 2.0f,
+                                    (normalized.top + normalized.bottom) / 2.0f);
                             PaddleOCREngine.TextRegion hit = findTextRegionAt(tapPoint);
                             if (hit != null) {
                                 this.selectionRect = null;
@@ -539,13 +673,15 @@ public class SelectionOverlayView extends View {
     private Rect screenRectToBitmapRect(RectF screenRect) {
         Matrix inverse = new Matrix();
         this.imageMatrix.invert(inverse);
-        float[] pts = {screenRect.left, screenRect.top, screenRect.right, screenRect.bottom};
+        float[] pts = { screenRect.left, screenRect.top, screenRect.right, screenRect.bottom };
         inverse.mapPoints(pts);
-        return new Rect(Math.max(0, (int) pts[0]), Math.max(0, (int) pts[1]), Math.min(this.imageBitmap.getWidth(), (int) pts[2]), Math.min(this.imageBitmap.getHeight(), (int) pts[3]));
+        return new Rect(Math.max(0, (int) pts[0]), Math.max(0, (int) pts[1]),
+                Math.min(this.imageBitmap.getWidth(), (int) pts[2]),
+                Math.min(this.imageBitmap.getHeight(), (int) pts[3]));
     }
 
     private RectF bitmapRectToScreenRect(Rect bitmapRect) {
-        float[] pts = {bitmapRect.left, bitmapRect.top, bitmapRect.right, bitmapRect.bottom};
+        float[] pts = { bitmapRect.left, bitmapRect.top, bitmapRect.right, bitmapRect.bottom };
         this.imageMatrix.mapPoints(pts);
         return new RectF(pts[0], pts[1], pts[2], pts[3]);
     }
@@ -553,7 +689,9 @@ public class SelectionOverlayView extends View {
     private Rect expandPointToRegion(Rect point, int radius) {
         int cx = point.centerX();
         int cy = point.centerY();
-        return new Rect(Math.max(0, cx - radius), Math.max(0, cy - radius), Math.min(this.imageBitmap.getWidth(), cx + radius), Math.min(this.imageBitmap.getHeight(), cy + radius));
+        return new Rect(Math.max(0, cx - radius), Math.max(0, cy - radius),
+                Math.min(this.imageBitmap.getWidth(), cx + radius),
+                Math.min(this.imageBitmap.getHeight(), cy + radius));
     }
 
     /* JADX INFO: Access modifiers changed from: private */
@@ -572,7 +710,7 @@ public class SelectionOverlayView extends View {
     public PaddleOCREngine.TextRegion findTextRegionAt(PointF screenPoint) {
         Matrix inverse = new Matrix();
         this.imageMatrix.invert(inverse);
-        float[] pt = {screenPoint.x, screenPoint.y};
+        float[] pt = { screenPoint.x, screenPoint.y };
         inverse.mapPoints(pt);
         for (PaddleOCREngine.TextRegion region : this.textRegions) {
             if (region.boundingBox != null && region.boundingBox.contains((int) pt[0], (int) pt[1])) {
@@ -580,6 +718,69 @@ public class SelectionOverlayView extends View {
             }
         }
         return null;
+    }
+
+    private String gatherTextFromScreenRect(RectF screenRect) {
+        // Prefer character-level regions for precise selection; fall back to line
+        // regions
+        List<PaddleOCREngine.TextRegion> source = (this.charRegions != null && !this.charRegions.isEmpty())
+                ? this.charRegions
+                : this.textRegions;
+        if (source == null || source.isEmpty()) {
+            return null;
+        }
+        final Rect bitmapRect = screenRectToBitmapRect(screenRect);
+
+        // Collect characters whose center point falls inside the drawn rectangle
+        List<PaddleOCREngine.TextRegion> matched = new ArrayList<>();
+        for (PaddleOCREngine.TextRegion region : source) {
+            if (region.boundingBox != null) {
+                int cx = region.boundingBox.centerX();
+                int cy = region.boundingBox.centerY();
+                if (bitmapRect.contains(cx, cy)) {
+                    matched.add(region);
+                }
+            }
+        }
+        if (matched.isEmpty()) {
+            return null;
+        }
+
+        // Sort in reading order: top-to-bottom rows, then left-to-right within each row
+        Collections.sort(matched, new Comparator<PaddleOCREngine.TextRegion>() {
+            @Override
+            public int compare(PaddleOCREngine.TextRegion a, PaddleOCREngine.TextRegion b) {
+                int avgH = (a.boundingBox.height() + b.boundingBox.height()) / 2;
+                int rowDiff = a.boundingBox.centerY() - b.boundingBox.centerY();
+                if (Math.abs(rowDiff) > avgH / 2) {
+                    return rowDiff; // different rows
+                }
+                return a.boundingBox.centerX() - b.boundingBox.centerX(); // same row
+            }
+        });
+
+        // Join with spaces between words (large gap) and newlines between rows
+        StringBuilder sb = new StringBuilder();
+        PaddleOCREngine.TextRegion prev = null;
+        for (PaddleOCREngine.TextRegion region : matched) {
+            if (prev != null) {
+                int avgH = (region.boundingBox.height() + prev.boundingBox.height()) / 2;
+                int rowDiff = Math.abs(region.boundingBox.centerY() - prev.boundingBox.centerY());
+                if (rowDiff > avgH / 2) {
+                    sb.append("\n");
+                } else {
+                    // Insert space when the gap between characters is wider than one character
+                    int gap = region.boundingBox.left - prev.boundingBox.right;
+                    int charW = (region.boundingBox.width() + prev.boundingBox.width()) / 2;
+                    if (gap > charW / 2) {
+                        sb.append(" ");
+                    }
+                }
+            }
+            sb.append(region.text);
+            prev = region;
+        }
+        return sb.toString();
     }
 
     private void constrainRectToBitmap(Rect rect) {
@@ -648,10 +849,10 @@ public class SelectionOverlayView extends View {
         }
         if (!this.textRegions.isEmpty()) {
             Paint textBlockFill = new Paint(1);
-            textBlockFill.setColor(438408947);
+            textBlockFill.setColor(0x1A2196F3);
             textBlockFill.setStyle(Paint.Style.FILL);
             Paint textBlockStroke = new Paint(1);
-            textBlockStroke.setColor(1713477363);
+            textBlockStroke.setColor(0x662196F3);
             textBlockStroke.setStyle(Paint.Style.STROKE);
             textBlockStroke.setStrokeWidth(1.5f);
             for (PaddleOCREngine.TextRegion region : this.textRegions) {
@@ -683,9 +884,78 @@ public class SelectionOverlayView extends View {
             canvas.drawRect(screenRect2, strokePaint);
         }
         if (this.selectionRect != null) {
-            RectF normalized = new RectF(Math.min(this.selectionRect.left, this.selectionRect.right), Math.min(this.selectionRect.top, this.selectionRect.bottom), Math.max(this.selectionRect.left, this.selectionRect.right), Math.max(this.selectionRect.top, this.selectionRect.bottom));
-            canvas.drawRect(normalized, this.selectionFillPaint);
-            canvas.drawRect(normalized, this.selectionPaint);
+            RectF normalized = new RectF(Math.min(this.selectionRect.left, this.selectionRect.right),
+                    Math.min(this.selectionRect.top, this.selectionRect.bottom),
+                    Math.max(this.selectionRect.left, this.selectionRect.right),
+                    Math.max(this.selectionRect.top, this.selectionRect.bottom));
+            if (this.cropMode) {
+                Paint dimPaint = new Paint(1);
+                dimPaint.setColor(0xAA000000);
+                dimPaint.setStyle(Paint.Style.FILL);
+                canvas.drawRect(0, 0, getWidth(), normalized.top, dimPaint);
+                canvas.drawRect(0, normalized.bottom, getWidth(), getHeight(), dimPaint);
+                canvas.drawRect(0, normalized.top, normalized.left, normalized.bottom, dimPaint);
+                canvas.drawRect(normalized.right, normalized.top, getWidth(), normalized.bottom, dimPaint);
+                Paint cropBorderPaint = new Paint(1);
+                cropBorderPaint.setColor(0xFFFFD700);
+                cropBorderPaint.setStyle(Paint.Style.STROKE);
+                cropBorderPaint.setStrokeWidth(3.0f);
+                canvas.drawRect(normalized, cropBorderPaint);
+                drawCornerHandles(canvas, normalized, 0xFFFFD700);
+            } else {
+                canvas.drawRect(normalized, this.selectionFillPaint);
+                canvas.drawRect(normalized, this.selectionPaint);
+                // Draw offset crosshair cursor above the drag thumb
+                if (this.isLongPressSelecting && this.currentDragX > 0) {
+                    drawDragCursor(canvas, this.currentDragX, this.currentDragY);
+                }
+            }
         }
+    }
+
+    private void drawDragCursor(Canvas canvas, float touchX, float touchY) {
+        float density = getResources().getDisplayMetrics().density;
+        float offsetY = 110f * density;
+        float radius = 18f * density;
+        float cx = touchX;
+        float cy = touchY - offsetY;
+        // Keep cursor on screen
+        if (cy - radius < 0)
+            cy = radius + 4;
+
+        // Drop shadow
+        Paint shadowP = new Paint(Paint.ANTI_ALIAS_FLAG);
+        shadowP.setColor(0x55000000);
+        canvas.drawCircle(cx + density * 2, cy + density * 2, radius, shadowP);
+
+        // Gold fill
+        Paint fillP = new Paint(Paint.ANTI_ALIAS_FLAG);
+        fillP.setColor(0xFFFFD700);
+        fillP.setStyle(Paint.Style.FILL);
+        canvas.drawCircle(cx, cy, radius, fillP);
+
+        // Dark border
+        Paint borderP = new Paint(Paint.ANTI_ALIAS_FLAG);
+        borderP.setColor(0xCC333333);
+        borderP.setStyle(Paint.Style.STROKE);
+        borderP.setStrokeWidth(density * 1.5f);
+        canvas.drawCircle(cx, cy, radius, borderP);
+
+        // Crosshair lines
+        Paint crossP = new Paint(Paint.ANTI_ALIAS_FLAG);
+        crossP.setColor(0xFF1A1A1A);
+        crossP.setStrokeWidth(density * 2f);
+        crossP.setStrokeCap(Paint.Cap.ROUND);
+        float arm = radius * 0.55f;
+        canvas.drawLine(cx - arm, cy, cx + arm, cy, crossP);
+        canvas.drawLine(cx, cy - arm, cx, cy + arm, crossP);
+
+        // Stem from cursor down to actual touch point
+        Paint stemP = new Paint(Paint.ANTI_ALIAS_FLAG);
+        stemP.setColor(0xBBFFD700);
+        stemP.setStrokeWidth(density * 1.5f);
+        stemP.setStyle(Paint.Style.STROKE);
+        stemP.setPathEffect(new DashPathEffect(new float[] { density * 5f, density * 3f }, 0f));
+        canvas.drawLine(cx, cy + radius, touchX, touchY, stemP);
     }
 }

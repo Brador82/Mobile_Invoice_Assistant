@@ -228,9 +228,9 @@ public class SignatureView extends View {
             int canvasHeight = this.canvas.getHeight();
             int imgWidth = this.backgroundImage.getWidth();
             int imgHeight = this.backgroundImage.getHeight();
-            float scale = Math.min(canvasWidth / imgWidth, canvasHeight / imgHeight);
-            int scaledWidth = (int) (imgWidth * scale);
-            int scaledHeight = (int) (imgHeight * scale);
+            float scale = Math.min((float) canvasWidth / imgWidth, (float) canvasHeight / imgHeight);
+            int scaledWidth = Math.max(1, (int) (imgWidth * scale));
+            int scaledHeight = Math.max(1, (int) (imgHeight * scale));
             int left = (canvasWidth - scaledWidth) / 2;
             int top = (canvasHeight - scaledHeight) / 2;
             Rect destRect = new Rect(left, top, left + scaledWidth, top + scaledHeight);

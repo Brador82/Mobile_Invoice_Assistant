@@ -29,7 +29,9 @@ public class SignatureActivity extends BaseActivity {
     private long invoiceId = -1;
     private SignatureView signatureView;
 
-    /* JADX WARN: Can't fix incorrect switch cases order, some code will duplicate */
+    /*
+     * JADX WARN: Can't fix incorrect switch cases order, some code will duplicate
+     */
     @Override // com.mobileinvoice.ocr.BaseActivity
     protected void applyAppTheme() {
         char c;
@@ -95,7 +97,8 @@ public class SignatureActivity extends BaseActivity {
         }
     }
 
-    @Override // androidx.fragment.app.FragmentActivity, androidx.activity.ComponentActivity, androidx.core.app.ComponentActivity, android.app.Activity
+    @Override // androidx.fragment.app.FragmentActivity, androidx.activity.ComponentActivity,
+              // androidx.core.app.ComponentActivity, android.app.Activity
     protected void onCreate(Bundle savedInstanceState) {
         applyAppTheme();
         super.onCreate(savedInstanceState);
@@ -117,13 +120,15 @@ public class SignatureActivity extends BaseActivity {
     }
 
     private void setupButtons() {
-        this.binding.btnClear.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.SignatureActivity$$ExternalSyntheticLambda0
+        this.binding.btnClear.setOnClickListener(new View.OnClickListener() { // from class:
+                                                                              // com.mobileinvoice.ocr.SignatureActivity$$ExternalSyntheticLambda0
             @Override // android.view.View.OnClickListener
             public final void onClick(View view) {
                 SignatureActivity.this.lambda$setupButtons$0(view);
             }
         });
-        this.binding.btnSave.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.SignatureActivity$$ExternalSyntheticLambda1
+        this.binding.btnSave.setOnClickListener(new View.OnClickListener() { // from class:
+                                                                             // com.mobileinvoice.ocr.SignatureActivity$$ExternalSyntheticLambda1
             @Override // android.view.View.OnClickListener
             public final void onClick(View view) {
                 SignatureActivity.this.lambda$setupButtons$1(view);
@@ -158,13 +163,15 @@ public class SignatureActivity extends BaseActivity {
                 signaturesDir.mkdirs();
             }
             String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date());
-            String signatureFilename = "signature_" + (this.invoiceId > 0 ? this.invoiceId + "_" : "") + timestamp + ".png";
+            String signatureFilename = "signature_" + (this.invoiceId > 0 ? this.invoiceId + "_" : "") + timestamp
+                    + ".png";
             File signatureFile = new File(signaturesDir, signatureFilename);
             FileOutputStream fos = new FileOutputStream(signatureFile);
             signatureBitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
             fos.flush();
             fos.close();
-            String formFilename = "delivery_form_" + (this.invoiceId > 0 ? this.invoiceId + "_" : "") + timestamp + ".png";
+            String formFilename = "delivery_form_" + (this.invoiceId > 0 ? this.invoiceId + "_" : "") + timestamp
+                    + ".png";
             File formFile = new File(signaturesDir, formFilename);
             Bitmap formBitmap = generateDeliveryForm(signatureBitmap);
             FileOutputStream formFos = new FileOutputStream(formFile);
@@ -224,7 +231,14 @@ public class SignatureActivity extends BaseActivity {
         int y4 = y3 + 50;
         canvas.drawText("Terms of Acceptance:", 60, y4, titlePaint);
         int y5 = y4 + 35;
-        String[] terms = {"1. Customer or person(s) over the age of 18 present upon delivery &", "   installation of appliances, and agree to accepting are installed correctly", "   without any harm to the home.", "", "2. Customer or person(s) over the age of 18 was present for delivery and", "   installation agrees that appliances, a test run/overview was provided,", "   no damages were noted & that they were installed correctly without any", "   damage arising to the house or appliance from the use of customers old", "   appliance hoses, and/or improperly maintained or damaged", "   faucets/drains/valves, etc."};
+        String[] terms = { "1. Customer or person(s) over the age of 18 present upon delivery &",
+                "   installation of appliances, and agree to accepting are installed correctly",
+                "   without any harm to the home.", "",
+                "2. Customer or person(s) over the age of 18 was present for delivery and",
+                "   installation agrees that appliances, a test run/overview was provided,",
+                "   no damages were noted & that they were installed correctly without any",
+                "   damage arising to the house or appliance from the use of customers old",
+                "   appliance hoses, and/or improperly maintained or damaged", "   faucets/drains/valves, etc." };
         for (String line : terms) {
             canvas.drawText(line, 60, y5, termsPaint);
             y5 += 24;
@@ -234,7 +248,17 @@ public class SignatureActivity extends BaseActivity {
         int y7 = y6 + 30;
         canvas.drawText("TERMS AND CONDITIONS", 60, y7, titlePaint);
         int y8 = y7 + 35;
-        String[] conditions = {"Scratch and Dent Goods:", "• All delivery sales are final. There is no return or refund on scratch or", "  dent product, unless such item is non-repairable.", "• Purchaser is solely responsible for appliance(s) back to the store for", "  goods exchange.", "", "Warranty:", "• Warranty must begin within 30 days after delivery by contacting the", "  manufacturer or call 800-905-0443.", "• Customer is responsible for calling customer care as soon as any issue", "  arises within the warranty period.", "• After 30 days - Customer is still responsible for repair issues and", "  delivery/pickup, and labor.", "• Warranty does not cover negligence, power surges, or pest infestation."};
+        String[] conditions = { "Scratch and Dent Goods:",
+                "• All delivery sales are final. There is no return or refund on scratch or",
+                "  dent product, unless such item is non-repairable.",
+                "• Purchaser is solely responsible for appliance(s) back to the store for", "  goods exchange.", "",
+                "Warranty:", "• Warranty must begin within 30 days after delivery by contacting the",
+                "  manufacturer or call 800-905-0443.",
+                "• Customer is responsible for calling customer care as soon as any issue",
+                "  arises within the warranty period.",
+                "• After 30 days - Customer is still responsible for repair issues and",
+                "  delivery/pickup, and labor.",
+                "• Warranty does not cover negligence, power surges, or pest infestation." };
         for (String line2 : conditions) {
             canvas.drawText(line2, 60, y8, termsPaint);
             y8 += 24;
@@ -246,9 +270,10 @@ public class SignatureActivity extends BaseActivity {
         int y11 = y10 + 20;
         int sigWidth = Math.min(signatureBitmap.getWidth(), 1275 - (60 * 2));
         int sigHeight = Math.min(signatureBitmap.getHeight(), 200);
-        float scale = Math.min(sigWidth / signatureBitmap.getWidth(), sigHeight / signatureBitmap.getHeight());
-        int scaledWidth = (int) (signatureBitmap.getWidth() * scale);
-        int scaledHeight = (int) (signatureBitmap.getHeight() * scale);
+        float scale = Math.min((float) sigWidth / signatureBitmap.getWidth(),
+                (float) sigHeight / signatureBitmap.getHeight());
+        int scaledWidth = Math.max(1, (int) (signatureBitmap.getWidth() * scale));
+        int scaledHeight = Math.max(1, (int) (signatureBitmap.getHeight() * scale));
         Bitmap scaledSig = Bitmap.createScaledBitmap(signatureBitmap, scaledWidth, scaledHeight, true);
         canvas.drawBitmap(scaledSig, 60, y11, (Paint) null);
         int y12 = y11 + scaledHeight + 10;
@@ -259,20 +284,25 @@ public class SignatureActivity extends BaseActivity {
         Paint footerPaint = new Paint(1);
         footerPaint.setColor(Color.parseColor("#D4AF37"));
         footerPaint.setTextSize(16.0f);
-        float footerWidth = footerPaint.measureText("Please refer to www.ccsarms.com or call 800-905-0443 for warranty registration.");
-        canvas.drawText("Please refer to www.ccsarms.com or call 800-905-0443 for warranty registration.", (1275 - footerWidth) / 2.0f, 1650 - 60, footerPaint);
+        float footerWidth = footerPaint
+                .measureText("Please refer to www.ccsarms.com or call 800-905-0443 for warranty registration.");
+        canvas.drawText("Please refer to www.ccsarms.com or call 800-905-0443 for warranty registration.",
+                (1275 - footerWidth) / 2.0f, 1650 - 60, footerPaint);
         return formBitmap;
     }
 
     @Override // androidx.activity.ComponentActivity, android.app.Activity
     public void onBackPressed() {
         if (this.signatureView.hasSignature()) {
-            new AlertDialog.Builder(this).setTitle("Discard Signature?").setMessage("You have an unsigned delivery. Are you sure you want to go back?").setPositiveButton("Discard", new DialogInterface.OnClickListener() { // from class: com.mobileinvoice.ocr.SignatureActivity$$ExternalSyntheticLambda2
-                @Override // android.content.DialogInterface.OnClickListener
-                public final void onClick(DialogInterface dialogInterface, int i) {
-                    SignatureActivity.this.lambda$onBackPressed$2(dialogInterface, i);
-                }
-            }).setNegativeButton("Cancel", (DialogInterface.OnClickListener) null).show();
+            new AlertDialog.Builder(this).setTitle("Discard Signature?")
+                    .setMessage("You have an unsigned delivery. Are you sure you want to go back?")
+                    .setPositiveButton("Discard", new DialogInterface.OnClickListener() { // from class:
+                                                                                          // com.mobileinvoice.ocr.SignatureActivity$$ExternalSyntheticLambda2
+                        @Override // android.content.DialogInterface.OnClickListener
+                        public final void onClick(DialogInterface dialogInterface, int i) {
+                            SignatureActivity.this.lambda$onBackPressed$2(dialogInterface, i);
+                        }
+                    }).setNegativeButton("Cancel", (DialogInterface.OnClickListener) null).show();
         } else {
             super.onBackPressed();
         }

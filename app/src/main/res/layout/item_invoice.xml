@@ -69,6 +69,67 @@
             android:layout_marginTop="2dp"
             android:text="Address"/>
         <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp">
+            <TextView
+                android:id="@+id/tvBadgeDelivery"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DELIVERY"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:paddingStart="7dp"
+                android:paddingEnd="7dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:layout_marginEnd="6dp"
+                android:background="@drawable/badge_service_dim"
+                android:textColor="#404040"/>
+            <TextView
+                android:id="@+id/tvBadgeInstall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="INSTALL"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:paddingStart="7dp"
+                android:paddingEnd="7dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:layout_marginEnd="6dp"
+                android:background="@drawable/badge_service_dim"
+                android:textColor="#404040"/>
+            <TextView
+                android:id="@+id/tvBadgeHaulAway"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="HAUL AWAY"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:paddingStart="7dp"
+                android:paddingEnd="7dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:layout_marginEnd="6dp"
+                android:background="@drawable/badge_service_dim"
+                android:textColor="#404040"/>
+            <TextView
+                android:id="@+id/tvBadgeService"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SERVICE"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:paddingStart="7dp"
+                android:paddingEnd="7dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:background="@drawable/badge_service_dim"
+                android:textColor="#404040"/>
+        </LinearLayout>
+        <LinearLayout
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:layout_width="match_parent"
