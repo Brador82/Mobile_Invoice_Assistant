@@ -34,11 +34,11 @@ public class ViewfinderOverlayView extends View {
     private static final String PREFS_NAME = "viewfinder_prefs";
     private static final float TOUCH_SLOP = 48.0f;
     private Paint anchorPaint;
-    private float[] anchorScores;
+    private final float[] anchorScores;
     private boolean captureReady;
     private Paint dimPaint;
     private int dragEdge;
-    private RectF dragStartRect;
+    private final RectF dragStartRect;
     private float dragStartX;
     private float dragStartY;
     private float flashAlpha;
@@ -48,8 +48,8 @@ public class ViewfinderOverlayView extends View {
     private Paint guideAlignedPaint;
     private Paint guideDefaultPaint;
     private Paint guideReadyPaint;
-    private RectF guideRect;
-    private Rect guideRectInt;
+    private final RectF guideRect;
+    private final Rect guideRectInt;
     private Paint handlePaint;
     private boolean isFullScreen;
     private float overallScore;
@@ -233,7 +233,7 @@ public class ViewfinderOverlayView extends View {
         this.flashAnimator.setInterpolator(new DecelerateInterpolator());
         this.flashAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() { // from class: com.mobileinvoice.ocr.ViewfinderOverlayView$$ExternalSyntheticLambda0
             @Override // android.animation.ValueAnimator.AnimatorUpdateListener
-            public final void onAnimationUpdate(ValueAnimator valueAnimator) {
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 ViewfinderOverlayView.this.lambda$triggerCaptureFlash$0(valueAnimator);
             }
         });

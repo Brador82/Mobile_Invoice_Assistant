@@ -14,7 +14,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
-import com.mobileinvoice.ocr.PaddleOCREngine;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -26,12 +26,12 @@ public class SelectionOverlayView extends View {
     private static final int HANDLE_SIZE = 50;
     private Paint completedFillPaint;
     private Paint completedPaint;
-    private List<CompletedSelection> completedSelections;
+    private final List<CompletedSelection> completedSelections;
     private Rect dragOriginalRect;
     private PointF dragStartPoint;
     private CompletedSelection draggedSelection;
     private Bitmap imageBitmap;
-    private Matrix imageMatrix;
+    private final Matrix imageMatrix;
     private boolean cropMode;
     private float currentDragX;
     private float currentDragY;
@@ -232,7 +232,7 @@ public class SelectionOverlayView extends View {
                 PointF touchPoint = new PointF(e.getX(), e.getY());
                 if (SelectionOverlayView.this.textListener != null && !SelectionOverlayView.this.textRegions.isEmpty()
                         && (tappedRegion = SelectionOverlayView.this.findTextRegionAt(touchPoint)) != null) {
-                    SelectionOverlayView.this.textListener.onTextSelected(tappedRegion.text, tappedRegion.boundingBox);
+                    SelectionOverlayView.this.textListener.onTextSelected(tappedRegion.text(), tappedRegion.boundingBox());
                     return true;
                 }
                 CompletedSelection hit = SelectionOverlayView.this.findCompletedSelectionAt(touchPoint);
@@ -648,7 +648,7 @@ public class SelectionOverlayView extends View {
                             if (hit != null) {
                                 this.selectionRect = null;
                                 invalidate();
-                                this.textListener.onTextSelected(hit.text, hit.boundingBox);
+                                this.textListener.onTextSelected(hit.text(), hit.boundingBox());
                                 return true;
                             }
                         }
@@ -719,7 +719,7 @@ public class SelectionOverlayView extends View {
         float[] pt = { screenPoint.x, screenPoint.y };
         inverse.mapPoints(pt);
         for (PaddleOCREngine.TextRegion region : this.textRegions) {
-            if (region.boundingBox != null && region.boundingBox.contains((int) pt[0], (int) pt[1])) {
+            if (region.boundingBox() != null && region.boundingBox().contains((int) pt[0], (int) pt[1])) {
                 return region;
             }
         }
@@ -741,9 +741,9 @@ public class SelectionOverlayView extends View {
         // Collect characters whose center point falls inside the drawn rectangle
         List<PaddleOCREngine.TextRegion> matched = new ArrayList<>();
         for (PaddleOCREngine.TextRegion region : source) {
-            if (region.boundingBox != null) {
-                int cx = region.boundingBox.centerX();
-                int cy = region.boundingBox.centerY();
+            if (region.boundingBox() != null) {
+                int cx = region.boundingBox().centerX();
+                int cy = region.boundingBox().centerY();
                 if (bitmapRect.contains(cx, cy)) {
                     matched.add(region);
                 }
@@ -757,12 +757,12 @@ public class SelectionOverlayView extends View {
         Collections.sort(matched, new Comparator<PaddleOCREngine.TextRegion>() {
             @Override
             public int compare(PaddleOCREngine.TextRegion a, PaddleOCREngine.TextRegion b) {
-                int avgH = (a.boundingBox.height() + b.boundingBox.height()) / 2;
-                int rowDiff = a.boundingBox.centerY() - b.boundingBox.centerY();
+                int avgH = (a.boundingBox().height() + b.boundingBox().height()) / 2;
+                int rowDiff = a.boundingBox().centerY() - b.boundingBox().centerY();
                 if (Math.abs(rowDiff) > avgH / 2) {
                     return rowDiff; // different rows
                 }
-                return a.boundingBox.centerX() - b.boundingBox.centerX(); // same row
+                return a.boundingBox().centerX() - b.boundingBox().centerX(); // same row
             }
         });
 
@@ -771,20 +771,20 @@ public class SelectionOverlayView extends View {
         PaddleOCREngine.TextRegion prev = null;
         for (PaddleOCREngine.TextRegion region : matched) {
             if (prev != null) {
-                int avgH = (region.boundingBox.height() + prev.boundingBox.height()) / 2;
-                int rowDiff = Math.abs(region.boundingBox.centerY() - prev.boundingBox.centerY());
+                int avgH = (region.boundingBox().height() + prev.boundingBox().height()) / 2;
+                int rowDiff = Math.abs(region.boundingBox().centerY() - prev.boundingBox().centerY());
                 if (rowDiff > avgH / 2) {
                     sb.append("\n");
                 } else {
                     // Insert space when the gap between characters is wider than one character
-                    int gap = region.boundingBox.left - prev.boundingBox.right;
-                    int charW = (region.boundingBox.width() + prev.boundingBox.width()) / 2;
+                    int gap = region.boundingBox().left - prev.boundingBox().right;
+                    int charW = (region.boundingBox().width() + prev.boundingBox().width()) / 2;
                     if (gap > charW / 2) {
                         sb.append(" ");
                     }
                 }
             }
-            sb.append(region.text);
+            sb.append(region.text());
             prev = region;
         }
         return sb.toString();
@@ -863,8 +863,8 @@ public class SelectionOverlayView extends View {
             textBlockStroke.setStyle(Paint.Style.STROKE);
             textBlockStroke.setStrokeWidth(1.5f);
             for (PaddleOCREngine.TextRegion region : this.textRegions) {
-                if (region.boundingBox != null) {
-                    RectF screenRect = bitmapRectToScreenRect(region.boundingBox);
+                if (region.boundingBox() != null) {
+                    RectF screenRect = bitmapRectToScreenRect(region.boundingBox());
                     canvas.drawRect(screenRect, textBlockFill);
                     canvas.drawRect(screenRect, textBlockStroke);
                 }

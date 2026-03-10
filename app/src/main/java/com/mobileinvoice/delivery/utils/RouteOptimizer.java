@@ -38,7 +38,7 @@ public class RouteOptimizer {
         List<Delivery> optimized = new ArrayList<>(deliveries);
         optimized.sort(new Comparator() { // from class: com.mobileinvoice.delivery.utils.RouteOptimizer$$ExternalSyntheticLambda1
             @Override // java.util.Comparator
-            public final int compare(Object obj, Object obj2) {
+            public int compare(Object obj, Object obj2) {
                 return RouteOptimizer.lambda$optimizeByTimeWindow$0((Delivery) obj, (Delivery) obj2);
             }
         });
@@ -70,7 +70,7 @@ public class RouteOptimizer {
         List<Delivery> optimized = new ArrayList<>(deliveries);
         optimized.sort(new Comparator() { // from class: com.mobileinvoice.delivery.utils.RouteOptimizer$$ExternalSyntheticLambda0
             @Override // java.util.Comparator
-            public final int compare(Object obj, Object obj2) {
+            public int compare(Object obj, Object obj2) {
                 return RouteOptimizer.lambda$optimizeByPriority$1((Delivery) obj, (Delivery) obj2);
             }
         });

@@ -28,7 +28,7 @@ import java.util.List;
 /* loaded from: classes7.dex */
 public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.InvoiceViewHolder> {
     private List<Invoice> invoices = new ArrayList();
-    private OnInvoiceClickListener listener;
+    private final OnInvoiceClickListener listener;
 
     public interface OnInvoiceClickListener {
         void onDelete(Invoice invoice);
@@ -112,35 +112,35 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.InvoiceV
             this.binding.tvAddress.setOnClickListener(new View.OnClickListener() { // from class:
                                                                                    // com.mobileinvoice.ocr.InvoiceAdapter$InvoiceViewHolder$$ExternalSyntheticLambda0
                 @Override // android.view.View.OnClickListener
-                public final void onClick(View view) {
+                public void onClick(View view) {
                     InvoiceAdapter.InvoiceViewHolder.lambda$bind$0(invoice, view);
                 }
             });
             this.binding.btnViewDetails.setOnClickListener(new View.OnClickListener() { // from class:
                                                                                         // com.mobileinvoice.ocr.InvoiceAdapter$InvoiceViewHolder$$ExternalSyntheticLambda1
                 @Override // android.view.View.OnClickListener
-                public final void onClick(View view) {
+                public void onClick(View view) {
                     InvoiceAdapter.InvoiceViewHolder.this.lambda$bind$1(invoice, view);
                 }
             });
             this.binding.btnCall.setOnClickListener(new View.OnClickListener() { // from class:
                                                                                  // com.mobileinvoice.ocr.InvoiceAdapter$InvoiceViewHolder$$ExternalSyntheticLambda2
                 @Override // android.view.View.OnClickListener
-                public final void onClick(View view) {
+                public void onClick(View view) {
                     InvoiceAdapter.InvoiceViewHolder.lambda$bind$2(invoice, view);
                 }
             });
             this.binding.btnNavigate.setOnClickListener(new View.OnClickListener() { // from class:
                                                                                      // com.mobileinvoice.ocr.InvoiceAdapter$InvoiceViewHolder$$ExternalSyntheticLambda3
                 @Override // android.view.View.OnClickListener
-                public final void onClick(View view) {
+                public void onClick(View view) {
                     InvoiceAdapter.InvoiceViewHolder.lambda$bind$3(invoice, view);
                 }
             });
             this.binding.btnDelete.setOnClickListener(new View.OnClickListener() { // from class:
                                                                                    // com.mobileinvoice.ocr.InvoiceAdapter$InvoiceViewHolder$$ExternalSyntheticLambda4
                 @Override // android.view.View.OnClickListener
-                public final void onClick(View view) {
+                public void onClick(View view) {
                     InvoiceAdapter.InvoiceViewHolder.this.lambda$bind$4(invoice, view);
                 }
             });
@@ -150,7 +150,7 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.InvoiceV
                                                                                                                       // class:
                                                                                                                       // com.mobileinvoice.ocr.InvoiceAdapter$InvoiceViewHolder$$ExternalSyntheticLambda5
                 @Override // android.widget.CompoundButton.OnCheckedChangeListener
-                public final void onCheckedChanged(CompoundButton compoundButton, boolean z) {
+                public void onCheckedChanged(CompoundButton compoundButton, boolean z) {
                     InvoiceAdapter.InvoiceViewHolder.this.lambda$bind$5(invoice, compoundButton, z);
                 }
             });
@@ -161,7 +161,7 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.InvoiceV
             this.binding.tvServiceType.setOnClickListener(new View.OnClickListener() { // from class:
                                                                                        // com.mobileinvoice.ocr.InvoiceAdapter$InvoiceViewHolder$$ExternalSyntheticLambda6
                 @Override // android.view.View.OnClickListener
-                public final void onClick(View view) {
+                public void onClick(View view) {
                     InvoiceAdapter.InvoiceViewHolder.this.lambda$bind$7(invoice, view);
                 }
             });
@@ -240,7 +240,7 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.InvoiceV
             popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() { // from class:
                                                                                        // com.mobileinvoice.ocr.InvoiceAdapter$InvoiceViewHolder$$ExternalSyntheticLambda7
                 @Override // android.widget.PopupMenu.OnMenuItemClickListener
-                public final boolean onMenuItemClick(MenuItem menuItem) {
+                public boolean onMenuItemClick(MenuItem menuItem) {
                     boolean lambda$bind$6;
                     lambda$bind$6 = InvoiceAdapter.InvoiceViewHolder.this.lambda$bind$6(invoice, menuItem);
                     return lambda$bind$6;

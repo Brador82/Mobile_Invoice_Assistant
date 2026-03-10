@@ -44,7 +44,7 @@ public class BroadcastMessageActivity extends BaseActivity {
     private List<Invoice> activeInvoices = new ArrayList();
     private boolean isSending = false;
     private boolean pendingSendIsPM = false;
-    private List<Boolean> customerIsPM = new ArrayList();
+    private final List<Boolean> customerIsPM = new ArrayList();
 
     @Override // androidx.fragment.app.FragmentActivity, androidx.activity.ComponentActivity, androidx.core.app.ComponentActivity, android.app.Activity
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,13 +60,13 @@ public class BroadcastMessageActivity extends BaseActivity {
         setupPermissionLauncher();
         this.binding.btnSendAM.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.BroadcastMessageActivity$$ExternalSyntheticLambda11
             @Override // android.view.View.OnClickListener
-            public final void onClick(View view) {
+            public void onClick(View view) {
                 BroadcastMessageActivity.this.lambda$onCreate$0(view);
             }
         });
         this.binding.btnSendPM.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.BroadcastMessageActivity$$ExternalSyntheticLambda12
             @Override // android.view.View.OnClickListener
-            public final void onClick(View view) {
+            public void onClick(View view) {
                 BroadcastMessageActivity.this.lambda$onCreate$1(view);
             }
         });
@@ -92,7 +92,7 @@ public class BroadcastMessageActivity extends BaseActivity {
     private void setupPermissionLauncher() {
         this.requestSmsPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), new ActivityResultCallback() { // from class: com.mobileinvoice.ocr.BroadcastMessageActivity$$ExternalSyntheticLambda13
             @Override // androidx.activity.result.ActivityResultCallback
-            public final void onActivityResult(Object obj) {
+            public void onActivityResult(Object obj) {
                 BroadcastMessageActivity.this.lambda$setupPermissionLauncher$2((Boolean) obj);
             }
         });
@@ -110,7 +110,7 @@ public class BroadcastMessageActivity extends BaseActivity {
     private void prepareRouteData() {
         new Thread(new Runnable() { // from class: com.mobileinvoice.ocr.BroadcastMessageActivity$$ExternalSyntheticLambda1
             @Override // java.lang.Runnable
-            public final void run() {
+            public void run() {
                 BroadcastMessageActivity.this.lambda$prepareRouteData$6();
             }
         }).start();
@@ -129,7 +129,7 @@ public class BroadcastMessageActivity extends BaseActivity {
         if (active.isEmpty()) {
             runOnUiThread(new Runnable() { // from class: com.mobileinvoice.ocr.BroadcastMessageActivity$$ExternalSyntheticLambda2
                 @Override // java.lang.Runnable
-                public final void run() {
+                public void run() {
                     BroadcastMessageActivity.this.lambda$prepareRouteData$3();
                 }
             });
@@ -137,7 +137,7 @@ public class BroadcastMessageActivity extends BaseActivity {
         }
         runOnUiThread(new Runnable() { // from class: com.mobileinvoice.ocr.BroadcastMessageActivity$$ExternalSyntheticLambda3
             @Override // java.lang.Runnable
-            public final void run() {
+            public void run() {
                 BroadcastMessageActivity.this.lambda$prepareRouteData$4();
             }
         });
@@ -154,7 +154,7 @@ public class BroadcastMessageActivity extends BaseActivity {
         }
         runOnUiThread(new Runnable() { // from class: com.mobileinvoice.ocr.BroadcastMessageActivity$$ExternalSyntheticLambda4
             @Override // java.lang.Runnable
-            public final void run() {
+            public void run() {
                 BroadcastMessageActivity.this.lambda$prepareRouteData$5(active);
             }
         });
@@ -197,7 +197,7 @@ public class BroadcastMessageActivity extends BaseActivity {
             SimpleDateFormat sdf = new SimpleDateFormat("h:mm a", Locale.getDefault());
             String etaStart = sdf.format(new Date(stop.etaMillis));
             int etaWindow = AppSettings.getInstance(this).getEtaWindowMinutes();
-            String etaEnd = sdf.format(new Date(stop.etaMillis + (etaWindow * 60 * 1000)));
+            String etaEnd = sdf.format(new Date(stop.etaMillis + ((long) etaWindow * 60 * 1000)));
             msg.append("\n\nEstimated arrival: ").append(etaStart).append("–").append(etaEnd);
         }
         if (this.routeLink != null) {
@@ -264,7 +264,7 @@ public class BroadcastMessageActivity extends BaseActivity {
         applyToggleStyle(tvToggle, false);
         tvToggle.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.BroadcastMessageActivity$$ExternalSyntheticLambda9
             @Override // android.view.View.OnClickListener
-            public final void onClick(View view) {
+            public void onClick(View view) {
                 BroadcastMessageActivity.this.lambda$addCustomerRow$7(idx, tvToggle, view);
             }
         });
@@ -340,10 +340,10 @@ public class BroadcastMessageActivity extends BaseActivity {
         if (today.equals(lastDate)) {
             new AlertDialog.Builder(this).setTitle("Already Sent " + label + " Today").setMessage("You've already sent the " + label + " broadcast today. Send again?").setPositiveButton("Send Again", new DialogInterface.OnClickListener() { // from class: com.mobileinvoice.ocr.BroadcastMessageActivity$$ExternalSyntheticLambda8
                 @Override // android.content.DialogInterface.OnClickListener
-                public final void onClick(DialogInterface dialogInterface, int i) {
+                public void onClick(DialogInterface dialogInterface, int i) {
                     BroadcastMessageActivity.this.lambda$onSendClicked$8(dialogInterface, i);
                 }
-            }).setNegativeButton("Cancel", (DialogInterface.OnClickListener) null).show();
+            }).setNegativeButton("Cancel", null).show();
         } else {
             checkPermissionAndSend();
         }
@@ -369,7 +369,7 @@ public class BroadcastMessageActivity extends BaseActivity {
         this.binding.sendingProgress.setVisibility(0);
         new Thread(new Runnable() { // from class: com.mobileinvoice.ocr.BroadcastMessageActivity$$ExternalSyntheticLambda10
             @Override // java.lang.Runnable
-            public final void run() {
+            public void run() {
                 BroadcastMessageActivity.this.lambda$proceedWithSend$12(sendPM);
             }
         }).start();
@@ -384,7 +384,7 @@ public class BroadcastMessageActivity extends BaseActivity {
             List<RouteOptimizer.RoutePoint> filteredStops = new ArrayList<>();
             int i = 0;
             while (i < this.optimizedRoute.orderedPoints.size()) {
-                boolean isPM = i < this.customerIsPM.size() ? this.customerIsPM.get(i).booleanValue() : false;
+                boolean isPM = i < this.customerIsPM.size() && this.customerIsPM.get(i).booleanValue();
                 if (isPM == sendPM) {
                     filteredStops.add(this.optimizedRoute.orderedPoints.get(i));
                 }
@@ -398,7 +398,7 @@ public class BroadcastMessageActivity extends BaseActivity {
                 final int progress = i2 + 1;
                 runOnUiThread(new Runnable() { // from class: com.mobileinvoice.ocr.BroadcastMessageActivity$$ExternalSyntheticLambda0
                     @Override // java.lang.Runnable
-                    public final void run() {
+                    public void run() {
                         BroadcastMessageActivity.this.lambda$proceedWithSend$9(progress, total);
                     }
                 });
@@ -421,7 +421,7 @@ public class BroadcastMessageActivity extends BaseActivity {
             List<Invoice> filtered = new ArrayList<>();
             int i3 = 0;
             while (i3 < this.activeInvoices.size()) {
-                boolean isPM2 = i3 < this.customerIsPM.size() ? this.customerIsPM.get(i3).booleanValue() : false;
+                boolean isPM2 = i3 < this.customerIsPM.size() && this.customerIsPM.get(i3).booleanValue();
                 if (isPM2 == sendPM) {
                     filtered.add(this.activeInvoices.get(i3));
                 }
@@ -435,7 +435,7 @@ public class BroadcastMessageActivity extends BaseActivity {
                 final int progress2 = i4 + 1;
                 runOnUiThread(new Runnable() { // from class: com.mobileinvoice.ocr.BroadcastMessageActivity$$ExternalSyntheticLambda5
                     @Override // java.lang.Runnable
-                    public final void run() {
+                    public void run() {
                         BroadcastMessageActivity.this.lambda$proceedWithSend$10(progress2, total2);
                     }
                 });
@@ -463,7 +463,7 @@ public class BroadcastMessageActivity extends BaseActivity {
         final int finalFailed = failCount;
         runOnUiThread(new Runnable() { // from class: com.mobileinvoice.ocr.BroadcastMessageActivity$$ExternalSyntheticLambda6
             @Override // java.lang.Runnable
-            public final void run() {
+            public void run() {
                 BroadcastMessageActivity.this.lambda$proceedWithSend$11(finalSent, finalFailed, failedCustomers);
             }
         });
@@ -542,7 +542,7 @@ public class BroadcastMessageActivity extends BaseActivity {
         }
         new AlertDialog.Builder(this).setTitle(failed == 0 ? "Broadcast Complete" : "Broadcast Complete (with errors)").setMessage(summary.toString()).setPositiveButton("OK", new DialogInterface.OnClickListener() { // from class: com.mobileinvoice.ocr.BroadcastMessageActivity$$ExternalSyntheticLambda7
             @Override // android.content.DialogInterface.OnClickListener
-            public final void onClick(DialogInterface dialogInterface, int i) {
+            public void onClick(DialogInterface dialogInterface, int i) {
                 BroadcastMessageActivity.this.lambda$showSendSummary$13(failed, dialogInterface, i);
             }
         }).setIcon(failed == 0 ? android.R.drawable.ic_dialog_info : android.R.drawable.ic_dialog_alert).show();

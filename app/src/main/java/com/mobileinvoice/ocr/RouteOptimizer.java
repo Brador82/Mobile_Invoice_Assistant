@@ -22,8 +22,8 @@ public class RouteOptimizer {
     public static final int PRIORITY_LAST = 2;
     public static final int PRIORITY_NORMAL = 0;
     private static final String TAG = "RouteOptimizer";
-    private Context context;
-    private Geocoder geocoder;
+    private final Context context;
+    private final Geocoder geocoder;
 
     public static class RoutePoint {
         public String formattedAddress;
@@ -137,7 +137,7 @@ public class RouteOptimizer {
             Log.d(TAG, "Using persisted route order from database");
             points.sort(new Comparator() { // from class: com.mobileinvoice.ocr.RouteOptimizer$$ExternalSyntheticLambda0
                 @Override // java.util.Comparator
-                public final int compare(Object obj, Object obj2) {
+                public int compare(Object obj, Object obj2) {
                     return RouteOptimizer.lambda$optimizeRoute$0((RouteOptimizer.RoutePoint) obj, (RouteOptimizer.RoutePoint) obj2);
                 }
             });
@@ -292,9 +292,9 @@ public class RouteOptimizer {
         for (RoutePoint point : route.orderedPoints) {
             point.distanceFromPrevious = calculateDistance(prevLat, prevLng, point.latitude, point.longitude);
             point.travelTimeMinutes = estimateTravelTimeMinutes(point.distanceFromPrevious);
-            long currentTime2 = currentTime + (point.travelTimeMinutes * 60 * 1000);
+            long currentTime2 = currentTime + ((long) point.travelTimeMinutes * 60 * 1000);
             point.etaMillis = currentTime2;
-            currentTime = currentTime2 + (point.stopTimeMinutes * 60 * 1000);
+            currentTime = currentTime2 + ((long) point.stopTimeMinutes * 60 * 1000);
             double prevLat2 = point.latitude;
             prevLng = point.longitude;
             prevLat = prevLat2;

@@ -160,7 +160,7 @@ public class DraggableDividerTouchListener implements View.OnTouchListener {
         final float f2 = targetListWeight;
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() { // from class: com.mobileinvoice.ocr.DraggableDividerTouchListener$$ExternalSyntheticLambda0
             @Override // android.animation.ValueAnimator.AnimatorUpdateListener
-            public final void onAnimationUpdate(ValueAnimator valueAnimator) {
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 DraggableDividerTouchListener.this.lambda$animateToPosition$0(startMapWeight, f, startListWeight, f2, valueAnimator);
             }
         });

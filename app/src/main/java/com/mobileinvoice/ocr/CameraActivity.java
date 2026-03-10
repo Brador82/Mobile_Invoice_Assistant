@@ -20,7 +20,6 @@ import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import com.google.common.util.concurrent.ListenableFuture;
-import com.mobileinvoice.ocr.DocumentDetector;
 import com.mobileinvoice.ocr.databinding.ActivityCameraBinding;
 import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
@@ -78,19 +77,19 @@ public class CameraActivity extends BaseActivity {
         }
         this.binding.btnCapture.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.CameraActivity$$ExternalSyntheticLambda4
             @Override // android.view.View.OnClickListener
-            public final void onClick(View view) {
+            public void onClick(View view) {
                 CameraActivity.this.lambda$onCreate$0(view);
             }
         });
         this.binding.btnClose.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.CameraActivity$$ExternalSyntheticLambda5
             @Override // android.view.View.OnClickListener
-            public final void onClick(View view) {
+            public void onClick(View view) {
                 CameraActivity.this.lambda$onCreate$1(view);
             }
         });
         this.binding.btnToggleAutoCapture.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.CameraActivity$$ExternalSyntheticLambda6
             @Override // android.view.View.OnClickListener
-            public final void onClick(View view) {
+            public void onClick(View view) {
                 CameraActivity.this.lambda$onCreate$2(view);
             }
         });
@@ -124,7 +123,7 @@ public class CameraActivity extends BaseActivity {
         final ListenableFuture<ProcessCameraProvider> cameraProviderFuture = ProcessCameraProvider.getInstance(this);
         cameraProviderFuture.addListener(new Runnable() { // from class: com.mobileinvoice.ocr.CameraActivity$$ExternalSyntheticLambda2
             @Override // java.lang.Runnable
-            public final void run() {
+            public void run() {
                 CameraActivity.this.lambda$startCamera$3(cameraProviderFuture);
             }
         }, ContextCompat.getMainExecutor(this));
@@ -143,7 +142,7 @@ public class CameraActivity extends BaseActivity {
                 this.imageAnalysis = new ImageAnalysis.Builder().setTargetResolution(new Size(640, 480)).setBackpressureStrategy(0).build();
                 this.imageAnalysis.setAnalyzer(this.analysisExecutor, new ImageAnalysis.Analyzer() { // from class: com.mobileinvoice.ocr.CameraActivity$$ExternalSyntheticLambda1
                     @Override // androidx.camera.core.ImageAnalysis.Analyzer
-                    public final void analyze(ImageProxy imageProxy) {
+                    public void analyze(ImageProxy imageProxy) {
                         CameraActivity.this.analyzeFrame(imageProxy);
                     }
                 });
@@ -175,7 +174,7 @@ public class CameraActivity extends BaseActivity {
             final DocumentDetector.AlignmentResult result = this.documentDetector.analyze(yData, width, height, rowStride, guideInFrame);
             runOnUiThread(new Runnable() { // from class: com.mobileinvoice.ocr.CameraActivity$$ExternalSyntheticLambda0
                 @Override // java.lang.Runnable
-                public final void run() {
+                public void run() {
                     CameraActivity.this.lambda$analyzeFrame$4(result);
                 }
             });
@@ -186,8 +185,8 @@ public class CameraActivity extends BaseActivity {
 
     /* JADX INFO: Access modifiers changed from: private */
     public /* synthetic */ void lambda$analyzeFrame$4(DocumentDetector.AlignmentResult result) {
-        this.binding.viewfinderOverlay.updateAlignment(result.score, result.anchorScores, result.readyToCapture);
-        if (result.readyToCapture && !this.autoCapturePending) {
+        this.binding.viewfinderOverlay.updateAlignment(result.score(), result.anchorScores(), result.readyToCapture());
+        if (result.readyToCapture() && !this.autoCapturePending) {
             triggerAutoCapture();
         }
     }
@@ -222,7 +221,7 @@ public class CameraActivity extends BaseActivity {
         this.autoCapturePending = true;
         this.autoCaptureHandler.postDelayed(new Runnable() { // from class: com.mobileinvoice.ocr.CameraActivity$$ExternalSyntheticLambda3
             @Override // java.lang.Runnable
-            public final void run() {
+            public void run() {
                 CameraActivity.this.lambda$triggerAutoCapture$5();
             }
         }, AUTO_CAPTURE_DELAY_MS);

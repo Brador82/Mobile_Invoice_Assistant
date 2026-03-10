@@ -49,7 +49,7 @@ public class DeliveryRepository {
     public void insert(final Delivery delivery, final OnDeliveryInsertedListener listener) {
         this.executorService.execute(new Runnable() { // from class: com.mobileinvoice.delivery.data.repository.DeliveryRepository$$ExternalSyntheticLambda12
             @Override // java.lang.Runnable
-            public final void run() {
+            public void run() {
                 DeliveryRepository.this.lambda$insert$0(delivery, listener);
             }
         });
@@ -69,7 +69,7 @@ public class DeliveryRepository {
     public void insertAll(final List<Delivery> deliveries, final OnDeliveriesBulkInsertedListener listener) {
         this.executorService.execute(new Runnable() { // from class: com.mobileinvoice.delivery.data.repository.DeliveryRepository$$ExternalSyntheticLambda2
             @Override // java.lang.Runnable
-            public final void run() {
+            public void run() {
                 DeliveryRepository.this.lambda$insertAll$1(deliveries, listener);
             }
         });
@@ -134,7 +134,7 @@ public class DeliveryRepository {
     public void update(final Delivery delivery) {
         this.executorService.execute(new Runnable() { // from class: com.mobileinvoice.delivery.data.repository.DeliveryRepository$$ExternalSyntheticLambda5
             @Override // java.lang.Runnable
-            public final void run() {
+            public void run() {
                 DeliveryRepository.this.lambda$update$2(delivery);
             }
         });
@@ -148,7 +148,7 @@ public class DeliveryRepository {
     public void updateStatus(final long id, final DeliveryStatus status) {
         this.executorService.execute(new Runnable() { // from class: com.mobileinvoice.delivery.data.repository.DeliveryRepository$$ExternalSyntheticLambda10
             @Override // java.lang.Runnable
-            public final void run() {
+            public void run() {
                 DeliveryRepository.this.lambda$updateStatus$3(id, status);
             }
         });
@@ -162,7 +162,7 @@ public class DeliveryRepository {
     public void updateRouteOrder(final long id, final int order) {
         this.executorService.execute(new Runnable() { // from class: com.mobileinvoice.delivery.data.repository.DeliveryRepository$$ExternalSyntheticLambda7
             @Override // java.lang.Runnable
-            public final void run() {
+            public void run() {
                 DeliveryRepository.this.lambda$updateRouteOrder$4(id, order);
             }
         });
@@ -171,7 +171,7 @@ public class DeliveryRepository {
     public void completeDelivery(final long id, final String recipientName, final String signaturePath) {
         this.executorService.execute(new Runnable() { // from class: com.mobileinvoice.delivery.data.repository.DeliveryRepository$$ExternalSyntheticLambda6
             @Override // java.lang.Runnable
-            public final void run() {
+            public void run() {
                 DeliveryRepository.this.lambda$completeDelivery$5(id, signaturePath, recipientName);
             }
         });
@@ -186,7 +186,7 @@ public class DeliveryRepository {
     public void markDeliveryFailed(final long id, final String reason) {
         this.executorService.execute(new Runnable() { // from class: com.mobileinvoice.delivery.data.repository.DeliveryRepository$$ExternalSyntheticLambda3
             @Override // java.lang.Runnable
-            public final void run() {
+            public void run() {
                 DeliveryRepository.this.lambda$markDeliveryFailed$6(id, reason);
             }
         });
@@ -200,7 +200,7 @@ public class DeliveryRepository {
     public void updateRouteOrders(final List<Delivery> deliveries) {
         this.executorService.execute(new Runnable() { // from class: com.mobileinvoice.delivery.data.repository.DeliveryRepository$$ExternalSyntheticLambda4
             @Override // java.lang.Runnable
-            public final void run() {
+            public void run() {
                 DeliveryRepository.this.lambda$updateRouteOrders$7(deliveries);
             }
         });
@@ -221,7 +221,7 @@ public class DeliveryRepository {
     public void delete(final Delivery delivery) {
         this.executorService.execute(new Runnable() { // from class: com.mobileinvoice.delivery.data.repository.DeliveryRepository$$ExternalSyntheticLambda1
             @Override // java.lang.Runnable
-            public final void run() {
+            public void run() {
                 DeliveryRepository.this.lambda$delete$8(delivery);
             }
         });
@@ -235,7 +235,7 @@ public class DeliveryRepository {
     public void deleteById(final long id) {
         this.executorService.execute(new Runnable() { // from class: com.mobileinvoice.delivery.data.repository.DeliveryRepository$$ExternalSyntheticLambda9
             @Override // java.lang.Runnable
-            public final void run() {
+            public void run() {
                 DeliveryRepository.this.lambda$deleteById$9(id);
             }
         });
@@ -244,7 +244,7 @@ public class DeliveryRepository {
     public void deleteCompleted() {
         this.executorService.execute(new Runnable() { // from class: com.mobileinvoice.delivery.data.repository.DeliveryRepository$$ExternalSyntheticLambda0
             @Override // java.lang.Runnable
-            public final void run() {
+            public void run() {
                 DeliveryRepository.this.lambda$deleteCompleted$10();
             }
         });
@@ -264,7 +264,7 @@ public class DeliveryRepository {
     public void deleteAll() {
         this.executorService.execute(new Runnable() { // from class: com.mobileinvoice.delivery.data.repository.DeliveryRepository$$ExternalSyntheticLambda11
             @Override // java.lang.Runnable
-            public final void run() {
+            public void run() {
                 DeliveryRepository.this.lambda$deleteAll$11();
             }
         });
@@ -296,7 +296,7 @@ public class DeliveryRepository {
     public void getActiveDeliveriesSync(final OnDeliveriesLoadedListener listener) {
         this.executorService.execute(new Runnable() { // from class: com.mobileinvoice.delivery.data.repository.DeliveryRepository$$ExternalSyntheticLambda8
             @Override // java.lang.Runnable
-            public final void run() {
+            public void run() {
                 DeliveryRepository.this.lambda$getActiveDeliveriesSync$12(listener);
             }
         });

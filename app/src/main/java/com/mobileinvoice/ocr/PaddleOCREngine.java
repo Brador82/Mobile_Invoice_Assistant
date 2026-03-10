@@ -86,7 +86,7 @@ public class PaddleOCREngine {
                 StringBuilder result = new StringBuilder();
                 Collections.sort(regions, new Comparator() { // from class: com.mobileinvoice.ocr.PaddleOCREngine$$ExternalSyntheticLambda0
                     @Override // java.util.Comparator
-                    public final int compare(Object obj, Object obj2) {
+                    public int compare(Object obj, Object obj2) {
                         return PaddleOCREngine.lambda$recognizeText$0((Rect) obj, (Rect) obj2);
                     }
                 });
@@ -213,7 +213,7 @@ public class PaddleOCREngine {
         output2.close();
         int mapH2 = probMap[0][0].length;
         int mapW3 = probMap[0][0][0].length;
-        boolean[][] visited2 = (boolean[][]) Array.newInstance((Class<?>) Boolean.TYPE, mapH2, mapW3);
+        boolean[][] visited2 = (boolean[][]) Array.newInstance(Boolean.TYPE, mapH2, mapW3);
         int y2 = 0;
         while (y2 < mapH2) {
             int resizedW2 = resizedW;
@@ -368,7 +368,7 @@ public class PaddleOCREngine {
                             float r = ((Color.red(pixel) / 255.0f) - MEAN[0]) / STD[0];
                             float g = ((Color.green(pixel) / 255.0f) - MEAN[c]) / STD[c];
                             float b = ((Color.blue(pixel) / 255.0f) - MEAN[2]) / STD[2];
-                            inputData[(y * REC_MAX_WIDTH) + 0 + x] = r;
+                            inputData[(y * REC_MAX_WIDTH) + x] = r;
                             inputData[(y * REC_MAX_WIDTH) + 23040 + x] = g;
                             inputData[(y * REC_MAX_WIDTH) + 46080 + x] = b;
                             x++;
@@ -410,8 +410,8 @@ public class PaddleOCREngine {
                 float r = ((Color.red(pixel) / 255.0f) - MEAN[0]) / STD[0];
                 float g = ((Color.green(pixel) / 255.0f) - MEAN[1]) / STD[1];
                 float b = ((Color.blue(pixel) / 255.0f) - MEAN[2]) / STD[2];
-                data[(height * 0 * width) + (y * width) + x] = r;
-                data[(height * 1 * width) + (y * width) + x] = g;
+                data[(0) + (y * width) + x] = r;
+                data[(height * width) + (y * width) + x] = g;
                 data[(height * 2 * width) + (y * width) + x] = b;
             }
         }
@@ -487,16 +487,9 @@ public class PaddleOCREngine {
                 chars.add(String.valueOf((char) i));
             }
         }
-        return (String[]) chars.toArray(new String[0]);
+        return chars.toArray(new String[0]);
     }
 
-    public static class TextRegion {
-        public final Rect boundingBox;
-        public final String text;
-
-        public TextRegion(String text, Rect boundingBox) {
-            this.text = text;
-            this.boundingBox = boundingBox;
-        }
+    public record TextRegion(String text, Rect boundingBox) {
     }
 }

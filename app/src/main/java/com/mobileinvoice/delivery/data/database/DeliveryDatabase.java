@@ -22,7 +22,7 @@ public abstract class DeliveryDatabase extends RoomDatabase {
         if (INSTANCE == null) {
             synchronized (DeliveryDatabase.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = (DeliveryDatabase) Room.databaseBuilder(context.getApplicationContext(), DeliveryDatabase.class, DATABASE_NAME).build();
+                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(), DeliveryDatabase.class, DATABASE_NAME).build();
                 }
             }
         }

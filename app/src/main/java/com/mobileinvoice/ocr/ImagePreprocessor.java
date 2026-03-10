@@ -62,14 +62,11 @@ public class ImagePreprocessor {
         File file = new File(dir, filename);
         try {
             FileOutputStream fos = new FileOutputStream(file);
-            try {
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 92, fos);
-                fos.flush();
-                String absolutePath = file.getAbsolutePath();
-                fos.close();
-                return absolutePath;
-            } finally {
-            }
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 92, fos);
+            fos.flush();
+            String absolutePath = file.getAbsolutePath();
+            fos.close();
+            return absolutePath;
         } catch (IOException e) {
             e.printStackTrace();
             return null;

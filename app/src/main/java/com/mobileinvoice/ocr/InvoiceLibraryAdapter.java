@@ -15,7 +15,7 @@ import java.util.List;
 /* loaded from: classes7.dex */
 public class InvoiceLibraryAdapter extends RecyclerView.Adapter<InvoiceLibraryAdapter.ViewHolder> {
     private List<Invoice> invoices = new ArrayList();
-    private OnInvoiceImageClickListener listener;
+    private final OnInvoiceImageClickListener listener;
 
     public interface OnInvoiceImageClickListener {
         void onInvoiceImageClick(Invoice invoice);
@@ -65,7 +65,7 @@ public class InvoiceLibraryAdapter extends RecyclerView.Adapter<InvoiceLibraryAd
             this.binding.tvCustomerName.setText(invoice.getCustomerName() != null ? invoice.getCustomerName() : "Unknown");
             this.itemView.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.InvoiceLibraryAdapter$ViewHolder$$ExternalSyntheticLambda0
                 @Override // android.view.View.OnClickListener
-                public final void onClick(View view) {
+                public void onClick(View view) {
                     InvoiceLibraryAdapter.ViewHolder.this.lambda$bind$0(invoice, view);
                 }
             });

@@ -33,7 +33,7 @@ public class DriveHelper {
 
     public static boolean isConfigured(Context context) {
         String clientId = context.getString(R.string.google_oauth_client_id);
-        return (clientId.isEmpty() || clientId.equals(PLACEHOLDER_CLIENT_ID)) ? false : true;
+        return !clientId.isEmpty() && !clientId.equals(PLACEHOLDER_CLIENT_ID);
     }
 
     public static boolean isSignedIn(Context context) {
@@ -70,7 +70,7 @@ public class DriveHelper {
     public static void signOut(final Context context, final Callback callback) {
         buildSignInClient(context).signOut().addOnCompleteListener(new OnCompleteListener() { // from class: com.mobileinvoice.ocr.DriveHelper$$ExternalSyntheticLambda0
             @Override // com.google.android.gms.tasks.OnCompleteListener
-            public final void onComplete(Task task) {
+            public void onComplete(Task task) {
                 DriveHelper.lambda$signOut$0(context, callback, task);
             }
         });
@@ -88,7 +88,7 @@ public class DriveHelper {
         } else {
             new Thread(new Runnable() { // from class: com.mobileinvoice.ocr.DriveHelper$$ExternalSyntheticLambda1
                 @Override // java.lang.Runnable
-                public final void run() {
+                public void run() {
                     DriveHelper.lambda$uploadFile$1(context, callback, localFile, mimeType);
                 }
             }).start();

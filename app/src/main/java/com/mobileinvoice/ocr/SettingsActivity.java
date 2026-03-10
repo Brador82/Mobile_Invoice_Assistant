@@ -96,7 +96,7 @@ public class SettingsActivity extends BaseActivity {
         }
         this.signInLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback() { // from class: com.mobileinvoice.ocr.SettingsActivity$$ExternalSyntheticLambda9
             @Override // androidx.activity.result.ActivityResultCallback
-            public final void onActivityResult(Object obj) {
+            public void onActivityResult(Object obj) {
                 SettingsActivity.this.lambda$onCreate$0((ActivityResult) obj);
             }
         });
@@ -120,7 +120,7 @@ public class SettingsActivity extends BaseActivity {
         public void onSuccess(final String message) {
             SettingsActivity.this.runOnUiThread(new Runnable() { // from class: com.mobileinvoice.ocr.SettingsActivity$1$$ExternalSyntheticLambda1
                 @Override // java.lang.Runnable
-                public final void run() {
+                public void run() {
                     SettingsActivity.AnonymousClass1.this.lambda$onSuccess$0(message);
                 }
             });
@@ -141,7 +141,7 @@ public class SettingsActivity extends BaseActivity {
         public void onFailure(final String error) {
             SettingsActivity.this.runOnUiThread(new Runnable() { // from class: com.mobileinvoice.ocr.SettingsActivity$1$$ExternalSyntheticLambda0
                 @Override // java.lang.Runnable
-                public final void run() {
+                public void run() {
                     SettingsActivity.AnonymousClass1.this.lambda$onFailure$1(error);
                 }
             });
@@ -149,30 +149,30 @@ public class SettingsActivity extends BaseActivity {
     }
 
     private void bindViews() {
-        this.etCompanyName = (TextInputEditText) findViewById(R.id.etCompanyName);
-        this.etWarehouseAddress = (TextInputEditText) findViewById(R.id.etWarehouseAddress);
-        this.tvGeoResult = (TextView) findViewById(R.id.tvGeoResult);
-        this.btnGeocode = (MaterialButton) findViewById(R.id.btnGeocode);
-        this.btnEta15 = (Button) findViewById(R.id.btnEta15);
-        this.btnEta30 = (Button) findViewById(R.id.btnEta30);
-        this.btnEta45 = (Button) findViewById(R.id.btnEta45);
-        this.btnEta60 = (Button) findViewById(R.id.btnEta60);
-        this.spinnerServiceType = (Spinner) findViewById(R.id.spinnerServiceType);
-        this.chipDarkMarble = (LinearLayout) findViewById(R.id.chipDarkMarble);
-        this.chipLightMarble = (LinearLayout) findViewById(R.id.chipLightMarble);
-        this.chipBlended = (LinearLayout) findViewById(R.id.chipBlended);
-        this.tvChipDarkMarbleCheck = (TextView) findViewById(R.id.tvChipDarkMarbleCheck);
-        this.tvChipLightMarbleCheck = (TextView) findViewById(R.id.tvChipLightMarbleCheck);
-        this.tvChipBlendedCheck = (TextView) findViewById(R.id.tvChipBlendedCheck);
-        this.etExportFolder = (TextInputEditText) findViewById(R.id.etExportFolder);
-        this.tvDriveStatus = (TextView) findViewById(R.id.tvDriveStatus);
-        this.btnDriveConnect = (MaterialButton) findViewById(R.id.btnDriveConnect);
-        this.rgAfterDelivery = (RadioGroup) findViewById(R.id.rgAfterDelivery);
-        this.rbAfterAsk = (RadioButton) findViewById(R.id.rbAfterAsk);
-        this.rbAfterArchive = (RadioButton) findViewById(R.id.rbAfterArchive);
-        this.rbAfterNavigate = (RadioButton) findViewById(R.id.rbAfterNavigate);
-        this.tvVersion = (TextView) findViewById(R.id.tvVersion);
-        this.btnClearAllData = (MaterialButton) findViewById(R.id.btnClearAllData);
+        this.etCompanyName = findViewById(R.id.etCompanyName);
+        this.etWarehouseAddress = findViewById(R.id.etWarehouseAddress);
+        this.tvGeoResult = findViewById(R.id.tvGeoResult);
+        this.btnGeocode = findViewById(R.id.btnGeocode);
+        this.btnEta15 = findViewById(R.id.btnEta15);
+        this.btnEta30 = findViewById(R.id.btnEta30);
+        this.btnEta45 = findViewById(R.id.btnEta45);
+        this.btnEta60 = findViewById(R.id.btnEta60);
+        this.spinnerServiceType = findViewById(R.id.spinnerServiceType);
+        this.chipDarkMarble = findViewById(R.id.chipDarkMarble);
+        this.chipLightMarble = findViewById(R.id.chipLightMarble);
+        this.chipBlended = findViewById(R.id.chipBlended);
+        this.tvChipDarkMarbleCheck = findViewById(R.id.tvChipDarkMarbleCheck);
+        this.tvChipLightMarbleCheck = findViewById(R.id.tvChipLightMarbleCheck);
+        this.tvChipBlendedCheck = findViewById(R.id.tvChipBlendedCheck);
+        this.etExportFolder = findViewById(R.id.etExportFolder);
+        this.tvDriveStatus = findViewById(R.id.tvDriveStatus);
+        this.btnDriveConnect = findViewById(R.id.btnDriveConnect);
+        this.rgAfterDelivery = findViewById(R.id.rgAfterDelivery);
+        this.rbAfterAsk = findViewById(R.id.rbAfterAsk);
+        this.rbAfterArchive = findViewById(R.id.rbAfterArchive);
+        this.rbAfterNavigate = findViewById(R.id.rbAfterNavigate);
+        this.tvVersion = findViewById(R.id.tvVersion);
+        this.btnClearAllData = findViewById(R.id.btnClearAllData);
         this.switchFollowUp = (SwitchCompat) findViewById(R.id.switchFollowUp);
         this.etGoogleReviewUrl = (TextInputEditText) findViewById(R.id.etGoogleReviewUrl);
         this.etBroadcastMessage = (TextInputEditText) findViewById(R.id.etBroadcastMessage);
@@ -195,7 +195,7 @@ public class SettingsActivity extends BaseActivity {
         updateEtaButtons(this.settings.getEtaWindowMinutes());
         ArrayAdapter<String> serviceAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, SERVICE_TYPES);
         serviceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        this.spinnerServiceType.setAdapter((SpinnerAdapter) serviceAdapter);
+        this.spinnerServiceType.setAdapter(serviceAdapter);
         String savedService = this.settings.getDefaultServiceType();
         int i = 0;
         while (true) {
@@ -273,31 +273,31 @@ public class SettingsActivity extends BaseActivity {
         });
         this.btnGeocode.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.SettingsActivity$$ExternalSyntheticLambda12
             @Override // android.view.View.OnClickListener
-            public final void onClick(View view) {
+            public void onClick(View view) {
                 SettingsActivity.this.lambda$setupListeners$1(view);
             }
         });
         this.btnEta15.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.SettingsActivity$$ExternalSyntheticLambda14
             @Override // android.view.View.OnClickListener
-            public final void onClick(View view) {
+            public void onClick(View view) {
                 SettingsActivity.this.lambda$setupListeners$2(view);
             }
         });
         this.btnEta30.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.SettingsActivity$$ExternalSyntheticLambda15
             @Override // android.view.View.OnClickListener
-            public final void onClick(View view) {
+            public void onClick(View view) {
                 SettingsActivity.this.lambda$setupListeners$3(view);
             }
         });
         this.btnEta45.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.SettingsActivity$$ExternalSyntheticLambda16
             @Override // android.view.View.OnClickListener
-            public final void onClick(View view) {
+            public void onClick(View view) {
                 SettingsActivity.this.lambda$setupListeners$4(view);
             }
         });
         this.btnEta60.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.SettingsActivity$$ExternalSyntheticLambda17
             @Override // android.view.View.OnClickListener
-            public final void onClick(View view) {
+            public void onClick(View view) {
                 SettingsActivity.this.lambda$setupListeners$5(view);
             }
         });
@@ -313,19 +313,19 @@ public class SettingsActivity extends BaseActivity {
         });
         this.chipDarkMarble.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.SettingsActivity$$ExternalSyntheticLambda18
             @Override // android.view.View.OnClickListener
-            public final void onClick(View view) {
+            public void onClick(View view) {
                 SettingsActivity.this.lambda$setupListeners$6(view);
             }
         });
         this.chipLightMarble.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.SettingsActivity$$ExternalSyntheticLambda1
             @Override // android.view.View.OnClickListener
-            public final void onClick(View view) {
+            public void onClick(View view) {
                 SettingsActivity.this.lambda$setupListeners$7(view);
             }
         });
         this.chipBlended.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.SettingsActivity$$ExternalSyntheticLambda2
             @Override // android.view.View.OnClickListener
-            public final void onClick(View view) {
+            public void onClick(View view) {
                 SettingsActivity.this.lambda$setupListeners$8(view);
             }
         });
@@ -340,13 +340,13 @@ public class SettingsActivity extends BaseActivity {
         });
         this.btnDriveConnect.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.SettingsActivity$$ExternalSyntheticLambda3
             @Override // android.view.View.OnClickListener
-            public final void onClick(View view) {
+            public void onClick(View view) {
                 SettingsActivity.this.lambda$setupListeners$9(view);
             }
         });
         this.rgAfterDelivery.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() { // from class: com.mobileinvoice.ocr.SettingsActivity$$ExternalSyntheticLambda4
             @Override // android.widget.RadioGroup.OnCheckedChangeListener
-            public final void onCheckedChanged(RadioGroup radioGroup, int i) {
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 SettingsActivity.this.lambda$setupListeners$10(radioGroup, i);
             }
         });
@@ -406,7 +406,7 @@ public class SettingsActivity extends BaseActivity {
         });
         this.btnClearAllData.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.SettingsActivity$$ExternalSyntheticLambda13
             @Override // android.view.View.OnClickListener
-            public final void onClick(View view) {
+            public void onClick(View view) {
                 SettingsActivity.this.lambda$setupListeners$11(view);
             }
         });
@@ -465,7 +465,7 @@ public class SettingsActivity extends BaseActivity {
         public void onSuccess(final String msg) {
             SettingsActivity.this.runOnUiThread(new Runnable() { // from class: com.mobileinvoice.ocr.SettingsActivity$6$$ExternalSyntheticLambda1
                 @Override // java.lang.Runnable
-                public final void run() {
+                public void run() {
                     SettingsActivity.AnonymousClass6.this.lambda$onSuccess$0(msg);
                 }
             });
@@ -486,7 +486,7 @@ public class SettingsActivity extends BaseActivity {
         public void onFailure(final String err) {
             SettingsActivity.this.runOnUiThread(new Runnable() { // from class: com.mobileinvoice.ocr.SettingsActivity$6$$ExternalSyntheticLambda0
                 @Override // java.lang.Runnable
-                public final void run() {
+                public void run() {
                     SettingsActivity.AnonymousClass6.this.lambda$onFailure$1(err);
                 }
             });
@@ -588,7 +588,7 @@ public class SettingsActivity extends BaseActivity {
         final String addr = address;
         new Thread(new Runnable() { // from class: com.mobileinvoice.ocr.SettingsActivity$$ExternalSyntheticLambda8
             @Override // java.lang.Runnable
-            public final void run() {
+            public void run() {
                 SettingsActivity.this.lambda$geocodeAddress$15(addr);
             }
         }).start();
@@ -606,14 +606,14 @@ public class SettingsActivity extends BaseActivity {
                 this.settings.setWarehouseLng(lng);
                 runOnUiThread(new Runnable() { // from class: com.mobileinvoice.ocr.SettingsActivity$$ExternalSyntheticLambda5
                     @Override // java.lang.Runnable
-                    public final void run() {
+                    public void run() {
                         SettingsActivity.this.lambda$geocodeAddress$12(lat, lng);
                     }
                 });
             } else {
                 runOnUiThread(new Runnable() { // from class: com.mobileinvoice.ocr.SettingsActivity$$ExternalSyntheticLambda6
                     @Override // java.lang.Runnable
-                    public final void run() {
+                    public void run() {
                         SettingsActivity.this.lambda$geocodeAddress$13();
                     }
                 });
@@ -621,7 +621,7 @@ public class SettingsActivity extends BaseActivity {
         } catch (IOException e) {
             runOnUiThread(new Runnable() { // from class: com.mobileinvoice.ocr.SettingsActivity$$ExternalSyntheticLambda7
                 @Override // java.lang.Runnable
-                public final void run() {
+                public void run() {
                     SettingsActivity.this.lambda$geocodeAddress$14(e);
                 }
             });
@@ -683,17 +683,17 @@ public class SettingsActivity extends BaseActivity {
     private void confirmClearAllData() {
         new AlertDialog.Builder(this).setTitle("Clear All Data").setMessage("This will permanently delete all invoices. This cannot be undone.").setPositiveButton("DELETE EVERYTHING", new DialogInterface.OnClickListener() { // from class: com.mobileinvoice.ocr.SettingsActivity$$ExternalSyntheticLambda11
             @Override // android.content.DialogInterface.OnClickListener
-            public final void onClick(DialogInterface dialogInterface, int i) {
+            public void onClick(DialogInterface dialogInterface, int i) {
                 SettingsActivity.this.lambda$confirmClearAllData$18(dialogInterface, i);
             }
-        }).setNegativeButton("Cancel", (DialogInterface.OnClickListener) null).show();
+        }).setNegativeButton("Cancel", null).show();
     }
 
     /* JADX INFO: Access modifiers changed from: private */
     public /* synthetic */ void lambda$confirmClearAllData$18(DialogInterface dialog, int which) {
         new Thread(new Runnable() { // from class: com.mobileinvoice.ocr.SettingsActivity$$ExternalSyntheticLambda0
             @Override // java.lang.Runnable
-            public final void run() {
+            public void run() {
                 SettingsActivity.this.lambda$confirmClearAllData$17();
             }
         }).start();
@@ -704,7 +704,7 @@ public class SettingsActivity extends BaseActivity {
         InvoiceDatabase.getInstance(this).clearAllTables();
         runOnUiThread(new Runnable() { // from class: com.mobileinvoice.ocr.SettingsActivity$$ExternalSyntheticLambda10
             @Override // java.lang.Runnable
-            public final void run() {
+            public void run() {
                 SettingsActivity.this.lambda$confirmClearAllData$16();
             }
         });

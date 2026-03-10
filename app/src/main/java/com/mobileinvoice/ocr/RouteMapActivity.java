@@ -129,7 +129,7 @@ public class RouteMapActivity extends BaseActivity implements OnMapReadyCallback
         this.binding = ActivityRouteMapBinding.inflate(getLayoutInflater());
         setContentView(this.binding.getRoot());
         this.database = InvoiceDatabase.getInstance(this);
-        this.fusedLocationClient = LocationServices.getFusedLocationProviderClient((Activity) this);
+        this.fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         setupPermissionLauncher();
         setupRecyclerView();
         setupClickListeners();
@@ -233,7 +233,7 @@ public class RouteMapActivity extends BaseActivity implements OnMapReadyCallback
         stop.invoice.setStopTimeMinutes(newTimeMinutes);
         new Thread(new Runnable() { // from class: com.mobileinvoice.ocr.RouteMapActivity$$ExternalSyntheticLambda4
             @Override // java.lang.Runnable
-            public final void run() {
+            public void run() {
                 RouteMapActivity.this.lambda$handleStopTimeChanged$0(stop);
             }
         }).start();
@@ -250,7 +250,7 @@ public class RouteMapActivity extends BaseActivity implements OnMapReadyCallback
         stop.invoice.setCompleted(completed);
         new Thread(new Runnable() { // from class: com.mobileinvoice.ocr.RouteMapActivity$$ExternalSyntheticLambda0
             @Override // java.lang.Runnable
-            public final void run() {
+            public void run() {
                 RouteMapActivity.this.lambda$handleCompletedChanged$2(stop, completed);
             }
         }).start();
@@ -261,7 +261,7 @@ public class RouteMapActivity extends BaseActivity implements OnMapReadyCallback
         this.database.invoiceDao().update(stop.invoice);
         runOnUiThread(new Runnable() { // from class: com.mobileinvoice.ocr.RouteMapActivity$$ExternalSyntheticLambda9
             @Override // java.lang.Runnable
-            public final void run() {
+            public void run() {
                 RouteMapActivity.this.lambda$handleCompletedChanged$1(completed, stop);
             }
         });
@@ -367,7 +367,7 @@ public class RouteMapActivity extends BaseActivity implements OnMapReadyCallback
     private void setupPermissionLauncher() {
         this.requestLocationPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), new ActivityResultCallback() { // from class: com.mobileinvoice.ocr.RouteMapActivity$$ExternalSyntheticLambda15
             @Override // androidx.activity.result.ActivityResultCallback
-            public final void onActivityResult(Object obj) {
+            public void onActivityResult(Object obj) {
                 RouteMapActivity.this.lambda$setupPermissionLauncher$3((Boolean) obj);
             }
         });
@@ -387,25 +387,25 @@ public class RouteMapActivity extends BaseActivity implements OnMapReadyCallback
         setupDraggableDivider();
         this.binding.btnToggleMapSize.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.RouteMapActivity$$ExternalSyntheticLambda5
             @Override // android.view.View.OnClickListener
-            public final void onClick(View view) {
+            public void onClick(View view) {
                 RouteMapActivity.this.lambda$setupClickListeners$4(view);
             }
         });
         this.binding.btnRecenterMap.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.RouteMapActivity$$ExternalSyntheticLambda6
             @Override // android.view.View.OnClickListener
-            public final void onClick(View view) {
+            public void onClick(View view) {
                 RouteMapActivity.this.lambda$setupClickListeners$5(view);
             }
         });
         this.binding.btnStartNavigation.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.RouteMapActivity$$ExternalSyntheticLambda7
             @Override // android.view.View.OnClickListener
-            public final void onClick(View view) {
+            public void onClick(View view) {
                 RouteMapActivity.this.lambda$setupClickListeners$6(view);
             }
         });
         this.binding.btnReorderList.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.RouteMapActivity$$ExternalSyntheticLambda8
             @Override // android.view.View.OnClickListener
-            public final void onClick(View view) {
+            public void onClick(View view) {
                 RouteMapActivity.this.lambda$setupClickListeners$7(view);
             }
         });
@@ -539,12 +539,12 @@ public class RouteMapActivity extends BaseActivity implements OnMapReadyCallback
         }
         this.fusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener() { // from class: com.mobileinvoice.ocr.RouteMapActivity$$ExternalSyntheticLambda1
             @Override // com.google.android.gms.tasks.OnSuccessListener
-            public final void onSuccess(Object obj) {
+            public void onSuccess(Object obj) {
                 RouteMapActivity.this.lambda$getCurrentLocationAndOptimize$8((Location) obj);
             }
         }).addOnFailureListener(new OnFailureListener() { // from class: com.mobileinvoice.ocr.RouteMapActivity$$ExternalSyntheticLambda2
             @Override // com.google.android.gms.tasks.OnFailureListener
-            public final void onFailure(Exception exc) {
+            public void onFailure(Exception exc) {
                 RouteMapActivity.this.lambda$getCurrentLocationAndOptimize$9(exc);
             }
         });
@@ -576,7 +576,7 @@ public class RouteMapActivity extends BaseActivity implements OnMapReadyCallback
     private void optimizeAndDisplayRoute(final double startLat, final double startLng) {
         new Thread(new Runnable() { // from class: com.mobileinvoice.ocr.RouteMapActivity$$ExternalSyntheticLambda3
             @Override // java.lang.Runnable
-            public final void run() {
+            public void run() {
                 RouteMapActivity.this.lambda$optimizeAndDisplayRoute$14(startLat, startLng);
             }
         }).start();
@@ -589,7 +589,7 @@ public class RouteMapActivity extends BaseActivity implements OnMapReadyCallback
             if (allInvoices.isEmpty()) {
                 runOnUiThread(new Runnable() { // from class: com.mobileinvoice.ocr.RouteMapActivity$$ExternalSyntheticLambda10
                     @Override // java.lang.Runnable
-                    public final void run() {
+                    public void run() {
                         RouteMapActivity.this.lambda$optimizeAndDisplayRoute$10();
                     }
                 });
@@ -604,7 +604,7 @@ public class RouteMapActivity extends BaseActivity implements OnMapReadyCallback
             if (activeInvoices.isEmpty()) {
                 runOnUiThread(new Runnable() { // from class: com.mobileinvoice.ocr.RouteMapActivity$$ExternalSyntheticLambda11
                     @Override // java.lang.Runnable
-                    public final void run() {
+                    public void run() {
                         RouteMapActivity.this.lambda$optimizeAndDisplayRoute$11();
                     }
                 });
@@ -616,7 +616,7 @@ public class RouteMapActivity extends BaseActivity implements OnMapReadyCallback
             RouteOptimizer.calculateETAs(this.optimizedRoute, startLat, startLng, startTimeMillis);
             runOnUiThread(new Runnable() { // from class: com.mobileinvoice.ocr.RouteMapActivity$$ExternalSyntheticLambda12
                 @Override // java.lang.Runnable
-                public final void run() {
+                public void run() {
                     RouteMapActivity.this.lambda$optimizeAndDisplayRoute$12(startLat, startLng, allInvoices);
                 }
             });
@@ -624,7 +624,7 @@ public class RouteMapActivity extends BaseActivity implements OnMapReadyCallback
             Log.e(TAG, "Error optimizing route", e);
             runOnUiThread(new Runnable() { // from class: com.mobileinvoice.ocr.RouteMapActivity$$ExternalSyntheticLambda13
                 @Override // java.lang.Runnable
-                public final void run() {
+                public void run() {
                     RouteMapActivity.this.lambda$optimizeAndDisplayRoute$13(e);
                 }
             });
@@ -751,7 +751,7 @@ public class RouteMapActivity extends BaseActivity implements OnMapReadyCallback
         }
         new Thread(new Runnable() { // from class: com.mobileinvoice.ocr.RouteMapActivity$$ExternalSyntheticLambda14
             @Override // java.lang.Runnable
-            public final void run() {
+            public void run() {
                 RouteMapActivity.this.lambda$reorderInvoicesInDatabase$17();
             }
         }).start();
@@ -771,7 +771,7 @@ public class RouteMapActivity extends BaseActivity implements OnMapReadyCallback
             }
             runOnUiThread(new Runnable() { // from class: com.mobileinvoice.ocr.RouteMapActivity$$ExternalSyntheticLambda16
                 @Override // java.lang.Runnable
-                public final void run() {
+                public void run() {
                     RouteMapActivity.this.lambda$reorderInvoicesInDatabase$15();
                 }
             });
@@ -779,7 +779,7 @@ public class RouteMapActivity extends BaseActivity implements OnMapReadyCallback
             Log.e(TAG, "Error reordering invoices", e);
             runOnUiThread(new Runnable() { // from class: com.mobileinvoice.ocr.RouteMapActivity$$ExternalSyntheticLambda17
                 @Override // java.lang.Runnable
-                public final void run() {
+                public void run() {
                     RouteMapActivity.this.lambda$reorderInvoicesInDatabase$16();
                 }
             });
@@ -810,6 +810,6 @@ public class RouteMapActivity extends BaseActivity implements OnMapReadyCallback
             message.append("\n   ").append(failure.reason).append("\n\n");
         }
         message.append("Please check the addresses for these invoices.");
-        new AlertDialog.Builder(this).setTitle("Missing Stops (" + failures.size() + ")").setMessage(message.toString()).setPositiveButton("OK", (DialogInterface.OnClickListener) null).setIcon(android.R.drawable.ic_dialog_alert).show();
+        new AlertDialog.Builder(this).setTitle("Missing Stops (" + failures.size() + ")").setMessage(message.toString()).setPositiveButton("OK", null).setIcon(android.R.drawable.ic_dialog_alert).show();
     }
 }

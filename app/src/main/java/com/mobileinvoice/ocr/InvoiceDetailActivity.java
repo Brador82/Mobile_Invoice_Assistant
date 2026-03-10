@@ -82,31 +82,31 @@ public class InvoiceDetailActivity extends BaseActivity {
     private void setupActivityResultLaunchers() {
         this.signatureLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback() { // from class: com.mobileinvoice.ocr.InvoiceDetailActivity$$ExternalSyntheticLambda10
             @Override // androidx.activity.result.ActivityResultCallback
-            public final void onActivityResult(Object obj) {
+            public void onActivityResult(Object obj) {
                 InvoiceDetailActivity.this.lambda$setupActivityResultLaunchers$0((ActivityResult) obj);
             }
         });
         this.podCameraLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback() { // from class: com.mobileinvoice.ocr.InvoiceDetailActivity$$ExternalSyntheticLambda12
             @Override // androidx.activity.result.ActivityResultCallback
-            public final void onActivityResult(Object obj) {
+            public void onActivityResult(Object obj) {
                 InvoiceDetailActivity.this.lambda$setupActivityResultLaunchers$1((ActivityResult) obj);
             }
         });
         this.podGalleryLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback() { // from class: com.mobileinvoice.ocr.InvoiceDetailActivity$$ExternalSyntheticLambda13
             @Override // androidx.activity.result.ActivityResultCallback
-            public final void onActivityResult(Object obj) {
+            public void onActivityResult(Object obj) {
                 InvoiceDetailActivity.this.lambda$setupActivityResultLaunchers$2((ActivityResult) obj);
             }
         });
         this.extractionLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback() { // from class: com.mobileinvoice.ocr.InvoiceDetailActivity$$ExternalSyntheticLambda14
             @Override // androidx.activity.result.ActivityResultCallback
-            public final void onActivityResult(Object obj) {
+            public void onActivityResult(Object obj) {
                 InvoiceDetailActivity.this.lambda$setupActivityResultLaunchers$3((ActivityResult) obj);
             }
         });
         this.requestCameraPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), new ActivityResultCallback() { // from class: com.mobileinvoice.ocr.InvoiceDetailActivity$$ExternalSyntheticLambda15
             @Override // androidx.activity.result.ActivityResultCallback
-            public final void onActivityResult(Object obj) {
+            public void onActivityResult(Object obj) {
                 InvoiceDetailActivity.this.lambda$setupActivityResultLaunchers$4((Boolean) obj);
             }
         });
@@ -243,7 +243,7 @@ public class InvoiceDetailActivity extends BaseActivity {
         if (this.invoiceId > 0) {
             new Thread(new Runnable() { // from class: com.mobileinvoice.ocr.InvoiceDetailActivity$$ExternalSyntheticLambda21
                 @Override // java.lang.Runnable
-                public final void run() {
+                public void run() {
                     InvoiceDetailActivity.this.lambda$loadInvoiceFromDatabase$6();
                 }
             }).start();
@@ -255,7 +255,7 @@ public class InvoiceDetailActivity extends BaseActivity {
         this.currentInvoice = this.database.invoiceDao().getInvoiceByIdSync(this.invoiceId);
         runOnUiThread(new Runnable() { // from class: com.mobileinvoice.ocr.InvoiceDetailActivity$$ExternalSyntheticLambda18
             @Override // java.lang.Runnable
-            public final void run() {
+            public void run() {
                 InvoiceDetailActivity.this.lambda$loadInvoiceFromDatabase$5();
             }
         });
@@ -340,7 +340,7 @@ public class InvoiceDetailActivity extends BaseActivity {
     private void reloadInvoiceFromDatabase() {
         new Thread(new Runnable() { // from class: com.mobileinvoice.ocr.InvoiceDetailActivity$$ExternalSyntheticLambda20
             @Override // java.lang.Runnable
-            public final void run() {
+            public void run() {
                 InvoiceDetailActivity.this.lambda$reloadInvoiceFromDatabase$8();
             }
         }).start();
@@ -351,7 +351,7 @@ public class InvoiceDetailActivity extends BaseActivity {
         this.currentInvoice = this.database.invoiceDao().getInvoiceByIdSync(this.invoiceId);
         runOnUiThread(new Runnable() { // from class: com.mobileinvoice.ocr.InvoiceDetailActivity$$ExternalSyntheticLambda24
             @Override // java.lang.Runnable
-            public final void run() {
+            public void run() {
                 InvoiceDetailActivity.this.lambda$reloadInvoiceFromDatabase$7();
             }
         });
@@ -392,19 +392,19 @@ public class InvoiceDetailActivity extends BaseActivity {
     private void setupClickListeners() {
         this.binding.btnCaptureSignature.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.InvoiceDetailActivity$$ExternalSyntheticLambda26
             @Override // android.view.View.OnClickListener
-            public final void onClick(View view) {
+            public void onClick(View view) {
                 InvoiceDetailActivity.this.lambda$setupClickListeners$9(view);
             }
         });
         this.binding.btnCapturePOD.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.InvoiceDetailActivity$$ExternalSyntheticLambda30
             @Override // android.view.View.OnClickListener
-            public final void onClick(View view) {
+            public void onClick(View view) {
                 InvoiceDetailActivity.this.lambda$setupClickListeners$11(view);
             }
         });
         this.binding.ivPod1.setOnLongClickListener(new View.OnLongClickListener() { // from class: com.mobileinvoice.ocr.InvoiceDetailActivity$$ExternalSyntheticLambda31
             @Override // android.view.View.OnLongClickListener
-            public final boolean onLongClick(View view) {
+            public boolean onLongClick(View view) {
                 boolean lambda$setupClickListeners$12;
                 lambda$setupClickListeners$12 = InvoiceDetailActivity.this.lambda$setupClickListeners$12(view);
                 return lambda$setupClickListeners$12;
@@ -412,7 +412,7 @@ public class InvoiceDetailActivity extends BaseActivity {
         });
         this.binding.ivPod2.setOnLongClickListener(new View.OnLongClickListener() { // from class: com.mobileinvoice.ocr.InvoiceDetailActivity$$ExternalSyntheticLambda1
             @Override // android.view.View.OnLongClickListener
-            public final boolean onLongClick(View view) {
+            public boolean onLongClick(View view) {
                 boolean lambda$setupClickListeners$13;
                 lambda$setupClickListeners$13 = InvoiceDetailActivity.this.lambda$setupClickListeners$13(view);
                 return lambda$setupClickListeners$13;
@@ -420,7 +420,7 @@ public class InvoiceDetailActivity extends BaseActivity {
         });
         this.binding.ivPod3.setOnLongClickListener(new View.OnLongClickListener() { // from class: com.mobileinvoice.ocr.InvoiceDetailActivity$$ExternalSyntheticLambda2
             @Override // android.view.View.OnLongClickListener
-            public final boolean onLongClick(View view) {
+            public boolean onLongClick(View view) {
                 boolean lambda$setupClickListeners$14;
                 lambda$setupClickListeners$14 = InvoiceDetailActivity.this.lambda$setupClickListeners$14(view);
                 return lambda$setupClickListeners$14;
@@ -428,7 +428,7 @@ public class InvoiceDetailActivity extends BaseActivity {
         });
         this.binding.ivPod4.setOnLongClickListener(new View.OnLongClickListener() { // from class: com.mobileinvoice.ocr.InvoiceDetailActivity$$ExternalSyntheticLambda3
             @Override // android.view.View.OnLongClickListener
-            public final boolean onLongClick(View view) {
+            public boolean onLongClick(View view) {
                 boolean lambda$setupClickListeners$15;
                 lambda$setupClickListeners$15 = InvoiceDetailActivity.this.lambda$setupClickListeners$15(view);
                 return lambda$setupClickListeners$15;
@@ -436,7 +436,7 @@ public class InvoiceDetailActivity extends BaseActivity {
         });
         this.binding.ivPod5.setOnLongClickListener(new View.OnLongClickListener() { // from class: com.mobileinvoice.ocr.InvoiceDetailActivity$$ExternalSyntheticLambda4
             @Override // android.view.View.OnLongClickListener
-            public final boolean onLongClick(View view) {
+            public boolean onLongClick(View view) {
                 boolean lambda$setupClickListeners$16;
                 lambda$setupClickListeners$16 = InvoiceDetailActivity.this.lambda$setupClickListeners$16(view);
                 return lambda$setupClickListeners$16;
@@ -444,7 +444,7 @@ public class InvoiceDetailActivity extends BaseActivity {
         });
         this.binding.ivPod6.setOnLongClickListener(new View.OnLongClickListener() { // from class: com.mobileinvoice.ocr.InvoiceDetailActivity$$ExternalSyntheticLambda5
             @Override // android.view.View.OnLongClickListener
-            public final boolean onLongClick(View view) {
+            public boolean onLongClick(View view) {
                 boolean lambda$setupClickListeners$17;
                 lambda$setupClickListeners$17 = InvoiceDetailActivity.this.lambda$setupClickListeners$17(view);
                 return lambda$setupClickListeners$17;
@@ -452,31 +452,31 @@ public class InvoiceDetailActivity extends BaseActivity {
         });
         this.binding.tvSelectedItems.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.InvoiceDetailActivity$$ExternalSyntheticLambda6
             @Override // android.view.View.OnClickListener
-            public final void onClick(View view) {
+            public void onClick(View view) {
                 InvoiceDetailActivity.this.lambda$setupClickListeners$18(view);
             }
         });
         this.binding.tilAddress.setEndIconOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.InvoiceDetailActivity$$ExternalSyntheticLambda7
             @Override // android.view.View.OnClickListener
-            public final void onClick(View view) {
+            public void onClick(View view) {
                 InvoiceDetailActivity.this.lambda$setupClickListeners$19(view);
             }
         });
         this.binding.tilPhone.setEndIconOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.InvoiceDetailActivity$$ExternalSyntheticLambda27
             @Override // android.view.View.OnClickListener
-            public final void onClick(View view) {
+            public void onClick(View view) {
                 InvoiceDetailActivity.this.lambda$setupClickListeners$20(view);
             }
         });
         this.binding.cardInvoiceImage.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.InvoiceDetailActivity$$ExternalSyntheticLambda28
             @Override // android.view.View.OnClickListener
-            public final void onClick(View view) {
+            public void onClick(View view) {
                 InvoiceDetailActivity.this.lambda$setupClickListeners$21(view);
             }
         });
         this.binding.btnSave.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.InvoiceDetailActivity$$ExternalSyntheticLambda29
             @Override // android.view.View.OnClickListener
-            public final void onClick(View view) {
+            public void onClick(View view) {
                 InvoiceDetailActivity.this.lambda$setupClickListeners$22(view);
             }
         });
@@ -484,7 +484,7 @@ public class InvoiceDetailActivity extends BaseActivity {
 
     /* JADX INFO: Access modifiers changed from: private */
     public /* synthetic */ void lambda$setupClickListeners$9(View v) {
-        Intent intent = new Intent(this, (Class<?>) SignatureActivity.class);
+        Intent intent = new Intent(this, SignatureActivity.class);
         if (this.currentInvoice != null) {
             intent.putExtra("customer_name", this.currentInvoice.getCustomerName());
             intent.putExtra("invoice_id", this.currentInvoice.getId());
@@ -513,7 +513,7 @@ public class InvoiceDetailActivity extends BaseActivity {
     public /* synthetic */ void lambda$setupClickListeners$11(View v) {
         new AlertDialog.Builder(this).setTitle(R.string.add_pod).setItems(new CharSequence[]{getString(R.string.capture_pod), getString(R.string.upload_pod)}, new DialogInterface.OnClickListener() { // from class: com.mobileinvoice.ocr.InvoiceDetailActivity$$ExternalSyntheticLambda23
             @Override // android.content.DialogInterface.OnClickListener
-            public final void onClick(DialogInterface dialogInterface, int i) {
+            public void onClick(DialogInterface dialogInterface, int i) {
                 InvoiceDetailActivity.this.lambda$setupClickListeners$10(dialogInterface, i);
             }
         }).show();
@@ -598,7 +598,7 @@ public class InvoiceDetailActivity extends BaseActivity {
     public /* synthetic */ void lambda$setupClickListeners$21(View v) {
         if (this.currentInvoice != null) {
             autoSaveInvoiceData();
-            Intent intent = new Intent(this, (Class<?>) ManualExtractionActivity.class);
+            Intent intent = new Intent(this, ManualExtractionActivity.class);
             intent.putExtra("invoice_id", this.currentInvoice.getId());
             this.extractionLauncher.launch(intent);
         }
@@ -610,7 +610,7 @@ public class InvoiceDetailActivity extends BaseActivity {
     }
 
     private void openPODCamera() {
-        Intent intent = new Intent(this, (Class<?>) CameraActivity.class);
+        Intent intent = new Intent(this, CameraActivity.class);
         intent.putExtra(CameraActivity.EXTRA_CAMERA_MODE, CameraActivity.MODE_POD);
         this.podCameraLauncher.launch(intent);
     }
@@ -653,7 +653,7 @@ public class InvoiceDetailActivity extends BaseActivity {
                 itemView.setLayoutParams(itemParams);
                 itemView.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.InvoiceDetailActivity$$ExternalSyntheticLambda0
                     @Override // android.view.View.OnClickListener
-                    public final void onClick(View view) {
+                    public void onClick(View view) {
                         InvoiceDetailActivity.this.lambda$showItemSelectionDialog$23(di, view);
                     }
                 });
@@ -757,7 +757,7 @@ public class InvoiceDetailActivity extends BaseActivity {
                 itemView2.setLayoutParams(params);
                 itemView2.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.InvoiceDetailActivity$$ExternalSyntheticLambda11
                     @Override // android.view.View.OnClickListener
-                    public final void onClick(View view) {
+                    public void onClick(View view) {
                         InvoiceDetailActivity.this.lambda$showItemSelectionDialog$24(availableItem, view);
                     }
                 });
@@ -768,13 +768,13 @@ public class InvoiceDetailActivity extends BaseActivity {
         builder.setView(scrollView);
         builder.setPositiveButton("Done", new DialogInterface.OnClickListener() { // from class: com.mobileinvoice.ocr.InvoiceDetailActivity$$ExternalSyntheticLambda22
             @Override // android.content.DialogInterface.OnClickListener
-            public final void onClick(DialogInterface dialogInterface, int i4) {
+            public void onClick(DialogInterface dialogInterface, int i4) {
                 InvoiceDetailActivity.this.lambda$showItemSelectionDialog$25(dialogInterface, i4);
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() { // from class: com.mobileinvoice.ocr.InvoiceDetailActivity$$ExternalSyntheticLambda25
             @Override // android.content.DialogInterface.OnClickListener
-            public final void onClick(DialogInterface dialogInterface, int i4) {
+            public void onClick(DialogInterface dialogInterface, int i4) {
                 dialogInterface.dismiss();
             }
         });
@@ -826,7 +826,7 @@ public class InvoiceDetailActivity extends BaseActivity {
     private void updatePODButtonText() {
         int podCount = 0;
         if (this.podImagePath1 != null) {
-            podCount = 0 + 1;
+            podCount = 1;
         }
         if (this.podImagePath2 != null) {
             podCount++;
@@ -857,7 +857,7 @@ public class InvoiceDetailActivity extends BaseActivity {
         builder.setTitle("POD Photo " + podNumber);
         builder.setItems(new String[]{"View Full Size", "Replace Photo", "Delete Photo"}, new DialogInterface.OnClickListener() { // from class: com.mobileinvoice.ocr.InvoiceDetailActivity$$ExternalSyntheticLambda19
             @Override // android.content.DialogInterface.OnClickListener
-            public final void onClick(DialogInterface dialogInterface, int i) {
+            public void onClick(DialogInterface dialogInterface, int i) {
                 InvoiceDetailActivity.this.lambda$showPODOptionsDialog$27(podNumber, dialogInterface, i);
             }
         });
@@ -937,7 +937,7 @@ public class InvoiceDetailActivity extends BaseActivity {
         updatePODButtonText();
         new AlertDialog.Builder(this).setTitle(R.string.add_pod).setItems(new CharSequence[]{getString(R.string.capture_pod), getString(R.string.upload_pod)}, new DialogInterface.OnClickListener() { // from class: com.mobileinvoice.ocr.InvoiceDetailActivity$$ExternalSyntheticLambda8
             @Override // android.content.DialogInterface.OnClickListener
-            public final void onClick(DialogInterface dialogInterface, int i) {
+            public void onClick(DialogInterface dialogInterface, int i) {
                 InvoiceDetailActivity.this.lambda$replacePODPhoto$28(dialogInterface, i);
             }
         }).show();
@@ -1017,7 +1017,7 @@ public class InvoiceDetailActivity extends BaseActivity {
         this.currentInvoice.setPodImagePath6(this.podImagePath6);
         new Thread(new Runnable() { // from class: com.mobileinvoice.ocr.InvoiceDetailActivity$$ExternalSyntheticLambda17
             @Override // java.lang.Runnable
-            public final void run() {
+            public void run() {
                 InvoiceDetailActivity.this.lambda$autoSaveInvoiceData$29();
             }
         }).start();
@@ -1062,7 +1062,7 @@ public class InvoiceDetailActivity extends BaseActivity {
         this.currentInvoice.setPodImagePath6(this.podImagePath6);
         new Thread(new Runnable() { // from class: com.mobileinvoice.ocr.InvoiceDetailActivity$$ExternalSyntheticLambda16
             @Override // java.lang.Runnable
-            public final void run() {
+            public void run() {
                 InvoiceDetailActivity.this.lambda$saveInvoiceData$31();
             }
         }).start();
@@ -1073,7 +1073,7 @@ public class InvoiceDetailActivity extends BaseActivity {
         this.database.invoiceDao().update(this.currentInvoice);
         runOnUiThread(new Runnable() { // from class: com.mobileinvoice.ocr.InvoiceDetailActivity$$ExternalSyntheticLambda9
             @Override // java.lang.Runnable
-            public final void run() {
+            public void run() {
                 InvoiceDetailActivity.this.lambda$saveInvoiceData$30();
             }
         });

@@ -11,7 +11,7 @@ import java.io.Reader;
 /* loaded from: classes7.dex */
 public class TemplateParser {
     private static final String TAG = "TemplateParser";
-    private Context context;
+    private final Context context;
 
     public TemplateParser(Context context) {
         this.context = context;
@@ -22,7 +22,7 @@ public class TemplateParser {
             InputStream is = this.context.getAssets().open(templateName);
             InputStreamReader reader = new InputStreamReader(is);
             Gson gson = new Gson();
-            InvoiceTemplate template = (InvoiceTemplate) gson.fromJson((Reader) reader, InvoiceTemplate.class);
+            InvoiceTemplate template = gson.fromJson(reader, InvoiceTemplate.class);
             reader.close();
             is.close();
             Log.d(TAG, "Loaded template: " + templateName);

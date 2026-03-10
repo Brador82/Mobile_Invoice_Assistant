@@ -72,7 +72,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public static void restartApp(Context context) {
-        Intent intent = new Intent(context, (Class<?>) MainActivity.class);
+        Intent intent = new Intent(context, MainActivity.class);
         intent.addFlags(268468224);
         context.startActivity(intent);
     }

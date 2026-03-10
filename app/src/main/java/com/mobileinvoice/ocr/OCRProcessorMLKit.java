@@ -126,13 +126,13 @@ public class OCRProcessorMLKit {
         this.recognizer.process(image).addOnSuccessListener(new OnSuccessListener() { // from class:
                                                                                       // com.mobileinvoice.ocr.OCRProcessorMLKit$$ExternalSyntheticLambda0
             @Override // com.google.android.gms.tasks.OnSuccessListener
-            public final void onSuccess(Object obj) {
+            public void onSuccess(Object obj) {
                 OCRProcessorMLKit.lambda$processImageSync$0(lock, result, done, (Text) obj);
             }
         }).addOnFailureListener(new OnFailureListener() { // from class:
                                                           // com.mobileinvoice.ocr.OCRProcessorMLKit$$ExternalSyntheticLambda1
             @Override // com.google.android.gms.tasks.OnFailureListener
-            public final void onFailure(Exception exc) {
+            public void onFailure(Exception exc) {
                 OCRProcessorMLKit.lambda$processImageSync$1(lock, done, exc);
             }
         });

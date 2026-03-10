@@ -47,25 +47,25 @@ public class DeliveryViewModel extends AndroidViewModel {
     private void setupFilteredDeliveries() {
         this.filteredDeliveries.addSource(this.allDeliveries, new Observer() { // from class: com.mobileinvoice.delivery.viewmodel.DeliveryViewModel$$ExternalSyntheticLambda0
             @Override // androidx.lifecycle.Observer
-            public final void onChanged(Object obj) {
+            public void onChanged(Object obj) {
                 DeliveryViewModel.this.lambda$setupFilteredDeliveries$0((List) obj);
             }
         });
         this.filteredDeliveries.addSource(this.statusFilter, new Observer() { // from class: com.mobileinvoice.delivery.viewmodel.DeliveryViewModel$$ExternalSyntheticLambda1
             @Override // androidx.lifecycle.Observer
-            public final void onChanged(Object obj) {
+            public void onChanged(Object obj) {
                 DeliveryViewModel.this.lambda$setupFilteredDeliveries$1((DeliveryStatus) obj);
             }
         });
         this.filteredDeliveries.addSource(this.priorityFilter, new Observer() { // from class: com.mobileinvoice.delivery.viewmodel.DeliveryViewModel$$ExternalSyntheticLambda2
             @Override // androidx.lifecycle.Observer
-            public final void onChanged(Object obj) {
+            public void onChanged(Object obj) {
                 DeliveryViewModel.this.lambda$setupFilteredDeliveries$2((Priority) obj);
             }
         });
         this.filteredDeliveries.addSource(this.searchQuery, new Observer() { // from class: com.mobileinvoice.delivery.viewmodel.DeliveryViewModel$$ExternalSyntheticLambda3
             @Override // androidx.lifecycle.Observer
-            public final void onChanged(Object obj) {
+            public void onChanged(Object obj) {
                 DeliveryViewModel.this.lambda$setupFilteredDeliveries$3((String) obj);
             }
         });
@@ -105,17 +105,17 @@ public class DeliveryViewModel extends AndroidViewModel {
         } else {
             List<Delivery> filtered = (List) deliveries.stream().filter(new Predicate() { // from class: com.mobileinvoice.delivery.viewmodel.DeliveryViewModel$$ExternalSyntheticLambda4
                 @Override // java.util.function.Predicate
-                public final boolean test(Object obj) {
+                public boolean test(Object obj) {
                     return DeliveryViewModel.lambda$applyFilters$4(status, (Delivery) obj);
                 }
             }).filter(new Predicate() { // from class: com.mobileinvoice.delivery.viewmodel.DeliveryViewModel$$ExternalSyntheticLambda5
                 @Override // java.util.function.Predicate
-                public final boolean test(Object obj) {
+                public boolean test(Object obj) {
                     return DeliveryViewModel.lambda$applyFilters$5(priority, (Delivery) obj);
                 }
             }).filter(new Predicate() { // from class: com.mobileinvoice.delivery.viewmodel.DeliveryViewModel$$ExternalSyntheticLambda6
                 @Override // java.util.function.Predicate
-                public final boolean test(Object obj) {
+                public boolean test(Object obj) {
                     boolean lambda$applyFilters$6;
                     lambda$applyFilters$6 = DeliveryViewModel.this.lambda$applyFilters$6(query, (Delivery) obj);
                     return lambda$applyFilters$6;
@@ -209,7 +209,7 @@ public class DeliveryViewModel extends AndroidViewModel {
         this.isLoading.setValue(true);
         this.repository.insert(delivery, new DeliveryRepository.OnDeliveryInsertedListener() { // from class: com.mobileinvoice.delivery.viewmodel.DeliveryViewModel$$ExternalSyntheticLambda7
             @Override // com.mobileinvoice.delivery.data.repository.DeliveryRepository.OnDeliveryInsertedListener
-            public final void onInserted(long j) {
+            public void onInserted(long j) {
                 DeliveryViewModel.this.lambda$insert$7(j);
             }
         });

@@ -10,13 +10,13 @@ public class DocumentDetector {
     private static final int REQUIRED_CONSECUTIVE = 5;
     private static final int SAMPLE_SIZE = 20;
     private float overallScore = 0.0f;
-    private float[] anchorScores = new float[8];
+    private final float[] anchorScores = new float[8];
     private int consecutiveReadyFrames = 0;
     private boolean readyToCapture = false;
 
     public AlignmentResult analyze(byte[] yPlane, int width, int height, int rowStride, Rect guideRect) {
         if (guideRect == null || guideRect.isEmpty()) {
-            return new AlignmentResult(0.0f, (float[]) this.anchorScores.clone(), false);
+            return new AlignmentResult(0.0f, this.anchorScores.clone(), false);
         }
         int[][] anchorPositions = calculateAnchorPositions(guideRect);
         float totalScore = 0.0f;
@@ -35,7 +35,7 @@ public class DocumentDetector {
             this.consecutiveReadyFrames = 0;
         }
         this.readyToCapture = this.consecutiveReadyFrames >= 5;
-        return new AlignmentResult(this.overallScore, (float[]) this.anchorScores.clone(), this.readyToCapture);
+        return new AlignmentResult(this.overallScore, this.anchorScores.clone(), this.readyToCapture);
     }
 
     public void reset() {
@@ -118,15 +118,6 @@ public class DocumentDetector {
         return Math.min(1.0f, contrast / 45.0f);
     }
 
-    public static class AlignmentResult {
-        public final float[] anchorScores;
-        public final boolean readyToCapture;
-        public final float score;
-
-        public AlignmentResult(float score, float[] anchorScores, boolean readyToCapture) {
-            this.score = score;
-            this.anchorScores = anchorScores;
-            this.readyToCapture = readyToCapture;
-        }
+    public record AlignmentResult(float score, float[] anchorScores, boolean readyToCapture) {
     }
 }

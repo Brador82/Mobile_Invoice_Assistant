@@ -26,7 +26,7 @@ public class InvoiceLibraryActivity extends BaseActivity implements InvoiceLibra
         setContentView(this.binding.getRoot());
         this.binding.toolbar.setNavigationOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.InvoiceLibraryActivity$$ExternalSyntheticLambda0
             @Override // android.view.View.OnClickListener
-            public final void onClick(View view) {
+            public void onClick(View view) {
                 InvoiceLibraryActivity.this.lambda$onCreate$0(view);
             }
         });
@@ -51,7 +51,7 @@ public class InvoiceLibraryActivity extends BaseActivity implements InvoiceLibra
     private void loadInvoices() {
         new Thread(new Runnable() { // from class: com.mobileinvoice.ocr.InvoiceLibraryActivity$$ExternalSyntheticLambda1
             @Override // java.lang.Runnable
-            public final void run() {
+            public void run() {
                 InvoiceLibraryActivity.this.lambda$loadInvoices$2();
             }
         }).start();
@@ -69,7 +69,7 @@ public class InvoiceLibraryActivity extends BaseActivity implements InvoiceLibra
         }
         runOnUiThread(new Runnable() { // from class: com.mobileinvoice.ocr.InvoiceLibraryActivity$$ExternalSyntheticLambda2
             @Override // java.lang.Runnable
-            public final void run() {
+            public void run() {
                 InvoiceLibraryActivity.this.lambda$loadInvoices$1(withImages);
             }
         });
@@ -84,7 +84,7 @@ public class InvoiceLibraryActivity extends BaseActivity implements InvoiceLibra
 
     @Override // com.mobileinvoice.ocr.InvoiceLibraryAdapter.OnInvoiceImageClickListener
     public void onInvoiceImageClick(Invoice invoice) {
-        Intent intent = new Intent(this, (Class<?>) ManualExtractionActivity.class);
+        Intent intent = new Intent(this, ManualExtractionActivity.class);
         intent.putExtra("invoice_id", invoice.getId());
         startActivity(intent);
     }

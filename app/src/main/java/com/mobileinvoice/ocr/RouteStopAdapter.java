@@ -27,13 +27,13 @@ public class RouteStopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private static final int COLOR_LIGHT_GRAY = -3355444;
     private static final int COLOR_WHITE = -1;
     private OnStopChangeListener changeListener;
-    private OnStartDragListener dragListener;
-    private OnStopClickListener listener;
-    private List<RouteListItem> items = new ArrayList();
-    private List<RouteOptimizer.RoutePoint> activeStops = new ArrayList();
-    private List<RouteOptimizer.RoutePoint> completedStops = new ArrayList();
+    private final OnStartDragListener dragListener;
+    private final OnStopClickListener listener;
+    private final List<RouteListItem> items = new ArrayList();
+    private final List<RouteOptimizer.RoutePoint> activeStops = new ArrayList();
+    private final List<RouteOptimizer.RoutePoint> completedStops = new ArrayList();
     private boolean completedExpanded = false;
-    private Set<Integer> expandedPositions = new HashSet();
+    private final Set<Integer> expandedPositions = new HashSet();
 
     interface OnItemExpandListener {
         void onToggleExpand(int position);
@@ -181,7 +181,7 @@ public class RouteStopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         if (holder instanceof HeaderViewHolder) {
             ((HeaderViewHolder) holder).bind(item, new Runnable() { // from class: com.mobileinvoice.ocr.RouteStopAdapter$$ExternalSyntheticLambda0
                 @Override // java.lang.Runnable
-                public final void run() {
+                public void run() {
                     RouteStopAdapter.this.toggleCompletedSection();
                 }
             });
@@ -191,7 +191,7 @@ public class RouteStopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             boolean isExpanded = this.expandedPositions.contains(Integer.valueOf(position));
             ((StopViewHolder) holder).bind(stop, this.listener, this.dragListener, this.changeListener, isCompleted, isExpanded, position, new OnItemExpandListener() { // from class: com.mobileinvoice.ocr.RouteStopAdapter$$ExternalSyntheticLambda1
                 @Override // com.mobileinvoice.ocr.RouteStopAdapter.OnItemExpandListener
-                public final void onToggleExpand(int i) {
+                public void onToggleExpand(int i) {
                     RouteStopAdapter.this.toggleItemExpansion(i);
                 }
             });
@@ -219,8 +219,8 @@ public class RouteStopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         public HeaderViewHolder(View itemView) {
             super(itemView);
-            this.tvHeaderTitle = (TextView) itemView.findViewById(R.id.tvHeaderTitle);
-            this.ivExpandIcon = (ImageView) itemView.findViewById(R.id.ivExpandIcon);
+            this.tvHeaderTitle = itemView.findViewById(R.id.tvHeaderTitle);
+            this.ivExpandIcon = itemView.findViewById(R.id.ivExpandIcon);
         }
 
         public void bind(RouteListItem item, final Runnable onClickListener) {
@@ -229,7 +229,7 @@ public class RouteStopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             this.ivExpandIcon.setImageResource(iconRes);
             this.itemView.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.RouteStopAdapter$HeaderViewHolder$$ExternalSyntheticLambda0
                 @Override // android.view.View.OnClickListener
-                public final void onClick(View view) {
+                public void onClick(View view) {
                     onClickListener.run();
                 }
             });
@@ -265,31 +265,31 @@ public class RouteStopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         public StopViewHolder(View itemView) {
             super(itemView);
-            this.mainContent = (LinearLayout) itemView.findViewById(R.id.mainContent);
-            this.tvStopNumber = (TextView) itemView.findViewById(R.id.tvStopNumber);
-            this.tvCustomerName = (TextView) itemView.findViewById(R.id.tvCustomerName);
-            this.tvAddress = (TextView) itemView.findViewById(R.id.tvAddress);
-            this.tvStopInfo = (TextView) itemView.findViewById(R.id.tvStopInfo);
-            this.tvETA = (TextView) itemView.findViewById(R.id.tvETA);
-            this.tvStopTime = (TextView) itemView.findViewById(R.id.tvStopTime);
-            this.tvPriorityBadge = (TextView) itemView.findViewById(R.id.tvPriorityBadge);
-            this.btnCall = (ImageButton) itemView.findViewById(R.id.btnCall);
-            this.btnNavigate = (ImageButton) itemView.findViewById(R.id.btnNavigate);
-            this.btnExpand = (ImageButton) itemView.findViewById(R.id.btnExpand);
-            this.dragHandle = (ImageView) itemView.findViewById(R.id.dragHandle);
-            this.cbCompleted = (CheckBox) itemView.findViewById(R.id.cbCompleted);
-            this.expandablePanel = (LinearLayout) itemView.findViewById(R.id.expandablePanel);
-            this.btnMakeFirst = (Button) itemView.findViewById(R.id.btnMakeFirst);
-            this.btnMakeLast = (Button) itemView.findViewById(R.id.btnMakeLast);
-            this.btnDecreaseTime = (ImageButton) itemView.findViewById(R.id.btnDecreaseTime);
-            this.btnIncreaseTime = (ImageButton) itemView.findViewById(R.id.btnIncreaseTime);
-            this.tvStopTimeValue = (TextView) itemView.findViewById(R.id.tvStopTimeValue);
-            this.btnTime15 = (Button) itemView.findViewById(R.id.btnTime15);
-            this.btnTime30 = (Button) itemView.findViewById(R.id.btnTime30);
-            this.btnTime45 = (Button) itemView.findViewById(R.id.btnTime45);
-            this.btnTime60 = (Button) itemView.findViewById(R.id.btnTime60);
-            this.btnTime90 = (Button) itemView.findViewById(R.id.btnTime90);
-            this.btnTime120 = (Button) itemView.findViewById(R.id.btnTime120);
+            this.mainContent = itemView.findViewById(R.id.mainContent);
+            this.tvStopNumber = itemView.findViewById(R.id.tvStopNumber);
+            this.tvCustomerName = itemView.findViewById(R.id.tvCustomerName);
+            this.tvAddress = itemView.findViewById(R.id.tvAddress);
+            this.tvStopInfo = itemView.findViewById(R.id.tvStopInfo);
+            this.tvETA = itemView.findViewById(R.id.tvETA);
+            this.tvStopTime = itemView.findViewById(R.id.tvStopTime);
+            this.tvPriorityBadge = itemView.findViewById(R.id.tvPriorityBadge);
+            this.btnCall = itemView.findViewById(R.id.btnCall);
+            this.btnNavigate = itemView.findViewById(R.id.btnNavigate);
+            this.btnExpand = itemView.findViewById(R.id.btnExpand);
+            this.dragHandle = itemView.findViewById(R.id.dragHandle);
+            this.cbCompleted = itemView.findViewById(R.id.cbCompleted);
+            this.expandablePanel = itemView.findViewById(R.id.expandablePanel);
+            this.btnMakeFirst = itemView.findViewById(R.id.btnMakeFirst);
+            this.btnMakeLast = itemView.findViewById(R.id.btnMakeLast);
+            this.btnDecreaseTime = itemView.findViewById(R.id.btnDecreaseTime);
+            this.btnIncreaseTime = itemView.findViewById(R.id.btnIncreaseTime);
+            this.tvStopTimeValue = itemView.findViewById(R.id.tvStopTimeValue);
+            this.btnTime15 = itemView.findViewById(R.id.btnTime15);
+            this.btnTime30 = itemView.findViewById(R.id.btnTime30);
+            this.btnTime45 = itemView.findViewById(R.id.btnTime45);
+            this.btnTime60 = itemView.findViewById(R.id.btnTime60);
+            this.btnTime90 = itemView.findViewById(R.id.btnTime90);
+            this.btnTime120 = itemView.findViewById(R.id.btnTime120);
         }
 
         public void bind(final RouteOptimizer.RoutePoint stop, final OnStopClickListener listener, final OnStartDragListener dragListener, final OnStopChangeListener changeListener, final boolean isCompleted, boolean isExpanded, final int position, final OnItemExpandListener expandListener) {
@@ -356,38 +356,38 @@ public class RouteStopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             this.cbCompleted.setChecked(isCompleted);
             this.cbCompleted.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() { // from class: com.mobileinvoice.ocr.RouteStopAdapter$StopViewHolder$$ExternalSyntheticLambda2
                 @Override // android.widget.CompoundButton.OnCheckedChangeListener
-                public final void onCheckedChanged(CompoundButton compoundButton, boolean z) {
+                public void onCheckedChanged(CompoundButton compoundButton, boolean z) {
                     RouteStopAdapter.StopViewHolder.lambda$bind$0(changeListener, stop, compoundButton, z);
                 }
             });
             this.btnCall.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.RouteStopAdapter$StopViewHolder$$ExternalSyntheticLambda3
                 @Override // android.view.View.OnClickListener
-                public final void onClick(View view) {
+                public void onClick(View view) {
                     RouteStopAdapter.StopViewHolder.lambda$bind$1(listener, stop, view);
                 }
             });
             this.btnNavigate.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.RouteStopAdapter$StopViewHolder$$ExternalSyntheticLambda4
                 @Override // android.view.View.OnClickListener
-                public final void onClick(View view) {
+                public void onClick(View view) {
                     RouteStopAdapter.StopViewHolder.lambda$bind$2(listener, stop, view);
                 }
             });
             this.btnExpand.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.RouteStopAdapter$StopViewHolder$$ExternalSyntheticLambda5
                 @Override // android.view.View.OnClickListener
-                public final void onClick(View view) {
+                public void onClick(View view) {
                     RouteStopAdapter.StopViewHolder.lambda$bind$3(expandListener, position, view);
                 }
             });
             this.mainContent.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.RouteStopAdapter$StopViewHolder$$ExternalSyntheticLambda6
                 @Override // android.view.View.OnClickListener
-                public final void onClick(View view) {
+                public void onClick(View view) {
                     RouteStopAdapter.StopViewHolder.lambda$bind$4(isCompleted, expandListener, position, view);
                 }
             });
             if (!isCompleted) {
                 this.dragHandle.setOnTouchListener(new View.OnTouchListener() { // from class: com.mobileinvoice.ocr.RouteStopAdapter$StopViewHolder$$ExternalSyntheticLambda7
                     @Override // android.view.View.OnTouchListener
-                    public final boolean onTouch(View view, MotionEvent motionEvent) {
+                    public boolean onTouch(View view, MotionEvent motionEvent) {
                         boolean lambda$bind$5;
                         lambda$bind$5 = RouteStopAdapter.StopViewHolder.this.lambda$bind$5(dragListener, view, motionEvent);
                         return lambda$bind$5;
@@ -398,25 +398,25 @@ public class RouteStopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             }
             this.btnMakeFirst.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.RouteStopAdapter$StopViewHolder$$ExternalSyntheticLambda8
                 @Override // android.view.View.OnClickListener
-                public final void onClick(View view) {
+                public void onClick(View view) {
                     RouteStopAdapter.StopViewHolder.lambda$bind$6(changeListener, stop, view);
                 }
             });
             this.btnMakeLast.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.RouteStopAdapter$StopViewHolder$$ExternalSyntheticLambda9
                 @Override // android.view.View.OnClickListener
-                public final void onClick(View view) {
+                public void onClick(View view) {
                     RouteStopAdapter.StopViewHolder.lambda$bind$7(changeListener, stop, view);
                 }
             });
             this.btnDecreaseTime.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.RouteStopAdapter$StopViewHolder$$ExternalSyntheticLambda10
                 @Override // android.view.View.OnClickListener
-                public final void onClick(View view) {
+                public void onClick(View view) {
                     RouteStopAdapter.StopViewHolder.lambda$bind$8(stop, changeListener, view);
                 }
             });
             this.btnIncreaseTime.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.RouteStopAdapter$StopViewHolder$$ExternalSyntheticLambda1
                 @Override // android.view.View.OnClickListener
-                public final void onClick(View view) {
+                public void onClick(View view) {
                     RouteStopAdapter.StopViewHolder.lambda$bind$9(stop, changeListener, view);
                 }
             });
@@ -497,7 +497,7 @@ public class RouteStopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         private void setupTimePresetButton(Button button, final int minutes, final RouteOptimizer.RoutePoint stop, final OnStopChangeListener changeListener) {
             button.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.ocr.RouteStopAdapter$StopViewHolder$$ExternalSyntheticLambda0
                 @Override // android.view.View.OnClickListener
-                public final void onClick(View view) {
+                public void onClick(View view) {
                     RouteStopAdapter.StopViewHolder.lambda$setupTimePresetButton$10(changeListener, stop, minutes, view);
                 }
             });

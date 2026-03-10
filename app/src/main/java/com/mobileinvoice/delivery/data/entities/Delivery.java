@@ -318,7 +318,7 @@ public class Delivery {
     }
 
     public boolean hasCoordinates() {
-        return (this.latitude == null || this.longitude == null) ? false : true;
+        return this.latitude != null && this.longitude != null;
     }
 
     public boolean isOverdue() {

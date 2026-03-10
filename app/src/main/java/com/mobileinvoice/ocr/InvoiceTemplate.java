@@ -29,10 +29,10 @@ public class InvoiceTemplate {
         public String type;
 
         public Rect toPixelRect(int imageWidth, int imageHeight, Grid grid) {
-            int left = (int) ((this.coords.x1 / grid.cols) * imageWidth);
-            int top = (int) ((this.coords.y1 / grid.rows) * imageHeight);
-            int right = (int) ((this.coords.x2 / grid.cols) * imageWidth);
-            int bottom = (int) ((this.coords.y2 / grid.rows) * imageHeight);
+            int left = (this.coords.x1 / grid.cols) * imageWidth;
+            int top = (this.coords.y1 / grid.rows) * imageHeight;
+            int right = (this.coords.x2 / grid.cols) * imageWidth;
+            int bottom = (this.coords.y2 / grid.rows) * imageHeight;
             return new Rect(left, top, right, bottom);
         }
     }

@@ -37,10 +37,10 @@ public class DeliveryDashboardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delivery_dashboard);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Deliveries");
-        this.viewModel = (DeliveryViewModel) new ViewModelProvider(this).get(DeliveryViewModel.class);
+        this.viewModel = new ViewModelProvider(this).get(DeliveryViewModel.class);
         initializeViews();
         setupRecyclerView();
         setupFilters();
@@ -49,10 +49,10 @@ public class DeliveryDashboardActivity extends AppCompatActivity {
     }
 
     private void initializeViews() {
-        this.recyclerView = (RecyclerView) findViewById(R.id.recycler_deliveries);
+        this.recyclerView = findViewById(R.id.recycler_deliveries);
         this.emptyView = findViewById(R.id.layout_empty);
-        this.fabAddDelivery = (ExtendedFloatingActionButton) findViewById(R.id.fab_add_delivery);
-        this.chipGroupFilters = (ChipGroup) findViewById(R.id.chip_group_filters);
+        this.fabAddDelivery = findViewById(R.id.fab_add_delivery);
+        this.chipGroupFilters = findViewById(R.id.chip_group_filters);
     }
 
     private void setupRecyclerView() {
@@ -62,13 +62,13 @@ public class DeliveryDashboardActivity extends AppCompatActivity {
         this.recyclerView.setHasFixedSize(false);
         this.adapter.setOnDeliveryClickListener(new DeliveryAdapter.OnDeliveryClickListener() { // from class: com.mobileinvoice.delivery.ui.activities.DeliveryDashboardActivity$$ExternalSyntheticLambda10
             @Override // com.mobileinvoice.delivery.ui.adapters.DeliveryAdapter.OnDeliveryClickListener
-            public final void onDeliveryClick(Delivery delivery) {
+            public void onDeliveryClick(Delivery delivery) {
                 DeliveryDashboardActivity.this.lambda$setupRecyclerView$0(delivery);
             }
         });
         this.adapter.setOnDeliveryLongClickListener(new DeliveryAdapter.OnDeliveryLongClickListener() { // from class: com.mobileinvoice.delivery.ui.activities.DeliveryDashboardActivity$$ExternalSyntheticLambda1
             @Override // com.mobileinvoice.delivery.ui.adapters.DeliveryAdapter.OnDeliveryLongClickListener
-            public final void onDeliveryLongClick(Delivery delivery) {
+            public void onDeliveryLongClick(Delivery delivery) {
                 DeliveryDashboardActivity.this.lambda$setupRecyclerView$1(delivery);
             }
         });
@@ -113,7 +113,7 @@ public class DeliveryDashboardActivity extends AppCompatActivity {
             DeliveryDashboardActivity.this.viewModel.delete(delivery);
             Snackbar.make(DeliveryDashboardActivity.this.recyclerView, "Delivery deleted", 0).setAction("UNDO", new View.OnClickListener() { // from class: com.mobileinvoice.delivery.ui.activities.DeliveryDashboardActivity$1$$ExternalSyntheticLambda0
                 @Override // android.view.View.OnClickListener
-                public final void onClick(View view) {
+                public void onClick(View view) {
                     DeliveryDashboardActivity.AnonymousClass1.this.lambda$onSwiped$0(delivery, view);
                 }
             }).show();
@@ -126,31 +126,31 @@ public class DeliveryDashboardActivity extends AppCompatActivity {
     }
 
     private void setupFilters() {
-        final Chip chipAll = (Chip) findViewById(R.id.chip_all);
+        final Chip chipAll = findViewById(R.id.chip_all);
         chipAll.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.delivery.ui.activities.DeliveryDashboardActivity$$ExternalSyntheticLambda6
             @Override // android.view.View.OnClickListener
-            public final void onClick(View view) {
+            public void onClick(View view) {
                 DeliveryDashboardActivity.this.lambda$setupFilters$2(chipAll, view);
             }
         });
-        Chip chipPending = (Chip) findViewById(R.id.chip_pending);
+        Chip chipPending = findViewById(R.id.chip_pending);
         chipPending.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.delivery.ui.activities.DeliveryDashboardActivity$$ExternalSyntheticLambda7
             @Override // android.view.View.OnClickListener
-            public final void onClick(View view) {
+            public void onClick(View view) {
                 DeliveryDashboardActivity.this.lambda$setupFilters$3(view);
             }
         });
-        Chip chipInTransit = (Chip) findViewById(R.id.chip_in_transit);
+        Chip chipInTransit = findViewById(R.id.chip_in_transit);
         chipInTransit.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.delivery.ui.activities.DeliveryDashboardActivity$$ExternalSyntheticLambda8
             @Override // android.view.View.OnClickListener
-            public final void onClick(View view) {
+            public void onClick(View view) {
                 DeliveryDashboardActivity.this.lambda$setupFilters$4(view);
             }
         });
-        Chip chipDelivered = (Chip) findViewById(R.id.chip_delivered);
+        Chip chipDelivered = findViewById(R.id.chip_delivered);
         chipDelivered.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.delivery.ui.activities.DeliveryDashboardActivity$$ExternalSyntheticLambda9
             @Override // android.view.View.OnClickListener
-            public final void onClick(View view) {
+            public void onClick(View view) {
                 DeliveryDashboardActivity.this.lambda$setupFilters$5(view);
             }
         });
@@ -180,25 +180,25 @@ public class DeliveryDashboardActivity extends AppCompatActivity {
     private void observeData() {
         this.viewModel.getFilteredDeliveries().observe(this, new Observer() { // from class: com.mobileinvoice.delivery.ui.activities.DeliveryDashboardActivity$$ExternalSyntheticLambda0
             @Override // androidx.lifecycle.Observer
-            public final void onChanged(Object obj) {
+            public void onChanged(Object obj) {
                 DeliveryDashboardActivity.this.lambda$observeData$6((List) obj);
             }
         });
         this.viewModel.getTotalCount().observe(this, new Observer() { // from class: com.mobileinvoice.delivery.ui.activities.DeliveryDashboardActivity$$ExternalSyntheticLambda2
             @Override // androidx.lifecycle.Observer
-            public final void onChanged(Object obj) {
+            public void onChanged(Object obj) {
                 DeliveryDashboardActivity.this.lambda$observeData$7((Integer) obj);
             }
         });
         this.viewModel.isLoading().observe(this, new Observer() { // from class: com.mobileinvoice.delivery.ui.activities.DeliveryDashboardActivity$$ExternalSyntheticLambda3
             @Override // androidx.lifecycle.Observer
-            public final void onChanged(Object obj) {
+            public void onChanged(Object obj) {
                 DeliveryDashboardActivity.lambda$observeData$8((Boolean) obj);
             }
         });
         this.viewModel.getErrorMessage().observe(this, new Observer() { // from class: com.mobileinvoice.delivery.ui.activities.DeliveryDashboardActivity$$ExternalSyntheticLambda4
             @Override // androidx.lifecycle.Observer
-            public final void onChanged(Object obj) {
+            public void onChanged(Object obj) {
                 DeliveryDashboardActivity.this.lambda$observeData$9((String) obj);
             }
         });
@@ -237,7 +237,7 @@ public class DeliveryDashboardActivity extends AppCompatActivity {
     private void setupFab() {
         this.fabAddDelivery.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.delivery.ui.activities.DeliveryDashboardActivity$$ExternalSyntheticLambda5
             @Override // android.view.View.OnClickListener
-            public final void onClick(View view) {
+            public void onClick(View view) {
                 DeliveryDashboardActivity.this.lambda$setupFab$10(view);
             }
         });

@@ -61,7 +61,7 @@ public class SignatureView extends View {
     @Override // android.view.View
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawBitmap(this.bitmap, 0.0f, 0.0f, (Paint) null);
+        canvas.drawBitmap(this.bitmap, 0.0f, 0.0f, null);
         canvas.drawPath(this.path, this.paint);
     }
 
@@ -236,7 +236,7 @@ public class SignatureView extends View {
             Rect destRect = new Rect(left, top, left + scaledWidth, top + scaledHeight);
             Paint bgPaint = new Paint();
             bgPaint.setAlpha(180);
-            this.canvas.drawBitmap(this.backgroundImage, (Rect) null, destRect, bgPaint);
+            this.canvas.drawBitmap(this.backgroundImage, null, destRect, bgPaint);
         }
     }
 
