@@ -66,4 +66,8 @@
     <color name="selection_rect">#d4af37</color>
     <color name="warm_gray">#8b8680</color>
     <color name="white">#ffffffff</color>
+    <color name="light_crimson">#b71c1c</color>
+    <color name="light_crimson_bright">#d32f2f</color>
+    <color name="light_crimson_deep">#8b0000</color>
+    <color name="light_bg_charcoal">#2a2025</color>
 </resources>

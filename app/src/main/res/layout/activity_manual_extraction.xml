@@ -79,6 +79,8 @@
         android:orientation="horizontal"
         android:background="@color/dark_charcoal"
         android:visibility="gone"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <EditText
@@ -92,11 +94,14 @@
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:minHeight="48dp"
             android:minLines="2"
             android:maxLines="5"
             android:inputType="textMultiLine|textCapSentences"
             android:scrollbars="vertical"
-            android:gravity="top"/>
+            android:gravity="top|start"
+            android:textDirection="ltr"
+            android:textAlignment="viewStart"/>
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnAssignField"
             android:layout_width="wrap_content"

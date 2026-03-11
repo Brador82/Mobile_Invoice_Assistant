@@ -87,7 +87,7 @@ public class AppSettings {
     }
 
     public int getEtaWindowMinutes() {
-        return this.prefs.getInt(KEY_ETA_WINDOW_MINUTES, 45);
+        return this.prefs.getInt(KEY_ETA_WINDOW_MINUTES, 30);
     }
 
     public void setEtaWindowMinutes(int value) {

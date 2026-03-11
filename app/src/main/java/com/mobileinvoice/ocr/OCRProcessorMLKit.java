@@ -95,28 +95,37 @@ public class OCRProcessorMLKit {
                 result.rawText = "Error: Could not load image";
                 return result;
             }
-            InputImage image = InputImage.fromBitmap(bitmap, 0);
-            Text mlKitText = processImageSync(image);
-            if (mlKitText == null) {
-                result.rawText = "Error: ML Kit recognition failed";
-                return result;
-            }
-            OCRResult result2 = extractInvoiceData(mlKitText);
-            Log.d(TAG, "========= EXTRACTION RESULTS =========");
-            Log.d(TAG, "Customer: " + result2.customerName);
-            Log.d(TAG, "Address: " + result2.address);
-            Log.d(TAG, "Phone: " + result2.phone);
-            Log.d(TAG, "Alt Phone: " + result2.altPhone);
-            Log.d(TAG, "Invoice #: " + result2.invoiceNumber);
-            Log.d(TAG, "Items: " + result2.items);
-            Log.d(TAG, "Services: " + result2.services);
-            Log.d(TAG, "=====================================");
-            return result2;
+            return processImage(bitmap);
         } catch (IOException e) {
             Log.e(TAG, "Error loading image", e);
             result.rawText = "Error: " + e.getMessage();
             return result;
         }
+    }
+
+    public OCRResult processImage(Bitmap bitmap) {
+        OCRResult result = new OCRResult();
+        if (bitmap == null) {
+            result.rawText = "Error: Could not load image";
+            return result;
+        }
+        InputImage image = InputImage.fromBitmap(bitmap, 0);
+        Text mlKitText = processImageSync(image);
+        if (mlKitText == null) {
+            result.rawText = "Error: ML Kit recognition failed";
+            return result;
+        }
+        OCRResult result2 = extractInvoiceData(mlKitText);
+        Log.d(TAG, "========= EXTRACTION RESULTS =========");
+        Log.d(TAG, "Customer: " + result2.customerName);
+        Log.d(TAG, "Address: " + result2.address);
+        Log.d(TAG, "Phone: " + result2.phone);
+        Log.d(TAG, "Alt Phone: " + result2.altPhone);
+        Log.d(TAG, "Invoice #: " + result2.invoiceNumber);
+        Log.d(TAG, "Items: " + result2.items);
+        Log.d(TAG, "Services: " + result2.services);
+        Log.d(TAG, "=====================================");
+        return result2;
     }
 
     private Text processImageSync(InputImage image) {

@@ -387,7 +387,28 @@ public class MainActivity extends BaseActivity implements InvoiceAdapter.OnInvoi
                     MainActivity.this.lambda$setupClickListeners$10(index);
                 }
             });
-            OCRProcessorMLKit.OCRResult result = ocrProcessor.processImage(imageUri);
+            // Save original image first
+            String savedPath = saveImageToAppStorage(imageUri, "invoice_original_" + (this.invoices.size() + 1) + ".jpg");
+
+            // Preprocess BEFORE OCR for better recognition
+            OCRProcessorMLKit.OCRResult result;
+            Bitmap originalBitmap = null;
+            Bitmap preprocessed = null;
+            try {
+                String sourcePath = savedPath != null ? savedPath : imageUri.getPath();
+                originalBitmap = BitmapFactory.decodeFile(sourcePath);
+                if (originalBitmap != null) {
+                    preprocessed = ImagePreprocessor.pipeline(originalBitmap);
+                    result = ocrProcessor.processImage(preprocessed);
+                } else {
+                    // Fallback: decode failed, use URI directly
+                    result = ocrProcessor.processImage(imageUri);
+                }
+            } catch (Exception e) {
+                Log.w("MainActivity", "Preprocessing failed, falling back to raw URI", e);
+                result = ocrProcessor.processImage(imageUri);
+            }
+
             Invoice invoice = new Invoice();
             boolean hasItems = false;
             boolean hasInvoiceNumber = (result.invoiceNumber == null || result.invoiceNumber.trim().isEmpty()
@@ -416,16 +437,18 @@ public class MainActivity extends BaseActivity implements InvoiceAdapter.OnInvoi
             invoice.setTimestamp(System.currentTimeMillis());
             long newId = this.database.invoiceDao().insert(invoice);
             invoice.setId((int) newId);
-            String savedPath = saveImageToAppStorage(imageUri, "invoice_original_" + newId + ".jpg");
-            if (savedPath != null) {
+            // Update saved path with actual ID
+            String finalPath = saveImageToAppStorage(imageUri, "invoice_original_" + newId + ".jpg");
+            if (finalPath != null) {
+                invoice.setOriginalImagePath(finalPath);
+            } else if (savedPath != null) {
                 invoice.setOriginalImagePath(savedPath);
             } else {
                 invoice.setOriginalImagePath(imageUri.toString());
             }
-            Bitmap originalBitmap = BitmapFactory.decodeFile(savedPath != null ? savedPath : imageUri.getPath());
-            if (originalBitmap != null) {
+            // Save preprocessed image path
+            if (preprocessed != null) {
                 try {
-                    Bitmap preprocessed = ImagePreprocessor.pipeline(originalBitmap);
                     String preprocessedPath = ImagePreprocessor.savePreprocessed(this, preprocessed);
                     if (preprocessedPath != null) {
                         invoice.setPreprocessedImagePath(preprocessedPath);
@@ -433,8 +456,8 @@ public class MainActivity extends BaseActivity implements InvoiceAdapter.OnInvoi
                     if (preprocessed != originalBitmap) {
                         preprocessed.recycle();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } catch (Exception e2) {
+                    e2.printStackTrace();
                 }
             }
             this.database.invoiceDao().update(invoice);

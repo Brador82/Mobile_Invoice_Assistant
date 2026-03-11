@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Crimson accent border -->
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="#c8d4af37"/>
+            <solid android:color="#c8b71c1c"/>
         </shape>
     </item>
+    <!-- Warm white gradient fill -->
     <item
         android:left="1dp"
         android:top="1dp"
@@ -12,13 +14,14 @@
         android:bottom="1dp">
         <shape android:shape="rectangle">
             <gradient
-                android:startColor="#f5f2e8"
-                android:endColor="#e8e4d8"
+                android:startColor="#f8f5f0"
+                android:endColor="#ede8e0"
                 android:angle="270"
                 android:type="linear"
-                android:centerColor="#eeeae0"/>
+                android:centerColor="#f2ede5"/>
         </shape>
     </item>
+    <!-- Top gloss highlight -->
     <item
         android:left="1dp"
         android:top="1dp"
@@ -26,11 +29,11 @@
         android:bottom="1dp">
         <shape android:shape="rectangle">
             <gradient
-                android:startColor="#20ffffff"
+                android:startColor="#30ffffff"
                 android:endColor="#00000000"
                 android:angle="270"
                 android:type="linear"
-                android:centerColor="#05ffffff"/>
+                android:centerColor="#08ffffff"/>
         </shape>
     </item>
 </layer-list>
