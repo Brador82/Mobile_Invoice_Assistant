@@ -370,6 +370,13 @@ public class InvoiceDetailActivity extends BaseActivity {
                 this.selectedItems = ItemsHelper.fromJson(this.currentInvoice.getItems());
             }
             updateSelectedItemsDisplay();
+            // Refresh the invoice image (may have been cropped/rotated in manual extraction)
+            String imagePath = this.currentInvoice.getOriginalImagePath();
+            if (imagePath != null && !imagePath.isEmpty()) {
+                // Clear URI cache so ImageView reloads the modified file
+                this.binding.ivInvoiceImage.setImageDrawable(null);
+                loadInvoiceImage(imagePath);
+            }
             Toast.makeText(this, "Fields updated from extraction", 0).show();
         }
     }
@@ -807,20 +814,29 @@ public class InvoiceDetailActivity extends BaseActivity {
     /* JADX INFO: Access modifiers changed from: private */
     public void updateSelectedItemsDisplay() {
         if (this.selectedItems.isEmpty()) {
-            this.binding.tvSelectedItems.setText("Tap to select delivered items");
-            this.binding.tvSelectedItems.setTextColor(getResources().getColor(android.R.color.darker_gray));
+            this.binding.tvSelectedItems.setText("Tap to add items");
+            this.binding.tvSelectedItems.setTextColor(0xFF888888);
             return;
         }
         StringBuilder displayText = new StringBuilder();
-        displayText.append("Delivered Items (").append(this.selectedItems.size()).append("):\n");
         for (int i = 0; i < this.selectedItems.size(); i++) {
-            displayText.append("• ").append(this.selectedItems.get(i).getFullDetail());
+            DeliveryItem di = this.selectedItems.get(i);
+            String prefix = (di.make != null && !di.make.isEmpty()) ? di.make + " " : "";
+            displayText.append(prefix).append(di.item);
+            boolean hasModel = di.model != null && !di.model.isEmpty();
+            boolean hasSerial = di.serial != null && !di.serial.isEmpty();
+            if (hasModel) {
+                displayText.append("\n    Model: ").append(di.model);
+            }
+            if (hasSerial) {
+                displayText.append("\n    Serial: ").append(di.serial);
+            }
             if (i < this.selectedItems.size() - 1) {
-                displayText.append(StringUtils.LF);
+                displayText.append("\n");
             }
         }
         this.binding.tvSelectedItems.setText(displayText.toString());
-        this.binding.tvSelectedItems.setTextColor(getResources().getColor(android.R.color.primary_text_light));
+        this.binding.tvSelectedItems.setTextColor(0xFFE8DCC8);
     }
 
     private void updatePODButtonText() {

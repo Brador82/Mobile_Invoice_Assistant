@@ -386,7 +386,13 @@ public class ManualExtractionActivity extends BaseActivity {
             }
         }
         this.binding.tvResultPreview.setText(extractedText.trim());
-        this.binding.tvResultPreview.setSelection(this.binding.tvResultPreview.getText().length());
+        this.binding.tvResultPreview.post(new Runnable() {
+            @Override
+            public void run() {
+                binding.tvResultPreview.requestFocus();
+                binding.tvResultPreview.setSelection(binding.tvResultPreview.getText().length());
+            }
+        });
         this.binding.layoutPreview.setVisibility(0);
         showFieldAssignPopup(bitmapRect);
     }

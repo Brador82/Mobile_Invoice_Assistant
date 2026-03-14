@@ -1,6 +1,6 @@
 package com.mobileinvoice.ocr;
 
-import android.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -338,7 +338,7 @@ public class MainActivity extends BaseActivity implements InvoiceAdapter.OnInvoi
     /* JADX INFO: Access modifiers changed from: private */
     public /* synthetic */ void lambda$setupClickListeners$9(View v) {
         if (!this.selectedImages.isEmpty()) {
-            new AlertDialog.Builder(this).setTitle("Clear Image Queue?")
+            new MaterialAlertDialogBuilder(this).setTitle("Clear Image Queue?")
                     .setMessage("This will clear " + this.selectedImages.size()
                             + " selected image(s) that haven't been processed yet.")
                     .setPositiveButton("Clear", new DialogInterface.OnClickListener() { // from class:
@@ -387,7 +387,28 @@ public class MainActivity extends BaseActivity implements InvoiceAdapter.OnInvoi
                     MainActivity.this.lambda$setupClickListeners$10(index);
                 }
             });
-            OCRProcessorMLKit.OCRResult result = ocrProcessor.processImage(imageUri);
+            // Save original image first
+            String savedPath = saveImageToAppStorage(imageUri, "invoice_original_" + (this.invoices.size() + 1) + ".jpg");
+
+            // Preprocess BEFORE OCR for better recognition
+            OCRProcessorMLKit.OCRResult result;
+            Bitmap originalBitmap = null;
+            Bitmap preprocessed = null;
+            try {
+                String sourcePath = savedPath != null ? savedPath : imageUri.getPath();
+                originalBitmap = BitmapFactory.decodeFile(sourcePath);
+                if (originalBitmap != null) {
+                    preprocessed = ImagePreprocessor.pipeline(originalBitmap);
+                    result = ocrProcessor.processImage(preprocessed);
+                } else {
+                    // Fallback: decode failed, use URI directly
+                    result = ocrProcessor.processImage(imageUri);
+                }
+            } catch (Exception e) {
+                Log.w("MainActivity", "Preprocessing failed, falling back to raw URI", e);
+                result = ocrProcessor.processImage(imageUri);
+            }
+
             Invoice invoice = new Invoice();
             boolean hasItems = false;
             boolean hasInvoiceNumber = (result.invoiceNumber == null || result.invoiceNumber.trim().isEmpty()
@@ -416,16 +437,18 @@ public class MainActivity extends BaseActivity implements InvoiceAdapter.OnInvoi
             invoice.setTimestamp(System.currentTimeMillis());
             long newId = this.database.invoiceDao().insert(invoice);
             invoice.setId((int) newId);
-            String savedPath = saveImageToAppStorage(imageUri, "invoice_original_" + newId + ".jpg");
-            if (savedPath != null) {
+            // Update saved path with actual ID
+            String finalPath = saveImageToAppStorage(imageUri, "invoice_original_" + newId + ".jpg");
+            if (finalPath != null) {
+                invoice.setOriginalImagePath(finalPath);
+            } else if (savedPath != null) {
                 invoice.setOriginalImagePath(savedPath);
             } else {
                 invoice.setOriginalImagePath(imageUri.toString());
             }
-            Bitmap originalBitmap = BitmapFactory.decodeFile(savedPath != null ? savedPath : imageUri.getPath());
-            if (originalBitmap != null) {
+            // Save preprocessed image path
+            if (preprocessed != null) {
                 try {
-                    Bitmap preprocessed = ImagePreprocessor.pipeline(originalBitmap);
                     String preprocessedPath = ImagePreprocessor.savePreprocessed(this, preprocessed);
                     if (preprocessedPath != null) {
                         invoice.setPreprocessedImagePath(preprocessedPath);
@@ -433,8 +456,8 @@ public class MainActivity extends BaseActivity implements InvoiceAdapter.OnInvoi
                     if (preprocessed != originalBitmap) {
                         preprocessed.recycle();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } catch (Exception e2) {
+                    e2.printStackTrace();
                 }
             }
             this.database.invoiceDao().update(invoice);
@@ -838,7 +861,7 @@ public class MainActivity extends BaseActivity implements InvoiceAdapter.OnInvoi
         final String phoneNumber = phone;
 
         String[] options = { "Send Follow-Up", "Quick Message 1", "Quick Message 2", "Skip" };
-        new AlertDialog.Builder(this)
+        new MaterialAlertDialogBuilder(this)
                 .setTitle("Send Customer Message?")
                 .setItems(options, new android.content.DialogInterface.OnClickListener() {
                     @Override
@@ -872,7 +895,7 @@ public class MainActivity extends BaseActivity implements InvoiceAdapter.OnInvoi
      * [inline-methods]
      */
     public void lambda$exportToSelectedFolder$25(int exportedCount) {
-        new AlertDialog.Builder(this).setTitle("Export Complete").setMessage(exportedCount
+        new MaterialAlertDialogBuilder(this).setTitle("Export Complete").setMessage(exportedCount
                 + " invoices exported successfully to Downloads/MobileInvoiceOCR.\n\nWould you like to clear all data to start fresh?")
                 .setPositiveButton("Clear All Data", new DialogInterface.OnClickListener() { // from class:
                                                                                              // com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda36
@@ -900,7 +923,7 @@ public class MainActivity extends BaseActivity implements InvoiceAdapter.OnInvoi
     }
 
     private void clearAllData() {
-        new AlertDialog.Builder(this).setTitle("Confirm Clear All")
+        new MaterialAlertDialogBuilder(this).setTitle("Confirm Clear All")
                 .setMessage("This will permanently delete all " + this.invoices.size()
                         + " invoices from the app. Exported data in Downloads will NOT be affected.\n\nAre you sure?")
                 .setPositiveButton("Yes, Clear All", new DialogInterface.OnClickListener() { // from class:

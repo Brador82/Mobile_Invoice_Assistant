@@ -280,12 +280,15 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.InvoiceV
         }
 
         private void setServiceBadge(TextView badge, boolean active) {
+            Context ctx = badge.getContext();
+            String theme = AppSettings.getInstance(ctx).getAppTheme();
+            boolean isLight = AppSettings.THEME_LIGHT_MARBLE.equals(theme);
             if (active) {
-                badge.setTextColor(0xFFD4AF37);
-                badge.setBackgroundResource(R.drawable.badge_background);
+                badge.setTextColor(isLight ? 0xFFB71C1C : 0xFFD4AF37);
+                badge.setBackgroundResource(isLight ? R.drawable.badge_background_light : R.drawable.badge_background);
             } else {
-                badge.setTextColor(0xFF404040);
-                badge.setBackgroundResource(R.drawable.badge_service_dim);
+                badge.setTextColor(isLight ? 0xFF999090 : 0xFF404040);
+                badge.setBackgroundResource(isLight ? R.drawable.badge_service_dim_light : R.drawable.badge_service_dim);
             }
         }
 

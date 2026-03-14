@@ -17,7 +17,7 @@
         <item name="colorSurface">@color/imperial_patina_iron</item>
         <item name="themeAccentColor">@color/imperial_gold_leaf</item>
         <item name="themeActivityBackground">@drawable/bg_obsidian_marble</item>
-        <item name="themeButtonBackground">@drawable/button_primary_imperial</item>
+        <item name="themeButtonBackground">@drawable/button_black_white_gradient</item>
         <item name="themeButtonTextColor">@color/imperial_gold_leaf</item>
         <item name="themeCardBackground">@drawable/bg_imperial_marble_card</item>
         <item name="themeSectionBackground">@drawable/bg_imperial_iron_section</item>
@@ -41,7 +41,7 @@
         <item name="colorSurface">@color/calacatta_surface</item>
         <item name="themeAccentColor">@color/imperial_gold_leaf</item>
         <item name="themeActivityBackground">@drawable/bg_obsidian_marble</item>
-        <item name="themeButtonBackground">@drawable/button_primary_imperial</item>
+        <item name="themeButtonBackground">@drawable/button_black_white_gradient</item>
         <item name="themeButtonTextColor">@color/imperial_gold_leaf</item>
         <item name="themeCardBackground">@drawable/bg_marble_card</item>
         <item name="themeSectionBackground">@drawable/bg_imperial_iron_section</item>
@@ -65,28 +65,28 @@
         <item name="windowNoTitle">true</item>
     </style>
     <style name="Theme.MobileInvoiceOCR.LightMarble" parent="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
-        <item name="android:colorBackground">@color/calacatta_warm</item>
-        <item name="android:textColorPrimary">@color/calacatta_dark_text</item>
-        <item name="android:textColorSecondary">@color/calacatta_warm_mid</item>
+        <item name="android:colorBackground">@color/light_bg_charcoal</item>
+        <item name="android:textColorPrimary">@color/calacatta_warm</item>
+        <item name="android:textColorSecondary">@color/light_crimson_bright</item>
         <item name="android:textColorHint">@color/calacatta_hint</item>
-        <item name="android:statusBarColor">@color/calacatta_dark_text</item>
-        <item name="colorOnBackground">@color/calacatta_dark_text</item>
-        <item name="colorOnPrimary">@color/imperial_gold_leaf</item>
+        <item name="android:statusBarColor">@color/light_crimson_deep</item>
+        <item name="colorOnBackground">@color/calacatta_warm</item>
+        <item name="colorOnPrimary">@color/white</item>
         <item name="colorOnSecondary">@color/calacatta_dark_text</item>
-        <item name="colorOnSurface">@color/calacatta_dark_text</item>
-        <item name="colorPrimary">@color/calacatta_dark_text</item>
-        <item name="colorPrimaryVariant">@color/imperial_obsidian</item>
-        <item name="colorSecondary">@color/imperial_gold_leaf</item>
-        <item name="colorSecondaryVariant">@color/antique_gold</item>
-        <item name="colorSurface">@color/calacatta_surface</item>
-        <item name="themeAccentColor">@color/imperial_gold_leaf</item>
+        <item name="colorOnSurface">@color/calacatta_warm</item>
+        <item name="colorPrimary">@color/light_crimson</item>
+        <item name="colorPrimaryVariant">@color/light_crimson_deep</item>
+        <item name="colorSecondary">@color/light_crimson_bright</item>
+        <item name="colorSecondaryVariant">@color/light_crimson</item>
+        <item name="colorSurface">@color/light_bg_charcoal</item>
+        <item name="themeAccentColor">@color/light_crimson</item>
         <item name="themeActivityBackground">@drawable/bg_calacatta_marble_bg</item>
         <item name="themeButtonBackground">@drawable/button_primary_light_marble</item>
         <item name="themeButtonTextColor">@color/calacatta_dark_text</item>
         <item name="themeCardBackground">@drawable/bg_marble_card</item>
         <item name="themeSectionBackground">@drawable/bg_marble_section_light</item>
-        <item name="themeSectionBorderColor">@color/marble_vein</item>
-        <item name="themeTextAccent">@color/calacatta_deep_gold</item>
+        <item name="themeSectionBorderColor">@color/light_crimson</item>
+        <item name="themeTextAccent">@color/light_crimson_bright</item>
     </style>
     <style name="Theme.MobileInvoiceOCR.LightMarble.Fullscreen" parent="@style/Theme.MobileInvoiceOCR.LightMarble">
         <item name="android:windowContentOverlay">@null</item>

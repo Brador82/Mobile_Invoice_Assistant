@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Crimson border -->
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="#d4af37"/>
+            <solid android:color="#b71c1c"/>
             <corners android:radius="8dp"/>
         </shape>
     </item>
+    <!-- Main body: cream-white gradient -->
     <item
         android:left="1.5dp"
         android:top="1.5dp"
@@ -13,15 +15,15 @@
         android:bottom="1.5dp">
         <shape android:shape="rectangle">
             <gradient
-                android:startColor="#fcfaf4"
-                android:endColor="#ddd8c8"
+                android:startColor="#ffffff"
+                android:endColor="#e8e0d8"
                 android:angle="270"
                 android:type="linear"
-                android:centerColor="#f0ede3"/>
+                android:centerColor="#f8f4f0"/>
             <corners android:radius="7dp"/>
         </shape>
     </item>
-    <!-- Intensified top gloss -->
+    <!-- Strong top gloss (refractive shine) -->
     <item
         android:left="1.5dp"
         android:top="1.5dp"
@@ -29,11 +31,11 @@
         android:bottom="1.5dp">
         <shape android:shape="rectangle">
             <gradient
-                android:startColor="#58ffffff"
+                android:startColor="#70ffffff"
                 android:endColor="#00000000"
                 android:angle="270"
                 android:type="linear"
-                android:centerColor="#18ffffff"/>
+                android:centerColor="#25ffffff"/>
             <corners android:radius="7dp"/>
         </shape>
     </item>
@@ -46,27 +48,43 @@
         <shape android:shape="rectangle">
             <gradient
                 android:startColor="#00000000"
-                android:endColor="#20000000"
+                android:endColor="#30000000"
                 android:angle="270"
                 android:type="linear"
                 android:centerColor="#00000000"/>
             <corners android:radius="7dp"/>
         </shape>
     </item>
-    <!-- Specular top stripe highlight -->
+    <!-- Specular top stripe highlight (sharp glass refraction) -->
     <item
-        android:left="3dp"
+        android:left="4dp"
         android:top="1.5dp"
-        android:right="3dp"
+        android:right="4dp"
         android:bottom="0dp">
         <shape android:shape="rectangle">
             <gradient
-                android:startColor="#40ffffff"
+                android:startColor="#60ffffff"
                 android:endColor="#00ffffff"
                 android:angle="270"
                 android:type="linear"/>
             <corners android:radius="7dp"/>
-            <size android:height="10dp"/>
+            <size android:height="8dp"/>
+        </shape>
+    </item>
+    <!-- Subtle crimson inner glow at bottom -->
+    <item
+        android:left="1.5dp"
+        android:top="1.5dp"
+        android:right="1.5dp"
+        android:bottom="1.5dp">
+        <shape android:shape="rectangle">
+            <gradient
+                android:startColor="#00000000"
+                android:endColor="#15b71c1c"
+                android:angle="270"
+                android:type="linear"
+                android:centerColor="#00000000"/>
+            <corners android:radius="7dp"/>
         </shape>
     </item>
 </layer-list>

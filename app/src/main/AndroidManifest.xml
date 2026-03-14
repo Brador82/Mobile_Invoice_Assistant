@@ -71,6 +71,7 @@
             android:label="@string/manual_extraction"
             android:name=".ManualExtractionActivity"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"
             android:parentActivityName=".InvoiceLibraryActivity"/>
         <activity
             android:name=".BroadcastMessageActivity"
