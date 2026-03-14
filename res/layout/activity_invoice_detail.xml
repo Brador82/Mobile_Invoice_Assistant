@@ -47,6 +47,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/invoice_number">
             <com.google.android.material.textfield.TextInputEditText
+                android:textColor="?android:attr/textColorPrimary"
                 android:id="@+id/etInvoiceNumber"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -57,6 +58,7 @@
             android:layout_marginTop="8dp"
             android:hint="@string/customer_name">
             <com.google.android.material.textfield.TextInputEditText
+                android:textColor="?android:attr/textColorPrimary"
                 android:id="@+id/etCustomerName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -72,6 +74,7 @@
             app:endIconMode="custom"
             app:endIconTint="@color/gold">
             <com.google.android.material.textfield.TextInputEditText
+                android:textColor="?android:attr/textColorPrimary"
                 android:id="@+id/etAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -88,6 +91,7 @@
             app:endIconMode="custom"
             app:endIconTint="@color/gold">
             <com.google.android.material.textfield.TextInputEditText
+                android:textColor="?android:attr/textColorPrimary"
                 android:id="@+id/etPhone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -95,6 +99,7 @@
         </com.google.android.material.textfield.TextInputLayout>
         <TextView
             android:textSize="16sp"
+            android:textColor="?android:attr/textColorPrimary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -102,6 +107,7 @@
             android:text="@string/items"/>
         <TextView
             android:id="@+id/tvSelectedItems"
+            android:textColor="?android:attr/textColorPrimary"
             android:background="@android:drawable/edit_text"
             android:padding="12dp"
             android:focusable="true"
@@ -111,6 +117,7 @@
             android:text="@string/select_items"/>
         <TextView
             android:textSize="16sp"
+            android:textColor="?android:attr/textColorPrimary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -215,6 +222,7 @@
             android:text="@string/add_pod"/>
         <TextView
             android:textSize="16sp"
+            android:textColor="?android:attr/textColorPrimary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -244,6 +252,7 @@
             android:layout_marginTop="16dp"
             android:hint="@string/notes">
             <com.google.android.material.textfield.TextInputEditText
+                android:textColor="?android:attr/textColorPrimary"
                 android:gravity="top"
                 android:id="@+id/etNotes"
                 android:layout_width="match_parent"

@@ -4109,6 +4109,11 @@
         <item name="themeSectionBackground">@drawable/bg_imperial_iron_section</item>
         <item name="themeSectionBorderColor">@color/imperial_gold_leaf</item>
         <item name="themeTextAccent">@color/imperial_gold_leaf</item>
+        <item name="alertDialogTheme">@style/AppAlertDialogTheme</item>
+    </style>
+    <style name="AppAlertDialogTheme" parent="@style/ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="colorPrimary">@color/imperial_gold_leaf</item>
+        <item name="android:textColorPrimary">@color/imperial_calacatta</item>
     </style>
     <style name="Theme.MobileInvoiceOCR.Blended" parent="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
         <item name="android:colorBackground">@color/imperial_obsidian</item>
@@ -4133,6 +4138,7 @@
         <item name="themeSectionBackground">@drawable/bg_imperial_iron_section</item>
         <item name="themeSectionBorderColor">@color/imperial_gold_leaf</item>
         <item name="themeTextAccent">@color/imperial_gold_leaf</item>
+        <item name="alertDialogTheme">@style/AppAlertDialogTheme</item>
     </style>
     <style name="Theme.MobileInvoiceOCR.Blended.Fullscreen" parent="@style/Theme.MobileInvoiceOCR.Blended">
         <item name="android:windowContentOverlay">@null</item>
@@ -4173,6 +4179,11 @@
         <item name="themeSectionBackground">@drawable/bg_marble_section_light</item>
         <item name="themeSectionBorderColor">@color/marble_vein</item>
         <item name="themeTextAccent">@color/calacatta_deep_gold</item>
+        <item name="alertDialogTheme">@style/AppAlertDialogThemeLightMarble</item>
+    </style>
+    <style name="AppAlertDialogThemeLightMarble" parent="@style/ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="colorPrimary">@color/calacatta_deep_gold</item>
+        <item name="android:textColorPrimary">@color/calacatta_dark_text</item>
     </style>
     <style name="Theme.MobileInvoiceOCR.LightMarble.Fullscreen" parent="@style/Theme.MobileInvoiceOCR.LightMarble">
         <item name="android:windowContentOverlay">@null</item>

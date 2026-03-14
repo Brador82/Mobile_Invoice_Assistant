@@ -3,13 +3,15 @@
 ## Project Overview
 - **App Name**: Mobile Invoice Assistant
 - **Package**: com.mobileinvoice.ocr
-- **Version**: 1.3.3 (versionCode 133)
+- **Version**: 1.3.4 (versionCode 134)
+- **Installed On**: Pixel 9a (as of March 2026)
 - **Source**: Decompiled from Pixel-installed APK (March 2026)
 - **Min SDK**: 26 (Android 8.0)
 - **Target SDK**: 35 (Android 15)
 
 ## Branch Strategy
 - `pixel-v1.3.3` — Baseline from Pixel-installed APK (versionCode 133). Do not modify.
+- `pixel-v1.3.4` — Current build installed on Pixel 9a (versionCode 134).
 - Future branches will be created for Debug/Blue builds (versionCode 135).
 
 ## Key Activities
