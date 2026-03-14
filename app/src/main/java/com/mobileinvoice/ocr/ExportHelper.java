@@ -1,6 +1,6 @@
 package com.mobileinvoice.ocr;
 
-import android.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -826,7 +826,7 @@ public class ExportHelper {
     }
 
     private void showShareDialog(final File zipFile, int invoiceCount) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this.context);
         builder.setTitle("Export Complete");
         builder.setMessage("Successfully exported " + invoiceCount + " delivery cards.\n\nFile: " + zipFile.getName() + "\nSize: " + (zipFile.length() / FileUtils.ONE_KB) + " KB\n\nHow would you like to share this?");
         builder.setPositiveButton("Share Now", new DialogInterface.OnClickListener() { // from class: com.mobileinvoice.ocr.ExportHelper$$ExternalSyntheticLambda3
@@ -1150,7 +1150,7 @@ public class ExportHelper {
     }
 
     public void showExportOptionsDialog(final File exportedFile, final String mimeType) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this.context);
         builder.setTitle("Share: " + exportedFile.getName());
         String[] options = {"Email", "QuickShare/Nearby", "SMS/MMS", "More Options"};
         builder.setItems(options, new DialogInterface.OnClickListener() { // from class: com.mobileinvoice.ocr.ExportHelper$$ExternalSyntheticLambda1

@@ -1,6 +1,6 @@
 package com.mobileinvoice.ocr;
 
-import android.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -338,7 +338,7 @@ public class MainActivity extends BaseActivity implements InvoiceAdapter.OnInvoi
     /* JADX INFO: Access modifiers changed from: private */
     public /* synthetic */ void lambda$setupClickListeners$9(View v) {
         if (!this.selectedImages.isEmpty()) {
-            new AlertDialog.Builder(this).setTitle("Clear Image Queue?")
+            new MaterialAlertDialogBuilder(this).setTitle("Clear Image Queue?")
                     .setMessage("This will clear " + this.selectedImages.size()
                             + " selected image(s) that haven't been processed yet.")
                     .setPositiveButton("Clear", new DialogInterface.OnClickListener() { // from class:
@@ -861,7 +861,7 @@ public class MainActivity extends BaseActivity implements InvoiceAdapter.OnInvoi
         final String phoneNumber = phone;
 
         String[] options = { "Send Follow-Up", "Quick Message 1", "Quick Message 2", "Skip" };
-        new AlertDialog.Builder(this)
+        new MaterialAlertDialogBuilder(this)
                 .setTitle("Send Customer Message?")
                 .setItems(options, new android.content.DialogInterface.OnClickListener() {
                     @Override
@@ -895,7 +895,7 @@ public class MainActivity extends BaseActivity implements InvoiceAdapter.OnInvoi
      * [inline-methods]
      */
     public void lambda$exportToSelectedFolder$25(int exportedCount) {
-        new AlertDialog.Builder(this).setTitle("Export Complete").setMessage(exportedCount
+        new MaterialAlertDialogBuilder(this).setTitle("Export Complete").setMessage(exportedCount
                 + " invoices exported successfully to Downloads/MobileInvoiceOCR.\n\nWould you like to clear all data to start fresh?")
                 .setPositiveButton("Clear All Data", new DialogInterface.OnClickListener() { // from class:
                                                                                              // com.mobileinvoice.ocr.MainActivity$$ExternalSyntheticLambda36
@@ -923,7 +923,7 @@ public class MainActivity extends BaseActivity implements InvoiceAdapter.OnInvoi
     }
 
     private void clearAllData() {
-        new AlertDialog.Builder(this).setTitle("Confirm Clear All")
+        new MaterialAlertDialogBuilder(this).setTitle("Confirm Clear All")
                 .setMessage("This will permanently delete all " + this.invoices.size()
                         + " invoices from the app. Exported data in Downloads will NOT be affected.\n\nAre you sure?")
                 .setPositiveButton("Yes, Clear All", new DialogInterface.OnClickListener() { // from class:
