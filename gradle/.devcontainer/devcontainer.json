@@ -1,0 +1,45 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/java
+{
+	"name": "Java",
+	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	"image": "mcr.microsoft.com/devcontainers/java:3-25-trixie",
+
+	"features": {
+		"ghcr.io/devcontainers/features/java:1": {
+			"version": "none",
+			"installMaven": "true",
+			"installGradle": "true"
+		},
+		"ghcr.io/dhoeric/features/act:1": {},
+		"ghcr.io/wxw-matt/devcontainer-features/command_runner:0": {},
+		"ghcr.io/wxw-matt/devcontainer-features/script_runner:0": {},
+		"ghcr.io/juan-ayala/devcontainer-features/aem-sdk:1": {},
+		"ghcr.io/juan-ayala/devcontainer-features/aem-universal-editor-service:1": {},
+		"ghcr.io/devcontainers-extra/features/act:1": {
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers-extra/features/act-asdf:2": {
+			"version": "latest"
+		},
+		"ghcr.io/dotnet/aspire-devcontainer-feature/dotnetaspire:1": {
+			"version": "9.0"
+		},
+		"ghcr.io/jajera/features/ag:1": {},
+		"ghcr.io/rails/devcontainer/features/activestorage:1": {
+			"variantProcessor": "vips"
+		}
+	}
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	// "postCreateCommand": "java -version",
+
+	// Configure tool-specific properties.
+	// "customizations": {},
+
+	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	// "remoteUser": "root"
+}

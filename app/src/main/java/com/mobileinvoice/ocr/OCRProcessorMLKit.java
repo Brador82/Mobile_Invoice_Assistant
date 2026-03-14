@@ -341,6 +341,37 @@ public class OCRProcessorMLKit {
                 result.address = extractAddress(line);
             }
         }
+        // Heuristic fallback: no "Name:" label — grab first plain-text line after BILL TO
+        if (result.customerName.isEmpty()) {
+            for (int i = billToIndex + 1; i < windowEnd; i++) {
+                String line = lines.get(i).trim();
+                if (line.isEmpty()) continue;
+                String lower = line.toLowerCase();
+                if (lower.startsWith("address:") || lower.startsWith("name:")) continue;
+                if (PHONE_PATTERN.matcher(line).find()) continue;
+                if (ZIP_CODE_PATTERN.matcher(line).find()) continue;
+                if (line.matches(".*\\d+\\s+[A-Z].*")) continue;
+                if (line.length() < 3 || line.length() > 60) continue;
+                if (lower.contains("invoice") || lower.contains("bill to") || lower.contains("date")
+                        || lower.contains("order") || lower.contains("salesperson")
+                        || lower.contains("ship to") || lower.contains("sold to")) continue;
+                result.customerName = toTitleCase(line);
+                break;
+            }
+        }
+
+        // Heuristic fallback: no "Address:" label — grab first street-address-looking line after BILL TO
+        if (result.address.isEmpty()) {
+            for (int i = billToIndex + 1; i < windowEnd; i++) {
+                String line = lines.get(i).trim();
+                if (line.isEmpty()) continue;
+                if (line.matches(".*\\d+\\s+[A-Z].*") && ZIP_CODE_PATTERN.matcher(line).find()) {
+                    result.address = extractAddress(line);
+                    break;
+                }
+            }
+        }
+
         // Phone: dedicate a separate pass with store-phone suppression
         assignPhones(lines, windowStart, windowEnd, storePhoneDigits, result);
         // If still no phone, widen scan to whole document
@@ -359,9 +390,11 @@ public class OCRProcessorMLKit {
                 result.address = extractAddress(line);
             }
         }
-        // Raw address heuristic — only accept lines that also contain a zip code
+        // Raw address heuristic — skip first 10 lines (company header) to avoid grabbing store address
         if (result.address.isEmpty()) {
-            for (String line : lines) {
+            int addrSearchStart = Math.min(10, lines.size() / 3);
+            for (int i = addrSearchStart; i < lines.size(); i++) {
+                String line = lines.get(i);
                 if (line.matches(".*\\d+\\s+[A-Z].*") && line.length() > 10
                         && ZIP_CODE_PATTERN.matcher(line).find()) {
                     result.address = extractAddress(line);

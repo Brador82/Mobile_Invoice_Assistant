@@ -26,7 +26,7 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AlertDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.Task;
@@ -681,7 +681,7 @@ public class SettingsActivity extends BaseActivity {
     }
 
     private void confirmClearAllData() {
-        new AlertDialog.Builder(this).setTitle("Clear All Data").setMessage("This will permanently delete all invoices. This cannot be undone.").setPositiveButton("DELETE EVERYTHING", new DialogInterface.OnClickListener() { // from class: com.mobileinvoice.ocr.SettingsActivity$$ExternalSyntheticLambda11
+        new MaterialAlertDialogBuilder(this).setTitle("Clear All Data").setMessage("This will permanently delete all invoices. This cannot be undone.").setPositiveButton("DELETE EVERYTHING", new DialogInterface.OnClickListener() { // from class: com.mobileinvoice.ocr.SettingsActivity$$ExternalSyntheticLambda11
             @Override // android.content.DialogInterface.OnClickListener
             public final void onClick(DialogInterface dialogInterface, int i) {
                 SettingsActivity.this.lambda$confirmClearAllData$18(dialogInterface, i);
