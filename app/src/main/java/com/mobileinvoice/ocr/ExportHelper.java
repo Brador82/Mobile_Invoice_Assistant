@@ -24,6 +24,7 @@ import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -175,7 +176,7 @@ public class ExportHelper {
                     String filename = sanitizeFilename(invoice.getCustomerName() + "_" + invoice.getInvoiceNumber()) + ".html";
                     File htmlFile = new File(deliveryDir, filename);
                     FileOutputStream fos = new FileOutputStream(htmlFile);
-                    fos.write(htmlContent.getBytes("UTF-8"));
+                    fos.write(htmlContent.getBytes(StandardCharsets.UTF_8));
                     fos.close();
                     successCount++;
                 } catch (Exception e) {
@@ -189,7 +190,7 @@ public class ExportHelper {
             String indexHTML = generateIndexHTML(invoices);
             File indexFile = new File(deliveryDir, "index.html");
             FileOutputStream fos2 = new FileOutputStream(indexFile);
-            fos2.write(indexHTML.getBytes("UTF-8"));
+            fos2.write(indexHTML.getBytes(StandardCharsets.UTF_8));
             fos2.close();
             String zipFilename = dateFolder + ".zip";
             File zipFile = new File(mainExportDir, zipFilename);
@@ -264,9 +265,9 @@ public class ExportHelper {
         int pageHeight;
         int pageWidth;
         Paint valuePaint2;
-        final int pageWidth2 = 612;
-        final int pageHeight2 = 792;
-        final PdfDocument document2 = new PdfDocument();
+        int pageWidth2 = 612;
+        int pageHeight2 = 792;
+        PdfDocument document2 = new PdfDocument();
         String mapLink2 = "MM/dd/yyyy hh:mm a";
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm a", Locale.US);
         Paint titlePaint = new Paint();
@@ -296,10 +297,13 @@ public class ExportHelper {
         final PdfDocument.Page[] currentPage = {document2.startPage(new PdfDocument.PageInfo.Builder(612, 792, pageNum[0]).create())};
         final Canvas[] canvas = {currentPage[0].getCanvas()};
         Paint valuePaint4 = valuePaint3;
+        final int pageHeightFinal = pageHeight2;
+        final PdfDocument documentFinal = document2;
+        final int pageWidthFinal = pageWidth2;
         Runnable checkNewPage = new Runnable() { // from class: com.mobileinvoice.ocr.ExportHelper$$ExternalSyntheticLambda0
             @Override // java.lang.Runnable
-            public final void run() {
-                ExportHelper.lambda$generatePDFDeliveryCard$0(currentY, pageHeight2, document2, currentPage, pageNum, pageWidth2, canvas);
+            public void run() {
+                ExportHelper.lambda$generatePDFDeliveryCard$0(currentY, pageHeightFinal, documentFinal, currentPage, pageNum, pageWidthFinal, canvas);
             }
         };
         int contentWidth = 612 - (40 * 2);
@@ -388,7 +392,7 @@ public class ExportHelper {
                     canvas[0] = currentPage[0].getCanvas();
                     currentY[0] = 50;
                 }
-                canvas[0].drawBitmap(originalImg, 40, currentY[0], (Paint) null);
+                canvas[0].drawBitmap(originalImg, 40, currentY[0], null);
                 currentY[0] = currentY[0] + originalImg.getHeight() + 20;
                 originalImg.recycle();
             }
@@ -423,7 +427,7 @@ public class ExportHelper {
                     hasPOD = hasPOD2;
                     canvas[0].drawText("Photo " + (i3 + 1), 40, currentY[0], valuePaint);
                     currentY[0] = currentY[0] + 15;
-                    canvas[0].drawBitmap(podImg, 40, currentY[0], (Paint) null);
+                    canvas[0].drawBitmap(podImg, 40, currentY[0], null);
                     currentY[0] = currentY[0] + podImg.getHeight() + 15;
                     podImg.recycle();
                 }
@@ -442,7 +446,7 @@ public class ExportHelper {
             currentY[0] = currentY[0] + 20;
             Bitmap formImg = exportHelper.loadAndScaleImage(invoice.getSignatureImagePath(), contentWidth, pageHeight4 - 100);
             if (formImg != null) {
-                canvas[0].drawBitmap(formImg, 40, currentY[0], (Paint) null);
+                canvas[0].drawBitmap(formImg, 40, currentY[0], null);
                 currentY[0] = currentY[0] + formImg.getHeight() + 20;
                 formImg.recycle();
             }
@@ -608,7 +612,7 @@ public class ExportHelper {
             StringBuilder line = new StringBuilder();
             float lineY = y;
             for (String word : words) {
-                String testLine = line.length() > 0 ? ((Object) line) + StringUtils.SPACE + word : word;
+                String testLine = line.length() > 0 ? line + StringUtils.SPACE + word : word;
                 float testWidth = paint.measureText(testLine);
                 if (testWidth > maxWidth && line.length() > 0) {
                     canvas.drawText(line.toString(), x, lineY, paint);
@@ -828,17 +832,17 @@ public class ExportHelper {
         builder.setMessage("Successfully exported " + invoiceCount + " delivery cards.\n\nFile: " + zipFile.getName() + "\nSize: " + (zipFile.length() / FileUtils.ONE_KB) + " KB\n\nHow would you like to share this?");
         builder.setPositiveButton("Share Now", new DialogInterface.OnClickListener() { // from class: com.mobileinvoice.ocr.ExportHelper$$ExternalSyntheticLambda3
             @Override // android.content.DialogInterface.OnClickListener
-            public final void onClick(DialogInterface dialogInterface, int i) {
+            public void onClick(DialogInterface dialogInterface, int i) {
                 ExportHelper.this.lambda$showShareDialog$1(zipFile, dialogInterface, i);
             }
         });
         builder.setNeutralButton("View Location", new DialogInterface.OnClickListener() { // from class: com.mobileinvoice.ocr.ExportHelper$$ExternalSyntheticLambda4
             @Override // android.content.DialogInterface.OnClickListener
-            public final void onClick(DialogInterface dialogInterface, int i) {
+            public void onClick(DialogInterface dialogInterface, int i) {
                 ExportHelper.this.lambda$showShareDialog$2(zipFile, dialogInterface, i);
             }
         });
-        builder.setNegativeButton("Done", (DialogInterface.OnClickListener) null);
+        builder.setNegativeButton("Done", null);
         builder.show();
     }
 
@@ -1152,11 +1156,11 @@ public class ExportHelper {
         String[] options = {"Email", "QuickShare/Nearby", "SMS/MMS", "More Options"};
         builder.setItems(options, new DialogInterface.OnClickListener() { // from class: com.mobileinvoice.ocr.ExportHelper$$ExternalSyntheticLambda1
             @Override // android.content.DialogInterface.OnClickListener
-            public final void onClick(DialogInterface dialogInterface, int i) {
+            public void onClick(DialogInterface dialogInterface, int i) {
                 ExportHelper.this.lambda$showExportOptionsDialog$3(exportedFile, mimeType, dialogInterface, i);
             }
         });
-        builder.setNegativeButton("Cancel", (DialogInterface.OnClickListener) null);
+        builder.setNegativeButton("Cancel", null);
         builder.show();
     }
 
@@ -1287,7 +1291,7 @@ public class ExportHelper {
             JSONArray cardFolders = new JSONArray();
             File[] cardDirs = mainExportDir.listFiles(new FileFilter() { // from class: com.mobileinvoice.ocr.ExportHelper$$ExternalSyntheticLambda2
                 @Override // java.io.FileFilter
-                public final boolean accept(File file) {
+                public boolean accept(File file) {
                     boolean isDirectory;
                     isDirectory = file.isDirectory();
                     return isDirectory;

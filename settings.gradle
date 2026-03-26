@@ -17,5 +17,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "MobileInvoiceAssistant"
+rootProject.name = "DailyRecord"
 include ':app'

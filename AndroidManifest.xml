@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:versionCode="133"
     android:versionName="1.3.3"
     android:compileSdkVersion="35"
     android:compileSdkVersionCodename="15"
-    package="com.mobileinvoice.ocr"
     platformBuildVersionCode="35"
     platformBuildVersionName="15">
     <uses-sdk
@@ -37,12 +37,12 @@
         <package android:name="com.google.android.apps.maps"/>
     </queries>
     <permission
-        android:name="com.mobileinvoice.ocr.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+        android:name="com.brador.dailyrecord.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
         android:protectionLevel="signature"/>
-    <uses-permission android:name="com.mobileinvoice.ocr.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"/>
+    <uses-permission android:name="com.brador.dailyrecord.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"/>
     <application
-        android:theme="@style/Theme.MobileInvoiceOCR"
-        android:label="Mobile Invoice Assistant"
+        android:theme="@style/Theme.DailyRecord"
+        android:label="Daily Record"
         android:icon="@mipmap/ic_launcher"
         android:debuggable="true"
         android:allowBackup="true"
@@ -53,7 +53,7 @@
         android:appComponentFactory="androidx.core.app.CoreComponentFactory"
         android:requestLegacyExternalStorage="true">
         <activity
-            android:theme="@style/Theme.MobileInvoiceOCR.NoActionBar"
+            android:theme="@style/Theme.DailyRecord.NoActionBar"
             android:name="com.mobileinvoice.ocr.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait">
@@ -70,7 +70,7 @@
             android:name="com.mobileinvoice.ocr.CameraActivity"
             android:screenOrientation="landscape"/>
         <activity
-            android:theme="@style/Theme.MobileInvoiceOCR.Fullscreen"
+            android:theme="@style/Theme.DailyRecord.Fullscreen"
             android:name="com.mobileinvoice.ocr.SignatureActivity"
             android:screenOrientation="sensor"/>
         <activity
@@ -93,7 +93,7 @@
             android:screenOrientation="portrait"
             android:parentActivityName="com.mobileinvoice.ocr.MainActivity"/>
         <activity
-            android:theme="@style/Theme.MobileInvoiceOCR.NoActionBar"
+            android:theme="@style/Theme.DailyRecord.NoActionBar"
             android:label="Route Optimization"
             android:name="com.mobileinvoice.ocr.RouteMapActivity"
             android:screenOrientation="portrait"
@@ -104,7 +104,7 @@
         <provider
             android:name="androidx.core.content.FileProvider"
             android:exported="false"
-            android:authorities="com.mobileinvoice.ocr.fileprovider"
+            android:authorities="com.brador.dailyrecord.fileprovider"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
@@ -135,12 +135,14 @@
         <provider
             android:name="com.google.mlkit.common.internal.MlKitInitProvider"
             android:exported="false"
-            android:authorities="com.mobileinvoice.ocr.mlkitinitprovider"
-            android:initOrder="99"/>
+            android:authorities="${applicationId}.mlkitinitprovider"
+            android:initOrder="99"
+            tools:replace="android:authorities"/>
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:exported="false"
-            android:authorities="com.mobileinvoice.ocr.androidx-startup">
+            android:authorities="${applicationId}.androidx-startup"
+            tools:replace="android:authorities">
             <meta-data
                 android:name="androidx.emoji2.text.EmojiCompatInitializer"
                 android:value="androidx.startup"/>

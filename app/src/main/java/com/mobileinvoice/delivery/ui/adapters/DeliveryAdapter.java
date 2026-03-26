@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import com.mobileinvoice.delivery.data.entities.Delivery;
 import com.mobileinvoice.delivery.models.DeliveryStatus;
+
 import com.mobileinvoice.ocr.R;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -85,26 +86,26 @@ public class DeliveryAdapter extends ListAdapter<Delivery, DeliveryAdapter.Deliv
 
         public DeliveryViewHolder(View itemView) {
             super(itemView);
-            this.cardView = (CardView) itemView.findViewById(R.id.card_delivery);
-            this.tvCustomerName = (TextView) itemView.findViewById(R.id.tv_customer_name);
-            this.tvAddress = (TextView) itemView.findViewById(R.id.tv_address);
-            this.tvTrackingNumber = (TextView) itemView.findViewById(R.id.tv_tracking_number);
-            this.tvTimeWindow = (TextView) itemView.findViewById(R.id.tv_time_window);
-            this.tvPackageCount = (TextView) itemView.findViewById(R.id.tv_package_count);
-            this.tvStatus = (TextView) itemView.findViewById(R.id.tv_status);
-            this.ivPriority = (ImageView) itemView.findViewById(R.id.iv_priority);
-            this.ivPhone = (ImageView) itemView.findViewById(R.id.iv_phone);
-            this.ivNavigate = (ImageView) itemView.findViewById(R.id.iv_navigate);
+            this.cardView = itemView.findViewById(R.id.card_delivery);
+            this.tvCustomerName = itemView.findViewById(R.id.tv_customer_name);
+            this.tvAddress = itemView.findViewById(R.id.tv_address);
+            this.tvTrackingNumber = itemView.findViewById(R.id.tv_tracking_number);
+            this.tvTimeWindow = itemView.findViewById(R.id.tv_time_window);
+            this.tvPackageCount = itemView.findViewById(R.id.tv_package_count);
+            this.tvStatus = itemView.findViewById(R.id.tv_status);
+            this.ivPriority = itemView.findViewById(R.id.iv_priority);
+            this.ivPhone = itemView.findViewById(R.id.iv_phone);
+            this.ivNavigate = itemView.findViewById(R.id.iv_navigate);
             this.statusIndicator = itemView.findViewById(R.id.view_status_indicator);
             itemView.setOnClickListener(new View.OnClickListener() { // from class: com.mobileinvoice.delivery.ui.adapters.DeliveryAdapter$DeliveryViewHolder$$ExternalSyntheticLambda0
                 @Override // android.view.View.OnClickListener
-                public final void onClick(View view) {
+                public void onClick(View view) {
                     DeliveryAdapter.DeliveryViewHolder.this.lambda$new$0(view);
                 }
             });
             itemView.setOnLongClickListener(new View.OnLongClickListener() { // from class: com.mobileinvoice.delivery.ui.adapters.DeliveryAdapter$DeliveryViewHolder$$ExternalSyntheticLambda1
                 @Override // android.view.View.OnLongClickListener
-                public final boolean onLongClick(View view) {
+                public boolean onLongClick(View view) {
                     boolean lambda$new$1;
                     lambda$new$1 = DeliveryAdapter.DeliveryViewHolder.this.lambda$new$1(view);
                     return lambda$new$1;
@@ -116,7 +117,7 @@ public class DeliveryAdapter extends ListAdapter<Delivery, DeliveryAdapter.Deliv
         public /* synthetic */ void lambda$new$0(View v) {
             int position = getAdapterPosition();
             if (position != -1 && DeliveryAdapter.this.clickListener != null) {
-                DeliveryAdapter.this.clickListener.onDeliveryClick((Delivery) DeliveryAdapter.this.getItem(position));
+                DeliveryAdapter.this.clickListener.onDeliveryClick(DeliveryAdapter.this.getItem(position));
             }
         }
 
@@ -124,7 +125,7 @@ public class DeliveryAdapter extends ListAdapter<Delivery, DeliveryAdapter.Deliv
         public /* synthetic */ boolean lambda$new$1(View v) {
             int position = getAdapterPosition();
             if (position != -1 && DeliveryAdapter.this.longClickListener != null) {
-                DeliveryAdapter.this.longClickListener.onDeliveryLongClick((Delivery) DeliveryAdapter.this.getItem(position));
+                DeliveryAdapter.this.longClickListener.onDeliveryLongClick(DeliveryAdapter.this.getItem(position));
                 return true;
             }
             return false;

@@ -29,3 +29,6 @@ oracleJdk-25/
 
 # Google Drive temp uploads
 .tmp.driveupload/
+build_output.txt
+build_bundle.txt
+public.xml.decompile
